@@ -5,8 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1c610051-70a7-4245-81a0-3bc479c5d1b4" name="Changes" comment="first commit">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/ichnaea/view/MainFrame.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/ichnaea/view/MainFrame.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/org/AppTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/org/AppTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -65,7 +66,7 @@
     "settings.editor.selected.configurable": "preferences.pluginManager"
   }
 }]]></component>
-  <component name="RunManager" selected="Kotlin.AppKt">
+  <component name="RunManager" selected="JUnit.AppTest">
     <configuration name="App" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="org.ichnaea.App" />
       <module name="ichnaea" />
@@ -109,10 +110,10 @@
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.AppTest" />
         <item itemvalue="Kotlin.AppKt" />
         <item itemvalue="Kotlin.AppKt" />
         <item itemvalue="Application.App" />
-        <item itemvalue="JUnit.AppTest" />
       </list>
     </recent_temporary>
   </component>
@@ -125,7 +126,7 @@
       <option name="presentableId" value="Default" />
       <updated>1665113692849</updated>
       <workItem from="1665113694452" duration="545000" />
-      <workItem from="1665150951559" duration="6010000" />
+      <workItem from="1665150951559" duration="6641000" />
     </task>
     <task id="LOCAL-00001" summary="first commit">
       <created>1665245676783</created>
@@ -134,7 +135,21 @@
       <option name="project" value="LOCAL" />
       <updated>1665245676783</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="first commit">
+      <created>1665245761977</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1665245761977</updated>
+    </task>
+    <task id="LOCAL-00003" summary="first commit">
+      <created>1665245842810</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1665245842810</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
