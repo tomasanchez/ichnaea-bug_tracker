@@ -1,15 +1,15 @@
-package org.ichnaea.view
+package org.ichnaea.core.mvc.view
 
 import java.awt.Dimension
 import javax.swing.JFrame
 import javax.swing.JOptionPane
 
-class MainFrame : JFrame() {
+class AppView : JFrame() {
 
     companion object {
 
-        fun open(): MainFrame {
-            val frame = MainFrame()
+        fun open(): AppView {
+            val frame = AppView()
             frame.launch()
             return frame
         }
@@ -27,6 +27,8 @@ class MainFrame : JFrame() {
     fun launch() {
         try {
             this.isVisible = true
+            preferredSize = DIMENSION
+            this.pack()
         } catch (e: Exception) {
             JOptionPane.showMessageDialog(null, e.message)
             throw e

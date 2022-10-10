@@ -1,6 +1,6 @@
 package org;
 
-import org.ichnaea.view.MainFrame;
+import org.ichnaea.core.mvc.view.AppView;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -9,11 +9,11 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class AppTest {
 
-    MainFrame app;
+    AppView app;
 
     @BeforeEach
     public void setUp() {
-        app = new MainFrame();
+        app = new AppView();
     }
 
     @AfterEach
