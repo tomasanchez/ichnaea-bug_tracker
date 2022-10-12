@@ -33,7 +33,7 @@ class SignUpView : BaseView() {
 
     private fun body() {
 
-        set(Box.createRigidArea(Dimension(0, 45)))
+        set(Box.createRigidArea(Dimension(0, 35)))
         set("usernameField", TextField(label = "Username"))
         set(Box.createRigidArea(Dimension(0, 25)))
         set("passwordField", PasswordField())
@@ -43,12 +43,10 @@ class SignUpView : BaseView() {
     }
 
     private fun footer() {
-        set(Box.createRigidArea(Dimension(0, 60)))
+        set(Box.createRigidArea(Dimension(0, 35)))
         val footerPanel = Toolbar()
-        
         set("cancelButton", Button(text = "Cancel", color = SemanticColor.DANGER), footerPanel)
         set("signUpButton", Button(text = "Sign Up"), footerPanel)
-
         set(footerPanel)
     }
 
