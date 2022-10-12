@@ -25,6 +25,11 @@ public abstract class MVCController {
         return this;
     }
 
+    public MVCView getMVCView() {
+        return this.MVCView;
+    }
+
+
     /**
      * Obtains the controller name. <br/>
      * <p>
@@ -36,4 +41,10 @@ public abstract class MVCController {
         return getClass().getSimpleName().replace("Controller", "");
     }
 
+    /**
+     * This method is called upon initialization of the View. The controller can perform its
+     * internal setup in this hook. It is only called once per View instance, unlike the
+     * onBeforeRendering and onAfterRendering hooks.
+     */
+    protected abstract void onInit();
 }

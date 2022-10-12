@@ -1,7 +1,9 @@
 package org.ichnaea.controller
 
+import org.ichnaea.core.mvc.controller.ControllerLoader
 import org.ichnaea.core.mvc.controller.MVCController
 import org.slf4j.Logger
+import java.awt.Component
 
 abstract class BaseController : MVCController() {
 
@@ -13,8 +15,14 @@ abstract class BaseController : MVCController() {
         }
 
         fun navTo(viewName: String) {
-            log.info("Navigating to view: $viewName")
+            log.info("Displaying: $viewName")
+            ControllerLoader.getController(viewName)?.show()
         }
+
+    }
+
+    fun byId(component_id: String): Component? {
+        return this.mvcView.model[component_id] as Component?
     }
 
 }

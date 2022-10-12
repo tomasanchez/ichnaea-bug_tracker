@@ -23,7 +23,8 @@ public class MVCView {
 
     public void show() {
         if (Objects.nonNull(this.frame)) {
-            this.frame.add(this.panel);
+            this.frame.setContentPane(this.panel);
+            this.frame.revalidate();
         }
     }
 
@@ -33,6 +34,17 @@ public class MVCView {
 
     public MVCView set(String key, Component value) {
         this.viewModel.put(key, value);
+        this.panel.add(value);
+        return this;
+    }
+
+    public MVCView set(String key, Component value, JPanel container) {
+        this.viewModel.put(key, value);
+        container.add(value);
+        return this;
+    }
+
+    public MVCView set(Component value) {
         this.panel.add(value);
         return this;
     }

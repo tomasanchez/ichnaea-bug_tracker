@@ -31,6 +31,7 @@ object ControllerLoader {
                 controllers[controller.name] = controller
                 val view = ViewLoader.findView(controller.name)
                 controller.setView(view)
+                controller.onInit()
                 loaded++
                 logger.trace("Loaded controller ${controller.name}")
             } catch (e: Exception) {
