@@ -13,9 +13,9 @@ import javax.swing.border.EmptyBorder
 
 class PasswordField(
     val label: String = "Password",
-) : JPasswordField() {
+) : JPasswordField(), Validatable {
 
-    var hasError = false
+    private var hasError = false
 
     private val animator: Animator
 
@@ -39,6 +39,7 @@ class PasswordField(
 
         minimumSize = Dimension(300, 45)
         maximumSize = minimumSize
+
 
         addMouseListener(object : MouseAdapter() {
 
@@ -93,7 +94,7 @@ class PasswordField(
         val target: TimingTarget = object : TimingTargetAdapter() {
 
             override fun begin() {
-                isAnimatedHint = text.isEmpty()
+                isAnimatedHint = value().isEmpty()
             }
 
             override fun timingEvent(fraction: Float) {
@@ -119,10 +120,11 @@ class PasswordField(
         val height = height
 
         g2.color =
-            if (!hasMouseOver) SemanticColor.SECONDARY
+            if (hasError) SemanticColor.DANGER
             else
-                if (hasError) SemanticColor.DANGER
-                else SemanticColor.PRIMARY
+                if (!hasMouseOver) SemanticColor.SECONDARY
+                else
+                    SemanticColor.PRIMARY
 
         g2.fillRect(2, height - 1, width - 4, 1)
         drawLabel(g2)
@@ -160,7 +162,7 @@ class PasswordField(
 
         val fontMetrics = g2.fontMetrics
 
-        g2.color = SemanticColor.SECONDARY
+        g2.color = if (hasError) SemanticColor.DANGER else SemanticColor.SECONDARY
 
         val labelBounds = fontMetrics.getStringBounds(label, g2)
 
@@ -184,10 +186,11 @@ class PasswordField(
     }
 
     private fun drawLineStyle(g2: Graphics2D) {
+
+        g2.color = if (hasError) SemanticColor.DANGER else SemanticColor.SECONDARY
+
         if (isFocusOwner) {
-            g2.color =
-                if (hasError) SemanticColor.DANGER
-                else SemanticColor.PRIMARY
+            g2.color = if (hasError) SemanticColor.DANGER else SemanticColor.PRIMARY
 
             val width = (width - 4).toDouble()
 
@@ -205,6 +208,19 @@ class PasswordField(
             showing(string.isEmpty())
         }
         super.setText(string)
+    }
+
+    override fun setError(isValid: Boolean) {
+        this.hasError = isValid
+        repaint()
+    }
+
+    fun value(): String {
+        return try {
+            String(password)
+        } catch (NPE: NullPointerException) {
+            String()
+        }
     }
 
 }

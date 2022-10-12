@@ -19,7 +19,7 @@ import javax.swing.border.EmptyBorder
 class TextField(
     val label: String,
     private val required: Boolean = true,
-) : JTextField() {
+) : JTextField(), Validatable {
 
     private val animator: Animator
 
@@ -91,11 +91,11 @@ class TextField(
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON)
         g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_LCD_HRGB)
 
-        if (hasMouseOver) {
-            g2.color = if (hasError) SemanticColor.DANGER else SemanticColor.PRIMARY
-        } else {
-            g2.color = SemanticColor.SECONDARY
-        }
+        if (hasError)
+            g2.color = SemanticColor.DANGER
+        else
+            g2.color = if (hasMouseOver) SemanticColor.PRIMARY else SemanticColor.SECONDARY
+
 
         g2.fillRect(2, height - 1, width - 4, 1)
         drawLabel(g2)
@@ -119,7 +119,7 @@ class TextField(
     }
 
     private fun drawLabel(g2: Graphics2D) {
-        g2.color = SemanticColor.SECONDARY
+        g2.color = if (hasError) SemanticColor.DANGER else SemanticColor.SECONDARY
         val fontMetrics = g2.fontMetrics
         val labelBounds = fontMetrics.getStringBounds(label, g2)
         val height = height - insets.top - insets.bottom
@@ -155,6 +155,11 @@ class TextField(
             val x = (width - size) / 2
             g2.fillRect((x + 2).toInt(), height - 2, size.toInt(), 2)
         }
+    }
+
+    override fun setError(isValid: Boolean) {
+        this.hasError = isValid
+        repaint()
     }
 
 }

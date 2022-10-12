@@ -2,6 +2,7 @@ package org.ichnaea.controller
 
 import org.ichnaea.core.mvc.controller.ControllerLoader
 import org.ichnaea.core.mvc.controller.MVCController
+import org.ichnaea.core.ui.form.Validatable
 import org.slf4j.Logger
 import java.awt.Component
 
@@ -19,10 +20,21 @@ abstract class BaseController : MVCController() {
             ControllerLoader.getController(viewName)?.show()
         }
 
+        fun validateEmpty(value: String, input: Validatable): Boolean {
+
+            val hasError = value.isEmpty() || value.isBlank()
+
+            input.setError(hasError)
+            
+            return hasError
+        }
+
+
     }
 
-    fun byId(component_id: String): Component? {
+    protected fun byId(component_id: String): Component? {
         return this.mvcView.model[component_id] as Component?
     }
+
 
 }
