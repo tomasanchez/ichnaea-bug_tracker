@@ -5,6 +5,7 @@ import org.jdesktop.animation.timing.Animator
 import org.jdesktop.animation.timing.TimingTarget
 import org.jdesktop.animation.timing.TimingTargetAdapter
 import java.awt.*
+import java.awt.event.ActionEvent
 import java.awt.event.MouseAdapter
 import java.awt.event.MouseEvent
 import java.awt.image.BufferedImage
@@ -33,6 +34,7 @@ class Button(
         foreground = when (color) {
             SemanticColor.PRIMARY,
             SemanticColor.DARK,
+            SemanticColor.DANGER,
             SemanticColor.SECONDARY,
             SemanticColor.SUCCESS -> SemanticColor.LIGHT
 
@@ -97,5 +99,9 @@ class Button(
         g2.dispose()
         grphcs.drawImage(img, 0, 0, null)
         super.paintComponent(grphcs)
+    }
+
+    fun onClick(action: (e: ActionEvent) -> Unit) {
+        addActionListener(action)
     }
 }
