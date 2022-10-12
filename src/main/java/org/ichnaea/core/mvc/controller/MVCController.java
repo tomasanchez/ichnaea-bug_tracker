@@ -10,7 +10,7 @@ public abstract class MVCController {
         this.getView().show();
     }
 
-    private MVCView getView() {
+    protected MVCView getView() {
         return this.MVCView;
     }
 
@@ -25,10 +25,9 @@ public abstract class MVCController {
         return this;
     }
 
-    public MVCView getMVCView() {
-        return this.MVCView;
+    public void repaint() {
+        this.getView().repaint();
     }
-
 
     /**
      * Obtains the controller name. <br/>

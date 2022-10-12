@@ -25,7 +25,7 @@ abstract class BaseController : MVCController() {
             val hasError = value.isEmpty() || value.isBlank()
 
             input.setError(hasError)
-            
+
             return hasError
         }
 
@@ -33,7 +33,7 @@ abstract class BaseController : MVCController() {
     }
 
     protected fun byId(component_id: String): Component? {
-        return this.mvcView.model[component_id] as Component?
+        return this.view.model[component_id] as Component?
     }
 
 

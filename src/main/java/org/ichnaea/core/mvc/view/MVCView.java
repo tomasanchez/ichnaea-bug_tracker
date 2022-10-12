@@ -21,6 +21,20 @@ public class MVCView {
         this.panel.setBackground(Color.WHITE);
     }
 
+    public JFrame getFrame() {
+        return frame;
+    }
+
+    public MVCView setFrame(JFrame frame) {
+        this.frame = frame;
+        return this;
+    }
+
+    public void remove(Component component) {
+        panel.remove(component);
+        repaint();
+    }
+
     public void show() {
         if (Objects.nonNull(this.frame)) {
             this.frame.setContentPane(this.panel);
@@ -49,11 +63,6 @@ public class MVCView {
         return this;
     }
 
-    public MVCView setFrame(JFrame frame) {
-        this.frame = frame;
-        return this;
-    }
-
     /**
      * Obtains the View name. <br/>
      * <p>
@@ -65,4 +74,8 @@ public class MVCView {
         return getClass().getSimpleName().replace("View", "");
     }
 
+    public void repaint() {
+        this.panel.revalidate();
+        this.panel.repaint();
+    }
 }
