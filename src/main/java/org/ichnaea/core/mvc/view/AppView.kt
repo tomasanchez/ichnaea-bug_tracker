@@ -4,7 +4,7 @@ import java.awt.Dimension
 import javax.swing.JFrame
 import javax.swing.JOptionPane
 
-class AppView : JFrame() {
+class AppView() : JFrame() {
 
     companion object {
 
@@ -14,7 +14,7 @@ class AppView : JFrame() {
             return frame
         }
 
-        val DIMENSION: Dimension = Dimension(640, 480)
+        val DIMENSION: Dimension = Dimension(720, 560)
     }
 
     init {
