@@ -29,7 +29,7 @@ class Button(
     init {
         this.text = text
         isContentAreaFilled = false
-        border = EmptyBorder(8, 8, 8, 8)
+        border = EmptyBorder(10, 10, 10, 10)
         background = color
         foreground = when (color) {
             SemanticColor.PRIMARY,
@@ -59,6 +59,7 @@ class Button(
         animator.resolution = 0
         animator.acceleration = 0.5f
         animator.deceleration = 0.5f
+
         addMouseListener(object : MouseAdapter() {
 
             override fun mousePressed(me: MouseEvent) {
@@ -72,7 +73,6 @@ class Button(
                 animator.start()
             }
         })
-
     }
 
     override fun paintComponent(grphcs: Graphics) {
