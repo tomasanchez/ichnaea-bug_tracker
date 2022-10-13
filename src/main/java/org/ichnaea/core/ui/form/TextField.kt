@@ -35,7 +35,7 @@ class TextField(
 
     init {
 
-        border = EmptyBorder(20, 1, 10, 30)
+        border = EmptyBorder(20, 0, 10, 30)
 
         selectionColor = SemanticColor.PRIMARY
 
@@ -120,6 +120,7 @@ class TextField(
 
     private fun drawLabel(g2: Graphics2D) {
         g2.color = if (hasError) SemanticColor.DANGER else SemanticColor.SECONDARY
+
         val fontMetrics = g2.fontMetrics
         val labelBounds = fontMetrics.getStringBounds(label, g2)
         val height = height - insets.top - insets.bottom
@@ -128,13 +129,13 @@ class TextField(
         val size = if (isAnimatedHint) {
             if (isFocused) 18 * (1 - animationLocation.toDouble())
             else 18 * animationLocation.toDouble()
-        } else {
+        } else
             18.0
-        }
+
 
         g2.drawString(
             if (required) "$label*" else label,
-            insets.right,
+            7,
             (insets.top + textY + fontMetrics.ascent - size).toInt()
         )
 

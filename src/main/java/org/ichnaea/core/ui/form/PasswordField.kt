@@ -178,7 +178,7 @@ class PasswordField(
 
         g2.drawString(
             "$label*",
-            insets.right,
+            7,
             (insets.top + textY + fontMetrics.ascent - size).toInt()
         )
 
