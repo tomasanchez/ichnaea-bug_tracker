@@ -34,6 +34,7 @@ class PasswordField(
     private var isFocused = false
 
     init {
+
         border = EmptyBorder(20, 3, 10, 30)
         selectionColor = SemanticColor.PRIMARY
 
@@ -72,23 +73,21 @@ class PasswordField(
             override fun mouseMoved(me: MouseEvent) {
                 if (isShowAndHide) {
                     val x = width - 30
-                    cursor = if (Rectangle(x, 0, 30, 30).contains(me.point)) {
-                        Cursor(Cursor.HAND_CURSOR)
-                    } else {
-                        Cursor(Cursor.TEXT_CURSOR)
-                    }
+                    cursor =
+                        if (Rectangle(x, 0, 30, 30).contains(me.point))
+                            Cursor(Cursor.HAND_CURSOR)
+                        else
+                            Cursor(Cursor.TEXT_CURSOR)
+
                 }
             }
         })
 
         addFocusListener(object : FocusAdapter() {
-            override fun focusGained(fe: FocusEvent) {
-                showing(false)
-            }
+            override fun focusGained(fe: FocusEvent) = showing(false)
 
-            override fun focusLost(fe: FocusEvent) {
-                showing(true)
-            }
+            override fun focusLost(fe: FocusEvent) = showing(true)
+
         })
 
         val target: TimingTarget = object : TimingTargetAdapter() {
