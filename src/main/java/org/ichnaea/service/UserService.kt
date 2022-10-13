@@ -18,18 +18,33 @@ class UserService(
         return null;
     }
 
+    /**
+     * Persist a user with the given username.
+     *
+     * @param user the user data
+     * @return the persisted user
+     * @throws UserAlreadyExistsException when the username is taken.
+     */
     fun save(user: User): User {
 
         findByUsername(user.userName)?.let {
-            throw UserAlreadyExistsException("Username '${user.userName}' already in use.")
+            throw UserAlreadyExistsException("Username '${user.userName}' is already in use.")
         }
 
+        val secretPassword = passwordEncoder.encode(user.password)
 
-        val encodedUser = user.copy(password = passwordEncoder.encode(user.password))
-
-        return userRepository.save(encodedUser)
+        return userRepository.save(
+            user.copy(password = secretPassword)
+        )
     }
 
+
+    /**
+     * Retrieves a user with the given id.
+     *
+     * @param username the unique username
+     * @return the user or null if no user with the given username
+     */
     private fun findByUsername(username: String): User? {
         return userRepository.findByUsername(username)
     }
