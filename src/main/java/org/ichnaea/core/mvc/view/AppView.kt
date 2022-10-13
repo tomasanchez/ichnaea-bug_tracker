@@ -1,6 +1,7 @@
 package org.ichnaea.core.mvc.view
 
 import java.awt.Dimension
+import javax.swing.ImageIcon
 import javax.swing.JFrame
 import javax.swing.JOptionPane
 
@@ -21,6 +22,7 @@ class AppView() : JFrame() {
         title = "Ichnaea - Issue Tracker"
         defaultCloseOperation = EXIT_ON_CLOSE
         size = DIMENSION
+        iconImage = ImageIcon(javaClass.getResource("/icon/ichnaea-icon.png")).image
         setLocationRelativeTo(null)
     }
 

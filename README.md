@@ -23,6 +23,8 @@ MVC logic is based on my previous [jpa-template](https://github.com/tomasanchez/
 itself was based
 on [SpringBoot](https://spring.io/projects/spring-boot).
 
+<a href="https://www.flaticon.com/free-icons/bug" title="bug icons">Bug icons created by Freepik - Flaticon</a>
+
 ## License
 
 All material is provided under Mozilla Public License unless otherwise specified.
