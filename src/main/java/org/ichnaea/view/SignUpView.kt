@@ -1,10 +1,13 @@
 package org.ichnaea.view
 
+import jiconfont.icons.google_material_design_icons.GoogleMaterialDesignIcons
 import org.ichnaea.core.mvc.view.View
+import org.ichnaea.core.ui.avatar.Avatar
 import org.ichnaea.core.ui.button.Button
 import org.ichnaea.core.ui.container.Toolbar
 import org.ichnaea.core.ui.form.PasswordField
 import org.ichnaea.core.ui.form.TextField
+import org.ichnaea.core.ui.icon.GoogleIconFactory
 import org.ichnaea.core.ui.semantic.SemanticColor
 import org.ichnaea.core.ui.text.Title
 import org.ichnaea.core.ui.text.TitleLevel
@@ -26,8 +29,10 @@ class SignUpView : BaseView() {
     }
 
     private fun header() {
+        val icon = GoogleIconFactory.build(GoogleMaterialDesignIcons.ACCOUNT_CIRCLE, color = SemanticColor.DARK)
+        set(Avatar(image = icon))
         set("title", Title(text = "Ichnaea Issue Tracker", level = TitleLevel.H1, color = SemanticColor.PRIMARY))
-        set("subtitle", Title(text = "Sign Up", level = TitleLevel.H2))
+        set("subtitle", Title(text = "Add a new Use", level = TitleLevel.H2))
         panel.layout = BoxLayout(panel, BoxLayout.PAGE_AXIS)
     }
 

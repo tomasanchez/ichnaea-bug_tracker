@@ -68,7 +68,7 @@ class SignUpController : BaseController() {
         }
 
 
-        var user = User(usernameInput.text, passwordInput.value())
+        var user = User(usernameInput.text.trim(), passwordInput.value().trim())
 
         try {
 

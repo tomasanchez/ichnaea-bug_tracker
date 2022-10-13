@@ -4,6 +4,7 @@ import org.ichnaea.core.mvc.controller.Controller
 import org.ichnaea.core.ui.button.Button
 import org.ichnaea.core.ui.form.PasswordField
 import org.ichnaea.core.ui.form.TextField
+import org.ichnaea.core.ui.semantic.SemanticColor
 import org.slf4j.Logger
 import java.awt.event.ActionEvent
 
@@ -39,9 +40,28 @@ class SignInController : BaseController() {
         val username = usernameInput.text
         val password = passwordInput.value()
 
-        validateEmpty(username, usernameInput) || validateEmpty(password, passwordInput)
+        val anyEmptyFields = validateEmpty(username, usernameInput) || validateEmpty(password, passwordInput)
 
-        logger.info("User '$username' attempted Sign In with '$password'")
+        logger.info("Sign In attempted")
+
+        if (anyEmptyFields) {
+            showAlert(
+                title = "Error",
+                message = "Please fill in all fields",
+                color = SemanticColor.DANGER
+            )
+            logger.error("Sign in failed: empty fields")
+            return
+        }
+
+        logger.info("$username has Signed in successful")
+
+        showAlert(
+            title = "Hello, $username!",
+            message = "You are being redirected to the home page...",
+            color = SemanticColor.SUCCESS
+        )
+
     }
 
     private fun onSignUp(event: ActionEvent) {

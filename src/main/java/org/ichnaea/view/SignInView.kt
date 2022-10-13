@@ -1,6 +1,7 @@
 package org.ichnaea.view
 
 import org.ichnaea.core.mvc.view.View
+import org.ichnaea.core.ui.avatar.Avatar
 import org.ichnaea.core.ui.button.Button
 import org.ichnaea.core.ui.container.Toolbar
 import org.ichnaea.core.ui.form.PasswordField
@@ -11,6 +12,7 @@ import org.ichnaea.core.ui.text.TitleLevel
 import java.awt.Dimension
 import javax.swing.Box
 import javax.swing.BoxLayout
+import javax.swing.ImageIcon
 
 
 @View
@@ -27,6 +29,8 @@ class SignInView : BaseView() {
     }
 
     private fun header() {
+        val icon = ImageIcon(javaClass.getResource("/icon/ichnaea-icon.png"))
+        set(Avatar(image = icon))
         set("title", Title(text = "Ichnaea Issue Tracker", level = TitleLevel.H1, color = SemanticColor.PRIMARY))
         set("subtitle", Title(text = "Sign In", level = TitleLevel.H2))
         panel.layout = BoxLayout(panel, BoxLayout.PAGE_AXIS)
@@ -46,7 +50,7 @@ class SignInView : BaseView() {
 
     private fun footer() {
         set(Box.createRigidArea(Dimension(0, 60)))
-        
+
         val footerPanel = Toolbar()
         set("signUpButton", Button(text = "Sign Up", color = SemanticColor.SECONDARY), footerPanel)
         set("signInButton", Button(text = "Sign In"), footerPanel)
