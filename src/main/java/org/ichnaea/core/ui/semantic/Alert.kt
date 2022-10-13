@@ -5,6 +5,7 @@ import jiconfont.icons.google_material_design_icons.GoogleMaterialDesignIcons
 import jiconfont.swing.IconFontSwing
 import org.ichnaea.core.ui.text.Title
 import org.ichnaea.core.ui.text.TitleLevel
+import org.ichnaea.core.ui.text.Typography
 import java.awt.Color
 import java.awt.Graphics
 import java.awt.Graphics2D
@@ -84,10 +85,9 @@ class Alert(
         }
 
 
-        val alertMessage = Title(
+        val alertMessage = Typography(
             text = message,
             color = color,
-            level = TitleLevel.H4
         )
 
         groupLayout.setHorizontalGroup(
