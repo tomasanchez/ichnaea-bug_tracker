@@ -1,5 +1,10 @@
 # Ichnaea Issue Tracker
 
+<p align="center">
+    <img alt="Ichnaea Logo" height="300" src="src/main/resources/icon/ichnaea-icon.png" width="300"/>
+</p>
+
+
 Named after the greek goddess [Ichnaea](https://en.wikipedia.org/wiki/Ichnaea), "_The Tracker_", is a **Java**
 application
 for **issue tracking**. It is designed to be used by
