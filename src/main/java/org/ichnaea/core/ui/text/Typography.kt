@@ -19,13 +19,15 @@ open class Typography(
      * Horizontal Alignment.
      */
     ha: Float = CENTER_ALIGNMENT,
+
+    style: Int = Font.PLAIN,
 ) : JLabel() {
 
     init {
         foreground = color
         alignmentX = va
         alignmentY = ha
-        font = font.deriveFont(Font.PLAIN, 14f)
+        font = font.deriveFont(style, 14f)
         this.text = text
     }
 
