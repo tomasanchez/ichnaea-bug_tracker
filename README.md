@@ -12,6 +12,51 @@ Project Managers
 and Developers to track
 issues and their status in multiple projects.
 
+## Project Requirements
+
+### Develop a Bug tracker
+
+An incident tracking system should be created, similar to the classic Bugzilla or MantisBT.
+
+### Basic features
+
+#### Users and Profiles.
+
+The application must be able to manage users, each with different permissions: report an issue, change its status,
+indicate the time spent, close it, etc.
+
+An admin user will be responsible for managing the users and their permissions, will be able to create new projects.
+Non-admin user will only be able to report issues, change their status and create new ones.
+
+#### Projects
+
+The application must be able to manage N projects, each with different users and permissions, and multiple issues.
+
+#### Issues
+
+It should be possible to create issues, assign them to a user, change their status, indicate the time spent. An Issue
+should have a description, a status, a title, a priority and real time spent, a list of comments, etc.
+
+### Advanced features
+
+#### Historical
+
+The application must be able to show the history of the changes made to an issue, and who made them.
+
+#### Reports
+
+Each project should have a report that shows the issues with their estimated time vs real time spent.
+
+It should be possible to showcase which projects are the most delayed, which ones are the most advanced. How many issues
+are in each status, How many hours are spent in each status. Only the admin user should be able to see this report.
+
+### Extra features
+
+#### Historical
+
+Historical on issues changes on both status and comments should be shown in a timeline (chronological order), and be
+shown in an issue detail page.
+
 ## Credits
 
 This project was made with 💙 by [Tomas Sanchez](https://github.com/tomasanchez).
