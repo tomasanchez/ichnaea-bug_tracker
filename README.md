@@ -1,7 +1,11 @@
 # Ichnaea Issue Tracker
 
-This is a Java application for issue tracking. It is designed to be used by Project Managers and Developers to track
-issues and their status.
+Named after the greek goddess [Ichnaea](https://en.wikipedia.org/wiki/Ichnaea), "_The Tracker_", is a **Java**
+application
+for **issue tracking**. It is designed to be used by
+Project Managers
+and Developers to track
+issues and their status in multiple projects.
 
 ## Credits
 
