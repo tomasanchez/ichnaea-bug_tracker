@@ -1,5 +1,8 @@
 package org.ichnaea.core.ui.semantic
 
+import jiconfont.IconCode
+import jiconfont.icons.google_material_design_icons.GoogleMaterialDesignIcons
+import jiconfont.swing.IconFontSwing
 import org.ichnaea.core.ui.text.Title
 import org.ichnaea.core.ui.text.TitleLevel
 import java.awt.Color
@@ -12,7 +15,13 @@ import javax.swing.LayoutStyle
 import javax.swing.border.LineBorder
 
 
-class Alert(title: String = "", message: String, color: Color = SemanticColor.PRIMARY) : JPanel() {
+class Alert(
+    title: String = "",
+    message: String,
+    color: Color = SemanticColor.PRIMARY,
+    showIcon: Boolean = true,
+    icon: IconCode? = null,
+) : JPanel() {
 
     init {
 
@@ -70,6 +79,10 @@ class Alert(title: String = "", message: String, color: Color = SemanticColor.PR
             level = TitleLevel.H2
         )
 
+        if (showIcon && title.isNotEmpty()) {
+            icon?.let { addTitleIcon(alertTitle, it, color) } ?: addTitleIcon(alertTitle, color)
+        }
+
 
         val alertMessage = Title(
             text = message,
@@ -110,6 +123,32 @@ class Alert(title: String = "", message: String, color: Color = SemanticColor.PR
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON)
         g2.fillRoundRect(0, 0, width, height, 15, 15)
         super.paintComponent(grphcs)
+    }
+
+    private fun addTitleIcon(title: Title, color: Color) {
+        IconFontSwing.register(GoogleMaterialDesignIcons.getIconFont())
+
+        val icon = IconFontSwing.buildIcon(
+            when (color) {
+                SemanticColor.PRIMARY -> GoogleMaterialDesignIcons.HELP
+                SemanticColor.SECONDARY -> GoogleMaterialDesignIcons.DONE
+                SemanticColor.INFO -> GoogleMaterialDesignIcons.INFO
+                SemanticColor.SUCCESS -> GoogleMaterialDesignIcons.CHECK
+                SemanticColor.WARNING -> GoogleMaterialDesignIcons.WARNING
+                SemanticColor.DANGER -> GoogleMaterialDesignIcons.ERROR
+                else -> GoogleMaterialDesignIcons.INFO
+            },
+            20f,
+            color
+        )
+
+
+        title.icon = icon
+    }
+
+    private fun addTitleIcon(title: Title, icon: IconCode, color: Color) {
+        IconFontSwing.register(GoogleMaterialDesignIcons.getIconFont())
+        title.icon = IconFontSwing.buildIcon(icon, 30f, color)
     }
 
 
