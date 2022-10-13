@@ -1,5 +1,6 @@
 package org.ichnaea.service
 
+import org.ichnaea.core.exception.UserAlreadyExistsException
 import org.ichnaea.core.security.auth.UserDetails
 import org.ichnaea.core.security.auth.UserDetailsService
 import org.ichnaea.core.security.crypto.BCryptPasswordEncoder
@@ -18,9 +19,19 @@ class UserService(
     }
 
     fun save(user: User): User {
+
+        findByUsername(user.userName)?.let {
+            throw UserAlreadyExistsException("Username '${user.userName}' already in use.")
+        }
+
+
         val encodedUser = user.copy(password = passwordEncoder.encode(user.password))
 
         return userRepository.save(encodedUser)
+    }
+
+    private fun findByUsername(username: String): User? {
+        return userRepository.findByUsername(username)
     }
 
 }

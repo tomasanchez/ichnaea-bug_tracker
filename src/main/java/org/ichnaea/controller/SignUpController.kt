@@ -1,5 +1,6 @@
 package org.ichnaea.controller
 
+import org.ichnaea.core.exception.UserAlreadyExistsException
 import org.ichnaea.core.mvc.controller.Controller
 import org.ichnaea.core.ui.form.PasswordField
 import org.ichnaea.core.ui.form.TextField
@@ -60,18 +61,35 @@ class SignUpController : BaseController() {
             return
         }
 
-        if (doesPasswordMatch()) {
-            var user = User(usernameInput.text, passwordInput.value())
-            user = userDetailsService.save(user)
-            showAlert("Success", "User was created successfully")
-            clearInputs()
-            logger.info("User created: $user")
-        } else {
+        if (!doesPasswordMatch()) {
             showAlert("Error", "Passwords do not match", SemanticColor.DANGER)
             logger.error("Passwords do not match")
+            return
         }
 
 
+        var user = User(usernameInput.text, passwordInput.value())
+
+        try {
+
+            user = userDetailsService.save(user)
+
+        } catch (uae: UserAlreadyExistsException) {
+            uae.message?.let { showAlert("Error", it, SemanticColor.DANGER) }
+            usernameInput.setError(true)
+            logger.error("User already exists")
+            return
+        } catch (e: Exception) {
+            showAlert("Error", e.message ?: "Something went wrong. Try again later.", SemanticColor.DANGER)
+            logger.error("Error creating a user", e)
+            return
+        }
+
+        showAlert("Success", "User was created successfully")
+
+        clearInputs()
+
+        logger.info("User created: $user")
     }
 
     private fun onCancel(event: ActionEvent) {
