@@ -23,6 +23,7 @@ abstract class BaseController : MVCController() {
         }
 
         fun navTo(viewName: String) {
+
             log.info("Displaying: $viewName")
             ControllerLoader.getController(viewName)?.show()
         }
@@ -45,9 +46,7 @@ abstract class BaseController : MVCController() {
 
     protected fun showAlert(title: String, message: String, color: Color = SemanticColor.SUCCESS) {
 
-        alert?.let {
-            view.remove(it)
-        }
+        removeAlert()
 
         alert = Alert(
             message = message,
@@ -59,11 +58,20 @@ abstract class BaseController : MVCController() {
 
 
         Executors.newSingleThreadScheduledExecutor().schedule({
-            view.remove(alert)
+            removeAlert()
         }, 10, TimeUnit.SECONDS)
 
         repaint()
     }
 
+    /**
+     * Removes the alert from the view if it exists.
+     */
+    protected fun removeAlert() {
+        alert?.let {
+            view.remove(it)
+            alert = null
+        }
+    }
 
 }
