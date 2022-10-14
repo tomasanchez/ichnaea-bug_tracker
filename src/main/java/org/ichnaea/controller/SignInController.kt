@@ -62,6 +62,8 @@ class SignInController : BaseController() {
             color = SemanticColor.SUCCESS
         )
 
+        navTo("Projects")
+
     }
 
     private fun onSignUp(event: ActionEvent) {
