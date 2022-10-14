@@ -19,6 +19,7 @@ import javax.swing.ImageIcon
 class SignInView : BaseView() {
 
     init {
+        panel.layout = BoxLayout(panel, BoxLayout.PAGE_AXIS)
         createLoginForm()
     }
 
@@ -33,7 +34,6 @@ class SignInView : BaseView() {
         set(Avatar(image = icon))
         set("title", Title(text = "Ichnaea Issue Tracker", level = TitleLevel.H1, color = SemanticColor.PRIMARY))
         set("subtitle", Title(text = "Sign In", level = TitleLevel.H2))
-        panel.layout = BoxLayout(panel, BoxLayout.PAGE_AXIS)
     }
 
 
@@ -52,8 +52,16 @@ class SignInView : BaseView() {
         set(Box.createRigidArea(Dimension(0, 60)))
 
         val footerPanel = Toolbar()
-        set("signUpButton", Button(text = "Sign Up", color = SemanticColor.SECONDARY), footerPanel)
-        set("signInButton", Button(text = "Sign In"), footerPanel)
+        set(
+            "signUpButton",
+            Button(text = "Sign Up", color = SemanticColor.SECONDARY),
+            footerPanel
+        )
+        set(
+            "signInButton",
+            Button(text = "Sign In"),
+            footerPanel
+        )
 
         set(footerPanel)
 

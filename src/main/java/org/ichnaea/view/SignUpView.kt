@@ -19,6 +19,7 @@ import javax.swing.BoxLayout
 class SignUpView : BaseView() {
 
     init {
+        panel.layout = BoxLayout(panel, BoxLayout.PAGE_AXIS)
         registerForm()
     }
 
@@ -33,7 +34,6 @@ class SignUpView : BaseView() {
         set(Avatar(image = icon))
         set("title", Title(text = "Ichnaea Issue Tracker", level = TitleLevel.H1, color = SemanticColor.PRIMARY))
         set("subtitle", Title(text = "Add a new Use", level = TitleLevel.H2))
-        panel.layout = BoxLayout(panel, BoxLayout.PAGE_AXIS)
     }
 
     private fun body() {
