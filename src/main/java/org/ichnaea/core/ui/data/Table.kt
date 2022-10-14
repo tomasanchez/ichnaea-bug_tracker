@@ -6,6 +6,8 @@ import org.ichnaea.core.ui.text.Typography
 import java.awt.Color
 import java.awt.Component
 import java.awt.Font
+import java.awt.Point
+import java.awt.event.MouseEvent
 import javax.swing.JPanel
 import javax.swing.JScrollPane
 import javax.swing.JTable
@@ -16,6 +18,7 @@ import javax.swing.table.DefaultTableModel
 
 class Table(
     selectionMode: Int = SINGLE_SELECTION,
+    active: Boolean = false,
 ) : JTable() {
 
     init {
@@ -23,33 +26,45 @@ class Table(
         showVerticalLines = true
         gridColor = SemanticColor.LIGHT
         rowHeight = 60
+        rowSelectionAllowed = active
         setSelectionMode(selectionMode)
 
         tableHeader.reorderingAllowed = false
         tableHeader.defaultRenderer = object : DefaultTableCellRenderer() {
             override fun getTableCellRendererComponent(
                 jtable: JTable,
-                o: Any,
-                bln: Boolean,
-                bln1: Boolean,
-                i: Int,
-                i1: Int
-            ): Component = TableHeader(o.toString())
+                value: Any,
+                isSelected: Boolean,
+                hasFocus: Boolean,
+                row: Int,
+                column: Int
+            ): Component = TableHeader(value.toString())
         }
 
         setDefaultRenderer(Any::class.java, object : DefaultTableCellRenderer() {
             override fun getTableCellRendererComponent(
                 jtable: JTable,
-                o: Any,
-                selected: Boolean,
-                bln1: Boolean,
-                i: Int,
-                i1: Int
+                value: Any,
+                isSelected: Boolean,
+                hasFocus: Boolean,
+                row: Int,
+                column: Int
             ): Component {
+                val component = Typography(value.toString(), style = if (isSelected) Font.BOLD else Font.PLAIN)
                 border = noFocusBorder
-                return Typography(o.toString(), style = if (selected) Font.BOLD else Font.PLAIN)
+
+                if (active) {
+                    component.isOpaque = true
+                    component.border = noFocusBorder
+                    component.background = if (isSelected) SemanticColor.LIGHT else Color.WHITE
+                }
+
+                return component
             }
         })
+
+        if (active)
+            attachActiveRowsEffect()
 
     }
 
@@ -69,5 +84,32 @@ class Table(
         scroll.setCorner(JScrollPane.UPPER_RIGHT_CORNER, p)
     }
 
+    private fun attachActiveRowsEffect() {
+        addMouseMotionListener(object : java.awt.event.MouseMotionAdapter() {
+
+            private var hoveredRow = -1
+
+            override fun mouseDragged(e: MouseEvent?) {
+                hoveredRow = -1
+                this@Table.repaint()
+                cursor = java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR)
+            }
+
+            override fun mouseMoved(e: MouseEvent) {
+                val p: Point = e.point
+                hoveredRow = this@Table.rowAtPoint(p)
+
+                if (this@Table.model.rowCount > 0) {
+                    this@Table.addRowSelectionInterval(
+                        hoveredRow,
+                        hoveredRow
+                    )
+                    cursor = java.awt.Cursor(java.awt.Cursor.HAND_CURSOR)
+                }
+
+                this@Table.repaint()
+            }
+        })
+    }
 
 }
