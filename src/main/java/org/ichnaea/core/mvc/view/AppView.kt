@@ -15,7 +15,7 @@ class AppView() : JFrame() {
             return frame
         }
 
-        val DIMENSION: Dimension = Dimension(720, 560)
+        val DIMENSION: Dimension = Dimension(720, 600)
     }
 
     init {
