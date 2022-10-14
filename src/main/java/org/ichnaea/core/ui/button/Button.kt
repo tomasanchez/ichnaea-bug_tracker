@@ -1,5 +1,8 @@
 package org.ichnaea.core.ui.button
 
+import jiconfont.IconCode
+import jiconfont.icons.google_material_design_icons.GoogleMaterialDesignIcons
+import org.ichnaea.core.ui.icon.GoogleIconFactory
 import org.ichnaea.core.ui.semantic.SemanticColor
 import org.jdesktop.animation.timing.Animator
 import org.jdesktop.animation.timing.TimingTarget
@@ -16,6 +19,7 @@ import javax.swing.border.EmptyBorder
 class Button(
     text: String,
     color: Color = SemanticColor.PRIMARY,
+    icon: IconCode? = null,
 ) : JButton() {
 
 
@@ -27,19 +31,33 @@ class Button(
 
 
     init {
+
         this.text = text
+
+        val createIcon = icon in GoogleMaterialDesignIcons.values()
+        var darkIcon = true
+
         isContentAreaFilled = false
         border = EmptyBorder(10, 10, 10, 10)
         background = color
+
         foreground = when (color) {
             SemanticColor.PRIMARY,
             SemanticColor.DARK,
             SemanticColor.DANGER,
             SemanticColor.SECONDARY,
-            SemanticColor.SUCCESS -> SemanticColor.LIGHT
+            SemanticColor.SUCCESS -> SemanticColor.LIGHT.also { darkIcon = false }
 
             else -> SemanticColor.DARK
         }
+
+        if (createIcon)
+            this.icon =
+                GoogleIconFactory.build(
+                    name = icon as GoogleMaterialDesignIcons,
+                    color = if (darkIcon) SemanticColor.DARK else SemanticColor.LIGHT,
+                    size = this.font.size.toFloat() + 15f
+                )
 
         minimumSize = Dimension(50, 125)
         cursor = Cursor(Cursor.HAND_CURSOR)
