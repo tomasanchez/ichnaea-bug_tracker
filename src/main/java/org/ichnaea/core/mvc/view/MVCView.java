@@ -16,7 +16,7 @@ public class MVCView {
 
     public MVCView() {
         this.panel = new JPanel();
-        this.panel.setBorder(BorderFactory.createEmptyBorder(30, 15, 10, 15));
+        this.panel.setBorder(BorderFactory.createEmptyBorder(25, 10, 10, 10));
         this.panel.setLayout(null);
         this.panel.setBackground(Color.WHITE);
     }
