@@ -18,6 +18,7 @@ class Toolbar(
     init {
         layout = FlowLayout(alignment)
         background = color
+        maximumSize = Dimension(Short.MAX_VALUE.toInt(), 50)
     }
 
     override fun add(component: Component): Component? {
