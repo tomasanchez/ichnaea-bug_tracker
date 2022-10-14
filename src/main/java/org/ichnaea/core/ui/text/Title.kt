@@ -8,7 +8,9 @@ class Title(
     text: String,
     level: TitleLevel = TitleLevel.H1,
     color: Color = SemanticColor.DARK,
-) : Typography(text = text, va = CENTER_ALIGNMENT, ha = CENTER_ALIGNMENT, color = color) {
+    va: Float = CENTER_ALIGNMENT,
+    ha: Float = CENTER_ALIGNMENT,
+) : Typography(text = text, va = va, ha = ha, color = color) {
 
     init {
 

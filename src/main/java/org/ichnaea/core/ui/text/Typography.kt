@@ -4,6 +4,7 @@ import org.ichnaea.core.ui.semantic.SemanticColor
 import java.awt.Color
 import java.awt.Font
 import javax.swing.JLabel
+import javax.swing.border.EmptyBorder
 
 open class Typography(
     text: String,
@@ -28,6 +29,7 @@ open class Typography(
         alignmentX = va
         alignmentY = ha
         font = font.deriveFont(style, 14f)
+        border = EmptyBorder(0, 3, 0, 3)
         this.text = text
     }
 
