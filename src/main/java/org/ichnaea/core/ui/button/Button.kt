@@ -1,18 +1,14 @@
 package org.ichnaea.core.ui.button
 
 import jiconfont.IconCode
-import jiconfont.icons.google_material_design_icons.GoogleMaterialDesignIcons
-import org.ichnaea.core.ui.icon.GoogleIconFactory
 import org.ichnaea.core.ui.semantic.SemanticColor
 import org.jdesktop.animation.timing.Animator
 import org.jdesktop.animation.timing.TimingTarget
 import org.jdesktop.animation.timing.TimingTargetAdapter
 import java.awt.*
-import java.awt.event.ActionEvent
 import java.awt.event.MouseAdapter
 import java.awt.event.MouseEvent
 import java.awt.image.BufferedImage
-import javax.swing.JButton
 import javax.swing.border.EmptyBorder
 
 
@@ -20,46 +16,19 @@ class Button(
     text: String,
     color: Color = SemanticColor.PRIMARY,
     icon: IconCode? = null,
-) : JButton() {
-
-
-    private val animator: Animator
-    private var targetSize = 0
-    private var animateSize = 0f
-    private var pressedPoint: Point? = null
-    private var alpha = 0f
-
+) : SemanticButton() {
 
     init {
 
         this.text = text
 
-        val createIcon = icon in GoogleMaterialDesignIcons.values()
-        var darkIcon = true
-
         isContentAreaFilled = false
         border = EmptyBorder(10, 10, 10, 10)
-        background = color
 
-        foreground = when (color) {
-            SemanticColor.PRIMARY,
-            SemanticColor.DARK,
-            SemanticColor.DANGER,
-            SemanticColor.SECONDARY,
-            SemanticColor.SUCCESS -> SemanticColor.LIGHT.also { darkIcon = false }
+        setSemanticColor(color)
+        createIcon(icon)
 
-            else -> SemanticColor.DARK
-        }
-
-        if (createIcon)
-            this.icon =
-                GoogleIconFactory.build(
-                    name = icon as GoogleMaterialDesignIcons,
-                    color = if (darkIcon) SemanticColor.DARK else SemanticColor.LIGHT,
-                    size = this.font.size.toFloat() + 15f
-                )
-
-        minimumSize = Dimension(50, 125)
+        minimumSize = Dimension(75, 125)
         cursor = Cursor(Cursor.HAND_CURSOR)
 
 
@@ -91,6 +60,7 @@ class Button(
                 animator.start()
             }
         })
+
     }
 
     override fun paintComponent(grphcs: Graphics) {
@@ -118,8 +88,5 @@ class Button(
         grphcs.drawImage(img, 0, 0, null)
         super.paintComponent(grphcs)
     }
-
-    fun onClick(action: (e: ActionEvent) -> Unit) {
-        addActionListener(action)
-    }
+    
 }
