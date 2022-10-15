@@ -4,7 +4,7 @@
     <module name="ichnaea" />
     <extension name="coverage">
       <pattern>
-        <option name="PATTERN" value="org.ichnaea.*" />
+        <option name="PATTERN" value="org.ichnaea.core.ui.app.*" />
         <option name="ENABLED" value="true" />
       </pattern>
     </extension>

@@ -1,10 +1,10 @@
 package org.ichnaea.core.mvc.view
 
+import org.ichnaea.core.ui.app.AppUI
 import org.ichnaea.view.BaseView
 import org.reflections.Reflections
 import org.slf4j.Logger
 import java.lang.reflect.Modifier
-import javax.swing.JFrame
 
 object ViewLoader {
 
@@ -12,7 +12,7 @@ object ViewLoader {
 
     private val logger: Logger = org.slf4j.LoggerFactory.getLogger(ViewLoader::class.java)
 
-    fun loadViews(frame: JFrame, classPath: String = "org.ichnaea.view") {
+    fun loadViews(frame: AppUI, classPath: String = "org.ichnaea.view") {
         logger.debug("Loading views from $classPath")
         BaseView.reflect()
         val reflections = Reflections(classPath)

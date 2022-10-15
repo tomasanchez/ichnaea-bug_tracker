@@ -1,5 +1,7 @@
 package org.ichnaea.core.mvc.view;
 
+import org.ichnaea.core.ui.app.AppUI;
+
 import javax.swing.*;
 import java.awt.*;
 import java.util.HashMap;
@@ -10,9 +12,9 @@ public class MVCView {
 
     protected final JPanel panel;
 
-    protected final Map<String, Object> viewModel = new HashMap();
+    protected final Map<String, Object> viewModel = new HashMap<>();
 
-    protected JFrame frame = null;
+    protected AppUI frame = null;
 
     public MVCView() {
         this.panel = new JPanel();
@@ -21,11 +23,7 @@ public class MVCView {
         this.panel.setBackground(Color.WHITE);
     }
 
-    public JFrame getFrame() {
-        return frame;
-    }
-
-    public MVCView setFrame(JFrame frame) {
+    public MVCView setFrame(AppUI frame) {
         this.frame = frame;
         return this;
     }

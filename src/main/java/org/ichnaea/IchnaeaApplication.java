@@ -2,10 +2,10 @@ package org.ichnaea;
 
 import org.ichnaea.core.mvc.controller.ControllerLoader;
 import org.ichnaea.core.mvc.view.ViewLoader;
+import org.ichnaea.core.ui.app.AppUI;
 import org.ichnaea.core.ui.app.SideNavApp;
 import org.slf4j.Logger;
 
-import javax.swing.*;
 import java.awt.*;
 import java.util.Objects;
 
@@ -18,7 +18,7 @@ public class IchnaeaApplication {
     public static void main(String[] args) {
         EventQueue.invokeLater(() -> {
             try {
-                JFrame window = new SideNavApp();
+                AppUI window = new SideNavApp("Ichnaea - Issue Tracking", "/icon/ichnaea-icon.png");
                 ViewLoader.INSTANCE.loadViews(window, VIEW_CLASS_PATH);
                 ControllerLoader.INSTANCE.loadControllers(CONTROLLER_CLASS_PATH);
                 Objects.requireNonNull(ControllerLoader.INSTANCE.getController("SignIn")).show();
