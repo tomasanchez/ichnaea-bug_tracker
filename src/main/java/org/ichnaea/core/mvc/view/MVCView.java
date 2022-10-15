@@ -16,11 +16,16 @@ public class MVCView {
 
     protected AppUI frame = null;
 
+
     public MVCView() {
         this.panel = new JPanel();
-        this.panel.setBorder(BorderFactory.createEmptyBorder(25, 10, 10, 10));
+        this.panel.setBorder(BorderFactory.createEmptyBorder(20, 10, 10, 10));
         this.panel.setLayout(null);
         this.panel.setBackground(Color.WHITE);
+    }
+
+    public boolean isFullScreen() {
+        return true;
     }
 
     public MVCView setFrame(AppUI frame) {
@@ -35,8 +40,7 @@ public class MVCView {
 
     public void show() {
         if (Objects.nonNull(this.frame)) {
-            this.frame.setContentPane(this.panel);
-            this.frame.revalidate();
+            this.frame.setBody(this.panel, isFullScreen());
         }
     }
 
