@@ -16,6 +16,8 @@ import javax.swing.JPanel
 
 class SideNavApp(
     title: String,
+    brand: String?,
+    logo: String?,
     iconResourcePath: String?,
 ) : AppUI() {
 
@@ -30,9 +32,9 @@ class SideNavApp(
 
     private var body = JPanel()
 
-    var sideNav = SideNav()
+    var sideNav = SideNav(title = brand, brandImage = logo)
 
-    var appBar = AppBar()
+    private var appBar = AppBar()
 
     init {
         val defaultSize = Dimension(DEFAULT_WIDTH, DEFAULT_HEIGHT)
@@ -55,7 +57,7 @@ class SideNavApp(
                 } else {
                     (minWidth + (maxWidth - minWidth) * fraction).toDouble()
                 }
-                
+
                 (contentPane.layout as MigLayout).setComponentConstraints(sideNav, "w $width!, spany2")
                 sideNav.revalidate()
             }
@@ -131,7 +133,7 @@ class SideNavApp(
     private fun defaultLayout(): MigLayout {
         return MigLayout(
             "fill",
-            "5[]5[100%, fill]5",
+            "0[]10[100%, fill]5",
             "5[fill, top]5"
         )
     }

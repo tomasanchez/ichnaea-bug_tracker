@@ -7,20 +7,28 @@ import org.ichnaea.core.ui.container.Toolbar
 import org.ichnaea.core.ui.data.Table
 import java.time.LocalDate
 import java.time.LocalDateTime
+import javax.swing.BorderFactory
 import javax.swing.Box
+import javax.swing.BoxLayout
 import javax.swing.JScrollPane
 import javax.swing.table.DefaultTableModel
 
 @View
-class ProjectsView : MenuView() {
+class ProjectsView : BaseView() {
 
     init {
+        panel.layout = BoxLayout(panel, BoxLayout.PAGE_AXIS)
+        panel.border = BorderFactory.createEmptyBorder(0, 0, 15, 0)
         body()
         footer()
     }
 
+    override fun isFullScreen(): Boolean {
+        return false
+    }
 
     private fun body() {
+
         val table = table()
         set(table.tableHeader)
         table.addRow(arrayOf("Project 1", LocalDate.now(), LocalDateTime.now(), "In Progress"))
@@ -41,7 +49,7 @@ class ProjectsView : MenuView() {
 
     private fun table(): Table {
 
-        val table = Table()
+        val table = Table(active = true)
         val scrollPanel = JScrollPane()
 
         table.model = object : DefaultTableModel(
@@ -57,6 +65,7 @@ class ProjectsView : MenuView() {
                 return canEdit[columnIndex]
             }
         }
+
         scrollPanel.setViewportView(table)
         table.fixTable(scrollPanel)
         return table
