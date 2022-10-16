@@ -20,6 +20,10 @@ abstract class SemanticButton : JButton() {
     var pressedPoint: Point? = null
     var alpha = 0f
 
+    init {
+        isFocusPainted = false
+    }
+
     /**
      * Set semantic color
      *
