@@ -5,11 +5,10 @@ import org.ichnaea.core.mvc.view.View
 import org.ichnaea.core.ui.button.Button
 import org.ichnaea.core.ui.container.Toolbar
 import org.ichnaea.core.ui.data.Table
+import java.awt.Dimension
 import java.time.LocalDate
 import java.time.LocalDateTime
-import javax.swing.BorderFactory
 import javax.swing.Box
-import javax.swing.BoxLayout
 import javax.swing.JScrollPane
 import javax.swing.table.DefaultTableModel
 
@@ -17,8 +16,6 @@ import javax.swing.table.DefaultTableModel
 class ProjectsView : SideView() {
 
     init {
-        panel.layout = BoxLayout(panel, BoxLayout.PAGE_AXIS)
-        panel.border = BorderFactory.createEmptyBorder(0, 0, 15, 0)
         body()
         footer()
     }
@@ -26,20 +23,17 @@ class ProjectsView : SideView() {
     private fun body() {
 
         val table = table()
-        set(table.tableHeader)
+        containerPanel.add(table.tableHeader)
         table.addRow(arrayOf("Project 1", LocalDate.now(), LocalDateTime.now(), "In Progress"))
         table.addRow(arrayOf("Project 2", LocalDate.now(), LocalDateTime.now(), "Analysis"))
-        set(table)
+        set("projectsTable", table, containerPanel)
     }
 
     private fun footer() {
-        set(Box.createVerticalStrut(20))
+        containerPanel.add(Box.createRigidArea(Dimension(0, 35)))
         val toolbar = Toolbar()
-        set(
-            "createProject",
-            Button(text = "New Project", icon = GoogleMaterialDesignIcons.ADD_TO_QUEUE),
-        )
-        set(toolbar)
+        toolbar.add(Button(text = "New Project", icon = GoogleMaterialDesignIcons.ADD))
+        containerPanel.add(toolbar)
     }
 
 

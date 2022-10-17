@@ -62,13 +62,13 @@ class SignInController : BaseController() {
             color = SemanticColor.SUCCESS
         )
 
+        clearInputs()
         navTo("Projects")
-
+        
     }
 
     private fun onSignUp(event: ActionEvent) {
         logger.info("Navigating to Sign Up View...")
-        clearInputs()
         navTo("SignUp")
     }
 
