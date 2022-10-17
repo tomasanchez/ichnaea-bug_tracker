@@ -37,7 +37,7 @@ class NavButton(
 
         border =
             if (isMainButton) EmptyBorder(0, 10, 0, 0)
-            else EmptyBorder(0, 45, 0, 0)
+            else EmptyBorder(0, 40, 0, 0)
         horizontalAlignment = LEFT
 
         if (!isMainButton) {
@@ -100,6 +100,10 @@ class NavButton(
                     animateSize.toInt()
                 )
             }
+
+        } else if (isSelected) {
+            g2.color = SemanticColor.PRIMARY
+            g2.fillRect(0, 3, 3, height)
         }
 
         g2.dispose()
@@ -110,7 +114,8 @@ class NavButton(
 
         if (wasSelected || isMouseOver) {
             foreground = SemanticColor.DARK.darker()
-            background = SemanticColor.LIGHT
+            if (!isMainButton)
+                background = SemanticColor.LIGHT
         } else {
             alpha = 0f
             foreground = SemanticColor.SECONDARY

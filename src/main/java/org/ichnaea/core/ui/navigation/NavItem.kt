@@ -6,12 +6,12 @@ import org.ichnaea.core.ui.button.NavButton
 import org.ichnaea.core.ui.semantic.SemanticColor
 import org.jdesktop.animation.timing.Animator
 import org.jdesktop.animation.timing.TimingTargetAdapter
-import java.awt.*
+import java.awt.Color
+import java.awt.Cursor
+import java.awt.Graphics
 import java.awt.event.ActionEvent
 import java.awt.event.MouseAdapter
 import java.awt.event.MouseEvent
-import java.awt.geom.AffineTransform
-import java.awt.geom.Path2D
 import javax.swing.GroupLayout
 import javax.swing.JPanel
 
@@ -29,7 +29,6 @@ class NavItem(
     var isOpen = false
     var alpha = 1f
     private val subItems: MutableList<NavItem> = mutableListOf()
-    private var buttonAngle = -1
     private lateinit var animator: Animator
 
     init {
@@ -72,16 +71,12 @@ class NavItem(
 
         button.onClick {
             onClear()
-
-            if (subItems.isNotEmpty()) {
-                isOpen = !isOpen
-                startAnimator()
-            }
-
-            setSelectedIndex(button.index)
+            markSelection()
+            toggleDropDown()
         }
 
-        var subIndex = 1
+        var subIndex = 0
+
         this.subItems.addAll(subItems.map {
             NavItem(
                 text = it,
@@ -90,10 +85,10 @@ class NavItem(
                 parentLayout = this.layout as MigLayout
             )
         })
+
         this.subItems.forEach(this::add)
 
         if (hasSubItems()) {
-            buttonAngle = 0
             parentLayout?.let(::initAnimator)
         }
 
@@ -115,10 +110,27 @@ class NavItem(
         )
     }
 
+    /**
+     * Event handler for clicking a NavItem submenu
+     *
+     * @param subIndex the item subIndex
+     * @param action to be performed
+     * @receiver a SubItem Navigation Button with the specified subIndex
+     */
+    fun onClick(subIndex: Int, action: (e: ActionEvent) -> Unit) {
+        subItems[subIndex].onClick(action)
+    }
 
+    /**
+     * Event handler for clicking a NavItem
+     *
+     * @param action to be performed when NavItem is clicked
+     * @receiver the Navigation Button
+     */
     fun onClick(action: (e: ActionEvent) -> Unit) = button.onClick { action(it) }
 
     fun addSubItem(item: NavItem) {
+        item.index = subItems.size
         subItems.add(item)
         add(item)
     }
@@ -129,25 +141,6 @@ class NavItem(
 
     override fun paintComponent(g: Graphics) {
         super.paintComponent(g)
-        if (buttonAngle >= 0) {
-            val g2 = g.create() as Graphics2D
-            g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON)
-            g2.color = foreground
-            val x: Double = width + 10 * 1.0
-            val y = 15.0
-            val p2: Path2D = Path2D.Double()
-            p2.moveTo(x, y)
-            p2.lineTo(x + 4, y + 4)
-            p2.lineTo(x + 8, y)
-            val at = AffineTransform.getRotateInstance(
-                Math.toRadians(buttonAngle.toDouble()),
-                (x + 4),
-                (y + 2)
-            )
-            g2.stroke = BasicStroke(1.8f)
-            g2.draw(at.createTransformedShape(p2))
-            g2.dispose()
-        }
     }
 
     // --------------------------------
@@ -156,28 +149,26 @@ class NavItem(
 
     fun clearSelection() {
         foreground = Color.WHITE
+
         components
             .filterIsInstance<NavItem>()
-            .forEach {
-                it.button.isSelected = false
-            }
+            .map(NavItem::button)
+            .forEach { it.isSelected = false }
+
+        button.isSelected = false
     }
 
-    fun setSelectedIndex(index: Int) {
-        components
-            .filterIsInstance<NavButton>()
-            .forEach {
+    private fun markSelection() {
+        button.isSelected = true
+        if (this.parent is NavItem)
+            (this.parent as NavItem).button.isSelected = true
+    }
 
-                if (it.isMainButton) {
-                    it.isSelected = true
-                    it.foreground = SemanticColor.LIGHT
-                }
-
-                if (it.index == index) {
-                    it.isSelected = true
-                    return@forEach
-                }
-            }
+    fun toggleDropDown() {
+        if (button.isMainButton) {
+            isOpen = !isOpen
+            startAnimator()
+        }
     }
 
     // --------------------------------
@@ -197,7 +188,6 @@ class NavItem(
                 val f = if (isOpen) fraction else 1f - fraction
                 val s = (35 + f * height).toInt()
                 layout.setComponentConstraints(this@NavItem, "h $s!")
-                buttonAngle = (f * 180).toInt()
                 revalidate()
                 repaint()
             }

@@ -7,7 +7,6 @@ import org.ichnaea.core.ui.container.ScrollBar
 import org.ichnaea.core.ui.container.TransparentPanel
 import org.ichnaea.core.ui.navigation.animation.SideNavAnimation
 import org.ichnaea.core.ui.navigation.event.NavPopUpEvent
-import org.ichnaea.core.ui.navigation.event.NavSelectionEvent
 import org.ichnaea.core.ui.semantic.SemanticColor
 import org.ichnaea.core.ui.text.Typography
 import java.awt.BorderLayout
@@ -26,14 +25,12 @@ class SideNav(
     color: Color = Color.WHITE,
 ) : TransparentPanel() {
 
-    var logo: BrandLogo? =
+    private var logo: BrandLogo? =
         title?.takeUnless { brandImage == null }?.let { BrandLogo(text = it, imagePath = brandImage) }
 
     var isShown = true
 
     var isNavEnabled = true
-
-    var onSelection: NavSelectionEvent? = null
 
     var onPopUp: NavPopUpEvent? = null
 
@@ -61,7 +58,16 @@ class SideNav(
                 icon = GoogleMaterialDesignIcons.HOME,
                 subItems = arrayListOf("Mozilla", "Chromium"),
                 onClear = ::clearSelected,
-                parentLayout = menuLayout
+                parentLayout = menuLayout,
+            )
+        )
+        addItem(
+            NavItem(
+                text = "About",
+                icon = GoogleMaterialDesignIcons.INFO,
+                subItems = arrayListOf("Test", "License"),
+                onClear = ::clearSelected,
+                parentLayout = menuLayout,
             )
         )
     }
@@ -82,8 +88,8 @@ class SideNav(
      * @param item a navigation entry
      */
     fun addItem(item: NavItem) {
+        item.index = index
         panel.add(item, "h 40!")
-
         index++
     }
 
@@ -115,16 +121,10 @@ class SideNav(
             }
     }
 
-    fun clearSelected() {
+    private fun clearSelected() {
         panel.components
             .filterIsInstance<NavItem>()
             .forEach(NavItem::clearSelection)
-    }
-
-    fun setSelectedIndex(index: Int, subIndex: Int) {
-        components
-            .filterIsInstance<NavItem>()
-            .find { it.index == index }?.setSelectedIndex(subIndex)
     }
 
     // --------------------------------
