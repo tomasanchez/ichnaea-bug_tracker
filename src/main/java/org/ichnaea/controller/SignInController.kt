@@ -68,6 +68,7 @@ class SignInController : BaseController() {
 
     private fun onSignUp(event: ActionEvent) {
         logger.info("Navigating to Sign Up View...")
+        clearInputs()
         navTo("SignUp")
     }
 
@@ -75,6 +76,10 @@ class SignInController : BaseController() {
     // Internal Methods
     // ------------------------------
 
+    private fun clearInputs() {
+        usernameInput.text = ""
+        passwordInput.text = ""
+    }
 
 }
 

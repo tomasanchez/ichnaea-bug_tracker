@@ -95,7 +95,7 @@ class SideNavApp(
         val layout = defaultLayout()
         val bg = JPanel()
         bg.border = BorderFactory.createEmptyBorder(0, 0, 0, 0)
-        bg.background = Color.RED
+        bg.background = Color.WHITE
         bg.layout = layout
         bg.add(sideNav, "w $SIDE_NAV_MAX_WIDTH!, spany 2")
         bg.add(appBar, "h 65!, wrap")
@@ -133,8 +133,8 @@ class SideNavApp(
     private fun defaultLayout(): MigLayout {
         return MigLayout(
             "fill",
-            "0[]10[100%, fill]5",
-            "5[fill, top]5"
+            "0[]10[100%, fill]0",
+            "0[fill, top]0"
         )
     }
 

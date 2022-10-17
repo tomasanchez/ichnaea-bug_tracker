@@ -19,7 +19,7 @@ class BrandLogo(
     init {
         initComponents(text, imagePath)
         isOpaque = true
-        background = SemanticColor.WARNING
+        background = SemanticColor.LIGHT.brighter()
         maximumSize = Dimension(Short.MAX_VALUE.toInt(), 100)
     }
 

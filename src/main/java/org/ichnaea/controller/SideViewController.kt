@@ -33,6 +33,18 @@ abstract class SideViewController : BaseController() {
         val sideNav: SideNav = app.sideNav
 
         sideNav.addGroup(
+            "Home",
+            NavItem(
+                text = "Projects",
+                icon = GoogleMaterialDesignIcons.WORK,
+                onClear = sideNav::clearSelected,
+                parentLayout = sideNav.menuLayout,
+                onClickHandler = { navTo("Projects") },
+                isMainButton = true
+            ).also { it.button.isSelected = true },
+        )
+
+        sideNav.addGroup(
             "Manage",
             NavItem(
                 text = "Admin",
@@ -51,7 +63,7 @@ abstract class SideViewController : BaseController() {
         sideNav.addGroup(
             "Session",
             NavItem(
-                text = "Sign Out",
+                text = "Exit",
                 icon = GoogleMaterialDesignIcons.EXIT_TO_APP,
                 onClear = sideNav::clearSelected,
                 parentLayout = sideNav.menuLayout,

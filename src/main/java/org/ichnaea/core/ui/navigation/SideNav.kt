@@ -73,7 +73,7 @@ class SideNav(
      *
      * @param item a navigation entry
      */
-    fun addItem(item: NavItem) {
+    private fun addItem(item: NavItem) {
         item.index = index
         panel.add(item, "h 40!")
         index++
