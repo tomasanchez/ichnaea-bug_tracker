@@ -3,7 +3,6 @@ package org.ichnaea.core.ui.navigation
 import jiconfont.IconCode
 import net.miginfocom.swing.MigLayout
 import org.ichnaea.core.ui.button.NavButton
-import org.ichnaea.core.ui.navigation.event.NavSelectionEvent
 import org.ichnaea.core.ui.semantic.SemanticColor
 import org.jdesktop.animation.timing.Animator
 import org.jdesktop.animation.timing.TimingTargetAdapter
@@ -13,6 +12,7 @@ import java.awt.event.MouseAdapter
 import java.awt.event.MouseEvent
 import java.awt.geom.AffineTransform
 import java.awt.geom.Path2D
+import javax.swing.GroupLayout
 import javax.swing.JPanel
 
 
@@ -20,20 +20,22 @@ class NavItem(
     val text: String,
     val icon: IconCode? = null,
     var index: Int = 0,
+    val onClear: () -> Unit = {},
+    val parentLayout: MigLayout? = null,
     subItems: List<String> = arrayListOf(),
 ) : JPanel() {
 
     val button: NavButton
     var isOpen = false
-    var onSelection: NavSelectionEvent? = null
     var alpha = 1f
     private val subItems: MutableList<NavItem> = mutableListOf()
     private var buttonAngle = -1
     private lateinit var animator: Animator
 
     init {
-        isOpaque = false
+        initComponents()
 
+        isOpaque = false
         layout = MigLayout(
             "wrap, fillx, inset 0",
             "[fill]",
@@ -48,33 +50,71 @@ class NavItem(
             index = index
         )
 
+
         button.addMouseListener(object : MouseAdapter() {
 
             override fun mouseEntered(e: MouseEvent?) {
+                button.isOpaque = true
+                button.background = SemanticColor.LIGHT
                 cursor = Cursor(Cursor.HAND_CURSOR)
-                button.foreground = SemanticColor.PRIMARY
             }
 
             override fun mouseExited(e: MouseEvent?) {
                 if (!button.isSelected) {
-                    button.foreground = SemanticColor.DARK
+                    button.isOpaque = false
+                    button.background = Color.WHITE
                 }
             }
+
         })
 
         add(button)
-        var subIndex = 1
 
-        this.subItems.addAll(subItems.map { NavItem(text = it, index = subIndex++) })
+        button.onClick {
+            onClear()
+
+            if (subItems.isNotEmpty()) {
+                isOpen = !isOpen
+                startAnimator()
+            }
+
+            setSelectedIndex(button.index)
+        }
+
+        var subIndex = 1
+        this.subItems.addAll(subItems.map {
+            NavItem(
+                text = it,
+                index = subIndex++,
+                onClear = onClear,
+                parentLayout = this.layout as MigLayout
+            )
+        })
         this.subItems.forEach(this::add)
 
         if (hasSubItems()) {
             buttonAngle = 0
-            initAnimator(this.layout as MigLayout)
+            parentLayout?.let(::initAnimator)
         }
 
-
     }
+
+    private fun initComponents() {
+        val layout = GroupLayout(this)
+
+        this.layout = layout
+
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                .addGap(0, 400, Short.MAX_VALUE.toInt())
+        )
+
+        layout.setVerticalGroup(
+            layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                .addGap(0, 300, Short.MAX_VALUE.toInt())
+        )
+    }
+
 
     fun onClick(action: (e: ActionEvent) -> Unit) = button.onClick { action(it) }
 
@@ -117,8 +157,10 @@ class NavItem(
     fun clearSelection() {
         foreground = Color.WHITE
         components
-            .filterIsInstance<NavButton>()
-            .forEach { it.isSelected = false }
+            .filterIsInstance<NavItem>()
+            .forEach {
+                it.button.isSelected = false
+            }
     }
 
     fun setSelectedIndex(index: Int) {
@@ -146,6 +188,7 @@ class NavItem(
 
         animator = Animator(300, object : TimingTargetAdapter() {
             private var height = 0
+
             override fun begin() {
                 height = preferredSize.height - 35
             }
@@ -166,13 +209,11 @@ class NavItem(
     }
 
     private fun startAnimator() {
-
         if (animator.isRunning) {
             animator.stop()
             animator.startFraction = 1f - animator.timingFraction
         } else
             animator.startFraction = 0f
-
         animator.start()
     }
 

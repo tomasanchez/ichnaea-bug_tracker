@@ -6,6 +6,8 @@ import org.jdesktop.animation.timing.Animator
 import org.jdesktop.animation.timing.TimingTarget
 import org.jdesktop.animation.timing.TimingTargetAdapter
 import java.awt.*
+import java.awt.event.MouseAdapter
+import java.awt.event.MouseEvent
 import javax.swing.border.EmptyBorder
 
 
@@ -33,18 +35,38 @@ class NavButton(
 
         setSemanticColor(color)
 
-        border = EmptyBorder(0, 0, 0, 0)
+        border =
+            if (isMainButton) EmptyBorder(0, 10, 0, 0)
+            else EmptyBorder(0, 45, 0, 0)
         horizontalAlignment = LEFT
 
         if (!isMainButton) {
+
+            foreground = SemanticColor.SECONDARY
+
             val target: TimingTarget = object : TimingTargetAdapter() {
                 override fun timingEvent(fraction: Float) {
                     alpha = if (isMouseOver) fraction else 1 - fraction
                     repaint()
                 }
             }
+
             animator = Animator(400, target)
             animator.resolution = 0
+
+            addMouseListener(object : MouseAdapter() {
+
+                override fun mouseEntered(e: MouseEvent?) {
+                    isMouseOver = true
+                    startAnimator()
+                }
+
+                override fun mouseExited(e: MouseEvent?) {
+                    startAnimator()
+                    isMouseOver = false
+                }
+            })
+
         } else {
             createIcon(icon)
         }
@@ -57,7 +79,7 @@ class NavButton(
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON)
 
         if (!isMainButton) {
-            g2.color = SemanticColor.LIGHT
+            g2.color = SemanticColor.PRIMARY
 
             if (isSelected)
                 alpha = 1f
@@ -65,8 +87,9 @@ class NavButton(
             val size = 6
             val y = (height - size) / 2
             g2.drawOval(27, y, size + 1, size + 1)
-
             g2.composite = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha)
+            g2.fillOval(27, y, size + 1, size + 1);
+
             pressedPoint?.let {
                 g2.color = effectColor
                 g2.composite = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha)
@@ -82,14 +105,18 @@ class NavButton(
         g2.dispose()
     }
 
-    override fun setSelected(b: Boolean) {
-        super.setSelected(b)
-        if (b || isMouseOver) {
-            foreground = SemanticColor.PRIMARY
+    override fun setSelected(wasSelected: Boolean) {
+        super.setSelected(wasSelected)
+
+        if (wasSelected || isMouseOver) {
+            foreground = SemanticColor.DARK.darker()
+            background = SemanticColor.LIGHT
         } else {
             alpha = 0f
-            foreground = Color(50, 50, 50)
+            foreground = SemanticColor.SECONDARY
+            background = Color.WHITE
         }
+
     }
 
     // --------------------------------

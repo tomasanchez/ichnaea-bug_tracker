@@ -17,6 +17,7 @@ import javax.swing.GroupLayout
 import javax.swing.JLabel
 import javax.swing.JPanel
 import javax.swing.JScrollPane
+import javax.swing.border.EmptyBorder
 
 
 class SideNav(
@@ -36,6 +37,7 @@ class SideNav(
 
     var onPopUp: NavPopUpEvent? = null
 
+    private val menuLayout: MigLayout
     private val scrollPanel = JScrollPane()
     private val panel = JPanel()
     private var index = 0
@@ -44,7 +46,11 @@ class SideNav(
         layout = BorderLayout()
         isOpaque = true
         background = color
-
+        menuLayout = MigLayout(
+            "wrap, fillx, insets 0",
+            "[fill]",
+            "[]0[]"
+        )
         initComponents()
 
         addGroupTitle("Navigation")
@@ -54,6 +60,8 @@ class SideNav(
                 text = "Home",
                 icon = GoogleMaterialDesignIcons.HOME,
                 subItems = arrayListOf("Mozilla", "Chromium"),
+                onClear = ::clearSelected,
+                parentLayout = menuLayout
             )
         )
     }
@@ -90,6 +98,7 @@ class SideNav(
 
     fun addGroupTitle(groupTitle: String) {
         val title = Typography(text = groupTitle, color = SemanticColor.SECONDARY, style = Font.BOLD)
+        title.border = EmptyBorder(15, 15, 5, 5)
         panel.add(title)
     }
 
@@ -107,7 +116,7 @@ class SideNav(
     }
 
     fun clearSelected() {
-        components
+        panel.components
             .filterIsInstance<NavItem>()
             .forEach(NavItem::clearSelection)
     }
@@ -174,13 +183,7 @@ class SideNav(
                 )
         )
 
-        panel.layout = MigLayout(
-            "wrap, fillx, insets 0",
-            "[fill]",
-            "[]0[]"
-        )
-
-
+        panel.layout = menuLayout
     }
 
     private fun initScrollPane() {
