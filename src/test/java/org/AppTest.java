@@ -1,6 +1,6 @@
 package org;
 
-import org.ichnaea.core.mvc.view.AppView;
+import org.ichnaea.core.ui.app.SideNavApp;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -9,11 +9,11 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class AppTest {
 
-    AppView app;
+    SideNavApp app;
 
     @BeforeEach
     public void setUp() {
-        app = new AppView();
+        app = new SideNavApp("", "", "", "");
     }
 
     @AfterEach
@@ -23,7 +23,6 @@ public class AppTest {
 
     @Test
     public void shouldOpenApplication() {
-        app.launch();
         assertTrue(app.isVisible());
     }
 }
