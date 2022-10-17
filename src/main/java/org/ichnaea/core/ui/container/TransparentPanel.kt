@@ -6,7 +6,7 @@ import java.awt.Graphics2D
 import javax.swing.JPanel
 
 
-class TransparentPanel(var alpha: Float = 1f) : JPanel() {
+open class TransparentPanel(var alpha: Float = 1f) : JPanel() {
 
     init {
         isOpaque = false
@@ -17,5 +17,4 @@ class TransparentPanel(var alpha: Float = 1f) : JPanel() {
         g2.composite = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha)
         super.paint(grphcs)
     }
-    
 }
