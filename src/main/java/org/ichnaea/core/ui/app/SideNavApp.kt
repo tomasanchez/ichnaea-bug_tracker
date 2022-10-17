@@ -98,7 +98,7 @@ class SideNavApp(
         bg.background = Color.RED
         bg.layout = layout
         bg.add(sideNav, "w $SIDE_NAV_MAX_WIDTH!, spany 2")
-        bg.add(appBar, "h 50!, wrap")
+        bg.add(appBar, "h 65!, wrap")
         bg.add(body, "w 100%, h 100%")
         contentPane = bg
     }
