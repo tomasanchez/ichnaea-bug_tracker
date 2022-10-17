@@ -14,17 +14,13 @@ import javax.swing.JScrollPane
 import javax.swing.table.DefaultTableModel
 
 @View
-class ProjectsView : BaseView() {
+class ProjectsView : SideView() {
 
     init {
         panel.layout = BoxLayout(panel, BoxLayout.PAGE_AXIS)
         panel.border = BorderFactory.createEmptyBorder(0, 0, 15, 0)
         body()
         footer()
-    }
-
-    override fun isFullScreen(): Boolean {
-        return false
     }
 
     private fun body() {

@@ -11,7 +11,7 @@ import org.slf4j.Logger
 import java.awt.event.ActionEvent
 
 @Controller
-class SignUpController : BaseController() {
+class SignUpController : SideViewController() {
 
     private lateinit var usernameInput: TextField
     private lateinit var passwordInput: PasswordField

@@ -35,6 +35,22 @@ class NavButton(
 
         setSemanticColor(color)
 
+        addMouseListener(object : MouseAdapter() {
+
+            override fun mouseEntered(e: MouseEvent?) {
+                background = SemanticColor.LIGHT
+                cursor = Cursor(Cursor.HAND_CURSOR)
+            }
+
+            override fun mouseExited(e: MouseEvent?) {
+                if (!isSelected) {
+                    isOpaque = false
+                    background = Color.WHITE
+                }
+            }
+
+        })
+
         border =
             if (isMainButton) EmptyBorder(0, 10, 0, 0)
             else EmptyBorder(0, 40, 0, 0)

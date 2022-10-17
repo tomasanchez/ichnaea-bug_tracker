@@ -34,7 +34,7 @@ class SideNavApp(
 
     var sideNav = SideNav(title = brand, brandImage = logo)
 
-    private var appBar = AppBar()
+    var appBar = AppBar()
 
     init {
         val defaultSize = Dimension(DEFAULT_WIDTH, DEFAULT_HEIGHT)

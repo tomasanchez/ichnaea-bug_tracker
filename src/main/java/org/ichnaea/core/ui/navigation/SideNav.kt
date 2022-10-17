@@ -1,12 +1,10 @@
 package org.ichnaea.core.ui.navigation
 
-import jiconfont.icons.google_material_design_icons.GoogleMaterialDesignIcons
 import net.miginfocom.swing.MigLayout
 import org.ichnaea.core.ui.avatar.BrandLogo
 import org.ichnaea.core.ui.container.ScrollBar
 import org.ichnaea.core.ui.container.TransparentPanel
 import org.ichnaea.core.ui.navigation.animation.SideNavAnimation
-import org.ichnaea.core.ui.navigation.event.NavPopUpEvent
 import org.ichnaea.core.ui.semantic.SemanticColor
 import org.ichnaea.core.ui.text.Typography
 import java.awt.BorderLayout
@@ -32,11 +30,12 @@ class SideNav(
 
     var isNavEnabled = true
 
-    var onPopUp: NavPopUpEvent? = null
+    val menuLayout: MigLayout
 
-    private val menuLayout: MigLayout
     private val scrollPanel = JScrollPane()
+
     private val panel = JPanel()
+
     private var index = 0
 
     init {
@@ -48,28 +47,8 @@ class SideNav(
             "[fill]",
             "[]0[]"
         )
-        initComponents()
 
-        addGroupTitle("Navigation")
-        addSpace(10)
-        addItem(
-            NavItem(
-                text = "Home",
-                icon = GoogleMaterialDesignIcons.HOME,
-                subItems = arrayListOf("Mozilla", "Chromium"),
-                onClear = ::clearSelected,
-                parentLayout = menuLayout,
-            )
-        )
-        addItem(
-            NavItem(
-                text = "About",
-                icon = GoogleMaterialDesignIcons.INFO,
-                subItems = arrayListOf("Test", "License"),
-                onClear = ::clearSelected,
-                parentLayout = menuLayout,
-            )
-        )
+        initComponents()
     }
 
     fun hideNav() {
@@ -81,6 +60,13 @@ class SideNav(
     // --------------------------------
     // Items
     // --------------------------------
+
+    fun addGroup(groupName: String, vararg items: NavItem) {
+        addGroupTitle(groupName)
+        addSpace(10)
+        items.forEach(::addItem)
+    }
+
 
     /**
      * Adds an item to the navigation.
@@ -121,7 +107,7 @@ class SideNav(
             }
     }
 
-    private fun clearSelected() {
+    fun clearSelected() {
         panel.components
             .filterIsInstance<NavItem>()
             .forEach(NavItem::clearSelection)

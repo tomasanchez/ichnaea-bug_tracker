@@ -7,11 +7,8 @@ import org.ichnaea.core.ui.semantic.SemanticColor
 import org.jdesktop.animation.timing.Animator
 import org.jdesktop.animation.timing.TimingTargetAdapter
 import java.awt.Color
-import java.awt.Cursor
 import java.awt.Graphics
 import java.awt.event.ActionEvent
-import java.awt.event.MouseAdapter
-import java.awt.event.MouseEvent
 import javax.swing.GroupLayout
 import javax.swing.JPanel
 
@@ -20,9 +17,11 @@ class NavItem(
     val text: String,
     val icon: IconCode? = null,
     var index: Int = 0,
-    val onClear: () -> Unit = {},
+    var onClear: () -> Unit = {},
     val parentLayout: MigLayout? = null,
-    subItems: List<String> = arrayListOf(),
+    onClickHandler: () -> Unit = {},
+    subItems: List<SubNavItem> = arrayListOf(),
+    isMainButton: Boolean = false,
 ) : JPanel() {
 
     val button: NavButton
@@ -45,27 +44,10 @@ class NavItem(
             text = text,
             icon = icon,
             color = SemanticColor.LIGHT,
-            isMainButton = subItems.isNotEmpty(),
+            isMainButton = isMainButton || subItems.isNotEmpty(),
             index = index
         )
 
-
-        button.addMouseListener(object : MouseAdapter() {
-
-            override fun mouseEntered(e: MouseEvent?) {
-                button.isOpaque = true
-                button.background = SemanticColor.LIGHT
-                cursor = Cursor(Cursor.HAND_CURSOR)
-            }
-
-            override fun mouseExited(e: MouseEvent?) {
-                if (!button.isSelected) {
-                    button.isOpaque = false
-                    button.background = Color.WHITE
-                }
-            }
-
-        })
 
         add(button)
 
@@ -73,16 +55,18 @@ class NavItem(
             onClear()
             markSelection()
             toggleDropDown()
+            onClickHandler()
         }
 
         var subIndex = 0
 
         this.subItems.addAll(subItems.map {
             NavItem(
-                text = it,
+                text = it.name,
                 index = subIndex++,
                 onClear = onClear,
-                parentLayout = this.layout as MigLayout
+                parentLayout = this.layout as MigLayout,
+                onClickHandler = it.onClick
             )
         })
 
@@ -165,7 +149,7 @@ class NavItem(
     }
 
     fun toggleDropDown() {
-        if (button.isMainButton) {
+        if (button.isMainButton && hasSubItems()) {
             isOpen = !isOpen
             startAnimator()
         }

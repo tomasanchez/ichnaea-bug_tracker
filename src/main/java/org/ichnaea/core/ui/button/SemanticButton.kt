@@ -7,6 +7,8 @@ import org.ichnaea.core.ui.semantic.SemanticColor
 import org.jdesktop.animation.timing.Animator
 import java.awt.*
 import java.awt.event.ActionEvent
+import java.awt.event.MouseAdapter
+import java.awt.event.MouseEvent
 import java.awt.geom.Rectangle2D
 import javax.swing.JButton
 
@@ -26,6 +28,18 @@ abstract class SemanticButton : JButton() {
         border = null
         isContentAreaFilled = false
         isFocusPainted = false
+
+        this.addMouseListener(object : MouseAdapter() {
+
+            override fun mouseEntered(e: MouseEvent?) {
+                cursor = Cursor(Cursor.HAND_CURSOR)
+            }
+
+            override fun mouseExited(e: MouseEvent?) {
+                cursor = Cursor(Cursor.DEFAULT_CURSOR)
+            }
+
+        })
     }
 
     /**

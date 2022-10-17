@@ -14,7 +14,7 @@ public class MVCView {
 
     protected final Map<String, Object> viewModel = new HashMap<>();
 
-    protected AppUI frame = null;
+    public AppUI frame = null;
 
 
     public MVCView() {
@@ -74,6 +74,10 @@ public class MVCView {
      */
     public String getName() {
         return getClass().getSimpleName().replace("View", "");
+    }
+
+    public AppUI getApp() {
+        return this.frame;
     }
 
     public void repaint() {
