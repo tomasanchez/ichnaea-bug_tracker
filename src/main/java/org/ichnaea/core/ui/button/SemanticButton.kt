@@ -5,10 +5,11 @@ import jiconfont.icons.google_material_design_icons.GoogleMaterialDesignIcons
 import org.ichnaea.core.ui.icon.GoogleIconFactory
 import org.ichnaea.core.ui.semantic.SemanticColor
 import org.jdesktop.animation.timing.Animator
-import java.awt.Color
-import java.awt.Point
+import java.awt.*
 import java.awt.event.ActionEvent
+import java.awt.geom.Rectangle2D
 import javax.swing.JButton
+
 
 abstract class SemanticButton : JButton() {
 
@@ -19,8 +20,11 @@ abstract class SemanticButton : JButton() {
     var animateSize = 0f
     var pressedPoint: Point? = null
     var alpha = 0f
+    var badges: Int? = null
 
     init {
+        border = null
+        isContentAreaFilled = false
         isFocusPainted = false
     }
 
@@ -68,6 +72,30 @@ abstract class SemanticButton : JButton() {
      */
     fun onClick(action: (e: ActionEvent) -> Unit) {
         addActionListener(action)
+    }
+
+    override fun paint(g: Graphics) {
+        super.paint(g)
+        badges?.let {
+            if (it > 0) {
+
+                val value = if (it > 99) "99+" else it.toString()
+                val g2 = g.create() as Graphics2D
+
+                val ft = g2.fontMetrics
+                val r2: Rectangle2D = ft.getStringBounds(value, g2)
+                val fw = r2.width
+                g2.color = SemanticColor.DANGER
+                val size = (fw.coerceAtLeast(r2.height)).toInt()
+                g2.composite = AlphaComposite.getInstance(AlphaComposite.SRC_ATOP, 1f)
+                g2.fillOval(width - size, 0, size, size)
+                val x = (size - fw) / 2
+                g2.color = Color.WHITE
+                g2.composite = AlphaComposite.SrcOver
+                g2.drawString(value, (width - size + x).toFloat(), (ft.ascent + 1).toFloat())
+                g2.dispose()
+            }
+        }
     }
 
 }
