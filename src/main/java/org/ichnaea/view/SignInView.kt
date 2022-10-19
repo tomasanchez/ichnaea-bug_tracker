@@ -52,11 +52,7 @@ class SignInView : BaseView() {
         set(Box.createRigidArea(Dimension(0, 60)))
 
         val footerPanel = Toolbar()
-        set(
-            "signUpButton",
-            Button(text = "Sign Up", color = SemanticColor.SECONDARY),
-            footerPanel
-        )
+
         set(
             "signInButton",
             Button(text = "Sign In"),

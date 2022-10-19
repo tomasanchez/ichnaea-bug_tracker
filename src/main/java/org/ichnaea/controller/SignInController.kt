@@ -24,9 +24,6 @@ class SignInController : BaseController() {
         val signInButton = this.byId("signInButton") as Button?
         signInButton?.onClick(::onSignIn)
 
-        val signUpButton = this.byId("signUpButton") as Button?
-        signUpButton?.onClick(::onSignUp)
-
         usernameInput = this.byId("usernameField") as TextField
         passwordInput = this.byId("passwordField") as PasswordField
     }
@@ -65,11 +62,6 @@ class SignInController : BaseController() {
         clearInputs()
         navTo("Projects")
 
-    }
-
-    private fun onSignUp(event: ActionEvent) {
-        logger.info("Navigating to Sign Up View...")
-        navTo("SignUp")
     }
 
     // ------------------------------
