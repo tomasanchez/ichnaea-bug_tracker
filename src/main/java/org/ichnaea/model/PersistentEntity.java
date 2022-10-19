@@ -18,9 +18,9 @@ public abstract class PersistentEntity implements Serializable {
 
     static final long serialVersionUID = 1L;
 
-    private Long id;
+    protected Long id;
 
-    private LocalDateTime createdAt = LocalDateTime.now();
+    protected LocalDateTime createdAt = LocalDateTime.now();
 
-    private LocalDateTime lastUpdatedAt;
+    protected LocalDateTime lastUpdatedAt;
 }
