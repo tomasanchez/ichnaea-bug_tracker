@@ -52,9 +52,14 @@ class Table(
                 row: Int,
                 column: Int,
             ): Component {
-                val component = Typography(value.toString(), style = if (isSelected) Font.BOLD else Font.PLAIN)
+
+                val component = Typography(
+                    value.toString(),
+                    style = if (isSelected) Font.BOLD else Font.PLAIN,
+                )
+
                 border = noFocusBorder
-                
+
                 if (active) {
                     component.isOpaque = true
                     component.border = noFocusBorder
@@ -65,8 +70,10 @@ class Table(
             }
         })
 
-        if (active)
+        if (active) {
             attachActiveRowsEffect()
+        }
+
 
         if (!showHeader)
             tableHeader = null
@@ -82,7 +89,7 @@ class Table(
         scroll.verticalScrollBar = org.ichnaea.core.ui.container.ScrollBar()
         scroll.verticalScrollBar.background = Color.WHITE
         scroll.viewport.background = Color.WHITE
-        scroll.background = scroll.viewport.background
+        scroll.background = Color.WHITE
 
         val p = JPanel()
         p.background = SemanticColor.LIGHT
@@ -98,8 +105,8 @@ class Table(
 
             override fun mouseDragged(e: MouseEvent?) {
                 hoveredRow = -1
-                this@Table.repaint()
                 cursor = java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR)
+                this@Table.selectionModel.clearSelection()
             }
 
             override fun mouseMoved(e: MouseEvent) {
@@ -115,6 +122,21 @@ class Table(
                 }
 
                 this@Table.repaint()
+            }
+        })
+    }
+
+    fun onRowClick(idConsumer: (id: Number) -> Unit) {
+        addMouseListener(object : java.awt.event.MouseAdapter() {
+            override fun mouseClicked(e: MouseEvent) {
+                val p: Point = e.point
+                val row = this@Table.rowAtPoint(p)
+                val col = this@Table.columnAtPoint(p)
+                if (row >= 0 && col >= 0) {
+                    this@Table.selectionModel.clearSelection()
+                    val id = this@Table.model.getValueAt(row, 0)
+                    idConsumer(id as Long)
+                }
             }
         })
     }
