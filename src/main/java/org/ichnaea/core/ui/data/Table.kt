@@ -12,6 +12,7 @@ import javax.swing.JPanel
 import javax.swing.JScrollPane
 import javax.swing.JTable
 import javax.swing.ListSelectionModel.SINGLE_SELECTION
+import javax.swing.border.EmptyBorder
 import javax.swing.table.DefaultTableCellRenderer
 import javax.swing.table.DefaultTableModel
 
@@ -19,6 +20,7 @@ import javax.swing.table.DefaultTableModel
 class Table(
     selectionMode: Int = SINGLE_SELECTION,
     active: Boolean = false,
+    showHeader: Boolean = true,
 ) : JTable() {
 
     init {
@@ -37,7 +39,7 @@ class Table(
                 isSelected: Boolean,
                 hasFocus: Boolean,
                 row: Int,
-                column: Int
+                column: Int,
             ): Component = TableHeader(value.toString())
         }
 
@@ -48,11 +50,11 @@ class Table(
                 isSelected: Boolean,
                 hasFocus: Boolean,
                 row: Int,
-                column: Int
+                column: Int,
             ): Component {
                 val component = Typography(value.toString(), style = if (isSelected) Font.BOLD else Font.PLAIN)
                 border = noFocusBorder
-
+                
                 if (active) {
                     component.isOpaque = true
                     component.border = noFocusBorder
@@ -66,6 +68,8 @@ class Table(
         if (active)
             attachActiveRowsEffect()
 
+        if (!showHeader)
+            tableHeader = null
     }
 
     fun addRow(row: Array<Any>) {
@@ -78,10 +82,13 @@ class Table(
         scroll.verticalScrollBar = org.ichnaea.core.ui.container.ScrollBar()
         scroll.verticalScrollBar.background = Color.WHITE
         scroll.viewport.background = Color.WHITE
+        scroll.background = scroll.viewport.background
 
         val p = JPanel()
         p.background = SemanticColor.LIGHT
+        p.isOpaque = true
         scroll.setCorner(JScrollPane.UPPER_RIGHT_CORNER, p)
+        scroll.border = EmptyBorder(5, 5, 5, 5)
     }
 
     private fun attachActiveRowsEffect() {
