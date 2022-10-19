@@ -28,9 +28,9 @@ object ControllerLoader {
         classes.forEach { clazz ->
             try {
                 val controller = clazz.newInstance()
-                controllers[controller.name] = controller
+                controllers[controller.name.lowercase()] = controller
                 val view = ViewLoader.findView(controller.name)
-                controller.setView(view)
+                controller.view = view
                 controller.onInit()
                 loaded++
                 logger.trace("Loaded controller ${controller.name}")
@@ -43,7 +43,7 @@ object ControllerLoader {
     }
 
     fun getController(name: String): MVCController? {
-        return controllers[name]
+        return controllers[name.lowercase()]
     }
 
 
