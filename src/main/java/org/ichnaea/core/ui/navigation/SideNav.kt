@@ -20,7 +20,7 @@ import javax.swing.border.EmptyBorder
 class SideNav(
     title: String?,
     brandImage: String?,
-    color: Color = Color.WHITE,
+    color: Color = SemanticColor.DARK,
 ) : TransparentPanel() {
 
     private var logo: BrandLogo? =
@@ -89,7 +89,7 @@ class SideNav(
     }
 
     fun addGroupTitle(groupTitle: String) {
-        val title = Typography(text = groupTitle, color = SemanticColor.SECONDARY, style = Font.BOLD)
+        val title = Typography(text = groupTitle, color = SemanticColor.SECONDARY.brighter(), style = Font.BOLD)
         title.border = EmptyBorder(15, 15, 5, 5)
         panel.add(title)
     }

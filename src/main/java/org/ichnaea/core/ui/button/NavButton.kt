@@ -13,7 +13,7 @@ import javax.swing.border.EmptyBorder
 
 class NavButton(
     text: String,
-    color: Color = SemanticColor.PRIMARY,
+    color: Color = SemanticColor.DARK,
     icon: IconCode? = null,
     var index: Int = 0,
     var isMainButton: Boolean = false,
@@ -30,7 +30,6 @@ class NavButton(
                 font.deriveFont(Font.BOLD, 14f)
             else font.deriveFont(Font.PLAIN, 12f)
 
-
         isContentAreaFilled = false
 
         setSemanticColor(color)
@@ -45,7 +44,6 @@ class NavButton(
             override fun mouseExited(e: MouseEvent?) {
                 if (!isSelected) {
                     isOpaque = false
-                    background = Color.WHITE
                 }
             }
 
@@ -84,8 +82,11 @@ class NavButton(
             })
 
         } else {
+            isDarkIcon = false
             createIcon(icon)
         }
+
+        foreground = SemanticColor.SECONDARY
     }
 
     override fun paintComponent(grphcs: Graphics) {
@@ -93,9 +94,10 @@ class NavButton(
         val g2 = grphcs as Graphics2D
 
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON)
+        g2.color = SemanticColor.PRIMARY.brighter()
 
         if (!isMainButton) {
-            g2.color = SemanticColor.PRIMARY
+
 
             if (isSelected)
                 alpha = 1f
@@ -118,7 +120,6 @@ class NavButton(
             }
 
         } else if (isSelected) {
-            g2.color = SemanticColor.PRIMARY
             g2.fillRect(0, 3, 3, height)
         }
 
@@ -129,13 +130,12 @@ class NavButton(
         super.setSelected(wasSelected)
 
         if (wasSelected || isMouseOver) {
-            foreground = SemanticColor.DARK.darker()
+            foreground = Color.WHITE
             if (!isMainButton)
                 background = SemanticColor.LIGHT
         } else {
             alpha = 0f
             foreground = SemanticColor.SECONDARY
-            background = Color.WHITE
         }
 
     }

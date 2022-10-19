@@ -73,7 +73,7 @@ abstract class SemanticButton : JButton() {
                     GoogleIconFactory.build(
                         name = it as GoogleMaterialDesignIcons,
                         color = if (isDarkIcon) SemanticColor.DARK else SemanticColor.LIGHT,
-                        size = this.font.size.toFloat() + 15f
+                        size = 24f
                     ).also { hasIcon = true }
             }
         }

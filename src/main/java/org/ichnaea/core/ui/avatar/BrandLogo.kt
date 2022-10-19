@@ -1,6 +1,7 @@
 package org.ichnaea.core.ui.avatar
 
 import org.ichnaea.core.ui.semantic.SemanticColor
+import java.awt.Color
 import java.awt.Dimension
 import java.awt.Font
 import java.awt.Image
@@ -12,6 +13,7 @@ import javax.swing.JPanel
 class BrandLogo(
     text: String,
     imagePath: String?,
+    val color: Color = SemanticColor.DARK,
 ) : JPanel() {
 
     private val logo = JLabel()
@@ -19,13 +21,18 @@ class BrandLogo(
     init {
         initComponents(text, imagePath)
         isOpaque = true
-        background = SemanticColor.LIGHT.brighter()
+        background = color
         maximumSize = Dimension(Short.MAX_VALUE.toInt(), 100)
     }
 
     private fun initComponents(logoText: String, imagePath: String?) {
         logo.font = font.deriveFont(Font.BOLD, 16f)
-        logo.foreground = SemanticColor.DARK.darker()
+
+        logo.foreground = when (color) {
+            Color.WHITE, SemanticColor.WARNING, SemanticColor.LIGHT -> SemanticColor.DARK
+            else -> Color.WHITE
+        }
+
         val image = imagePath?.let { ImageIcon(javaClass.getResource(it)) }?.image
         val newImage = image?.getScaledInstance(45, 45, Image.SCALE_SMOOTH)
         logo.icon = newImage?.let { ImageIcon(it) }
