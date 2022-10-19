@@ -20,7 +20,7 @@ public abstract class PersistentEntity implements Serializable {
 
     private Long id;
 
-    private LocalDateTime createdAt;
+    private LocalDateTime createdAt = LocalDateTime.now();
 
     private LocalDateTime lastUpdatedAt;
 }
