@@ -12,6 +12,7 @@ import javax.swing.Box
 import javax.swing.JScrollPane
 import javax.swing.table.DefaultTableModel
 
+
 @View
 class ProjectsView : SideView() {
 
@@ -25,7 +26,7 @@ class ProjectsView : SideView() {
     private fun body() {
         set(Box.createRigidArea(Dimension(0, 20)))
         val title = Title(text = "Projects", level = TitleLevel.H2)
-        set(title)
+        set("viewTitle", title)
         set(Box.createRigidArea(Dimension(0, 20)))
         val table = table()
         set(scrollPanel)
@@ -45,18 +46,16 @@ class ProjectsView : SideView() {
 
         table.model = object : DefaultTableModel(
             arrayOf(), arrayOf(
-                "Name",
+                "Id", "Name",
             )
         ) {
-            var canEdit = booleanArrayOf(
-                false,
-            )
-
             override fun isCellEditable(rowIndex: Int, columnIndex: Int): Boolean {
-                return canEdit[columnIndex]
+                return false
             }
         }
-        
+
+        table.columnModel.getColumn(0).maxWidth = 0
+
         scrollPanel.setViewportView(table)
         table.fixTable(scrollPanel)
         return table

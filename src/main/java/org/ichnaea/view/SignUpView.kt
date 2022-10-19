@@ -25,6 +25,7 @@ class SignUpView : SideView() {
     }
 
     private fun header() {
+        containerPanel.add(Box.createRigidArea(Dimension(0, 20)))
         containerPanel.add(Title(text = "Add a new User", level = TitleLevel.H2))
     }
 
@@ -41,10 +42,10 @@ class SignUpView : SideView() {
 
     private fun footer() {
         containerPanel.add(Box.createRigidArea(Dimension(0, 35)))
-        val footerPanel = Toolbar()
+        val footerPanel = Toolbar(color = SemanticColor.LIGHT)
         set("cancelButton", Button(text = "Reset", color = SemanticColor.SECONDARY), footerPanel)
         set("signUpButton", Button(text = "Add User"), footerPanel)
-        containerPanel.add(footerPanel)
+        panel.add(footerPanel, "align center, wrap")
     }
 
 

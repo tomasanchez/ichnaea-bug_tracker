@@ -16,7 +16,7 @@ abstract class SideView : BaseView() {
     init {
         initPanel()
         initContainerPanel()
-        panel.add(containerPanel)
+        panel.add(containerPanel, "align center, wrap")
     }
 
 
@@ -25,7 +25,7 @@ abstract class SideView : BaseView() {
     // -----------------------------
 
     private fun initPanel() {
-        panel.layout = MigLayout("fill, insets 0", "[fill]", "[fill]")
+        panel.layout = MigLayout("fill, insets 0", "[fill]", "0[fill]0[fill]15[fill]")
         panel.border = EmptyBorder(15, 15, 15, 15)
         panel.isOpaque = true
         panel.background = SemanticColor.LIGHT
@@ -46,7 +46,7 @@ abstract class SideView : BaseView() {
     }
 
     override fun set(value: Component): MVCView {
-        containerPanel.add(value)
+        containerPanel.add(value, "wrap, align center")
         return this
     }
 
@@ -60,6 +60,7 @@ abstract class SideView : BaseView() {
         containerPanel.remove(component)
         containerPanel.revalidate()
         containerPanel.repaint()
+        panel.remove(component)
         repaint()
     }
 

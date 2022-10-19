@@ -54,6 +54,12 @@ public class MVCView {
         return this;
     }
 
+    public MVCView set(String key, Component value, String constraints) {
+        this.viewModel.put(key, value);
+        this.panel.add(value, constraints);
+        return this;
+    }
+
     public MVCView set(String key, Component value, JPanel container) {
         this.viewModel.put(key, value);
         container.add(value);
@@ -62,6 +68,11 @@ public class MVCView {
 
     public MVCView set(Component value) {
         this.panel.add(value);
+        return this;
+    }
+
+    public MVCView set(Component value, String constraints) {
+        this.panel.add(value, constraints);
         return this;
     }
 

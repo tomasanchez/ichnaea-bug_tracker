@@ -15,6 +15,8 @@ abstract class BaseController : MVCController() {
 
     protected var alert: Alert? = null
 
+    protected var pathId: Long = 0
+
     companion object {
         private val log: Logger = org.slf4j.LoggerFactory.getLogger(BaseController::class.java)
 
@@ -54,7 +56,7 @@ abstract class BaseController : MVCController() {
             color = color
         )
 
-        view.set(alert)
+        view.set(alert, "align center, wrap, h 70!, w 60%")
 
 
         Executors.newSingleThreadScheduledExecutor().schedule({

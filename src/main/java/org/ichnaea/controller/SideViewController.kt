@@ -46,12 +46,12 @@ abstract class SideViewController : BaseController() {
             "Manage",
             NavItem(
                 text = "Admin",
-                icon = GoogleMaterialDesignIcons.BUILD,
+                icon = GoogleMaterialDesignIcons.VERIFIED_USER,
                 onClear = sideNav::clearSelected,
                 parentLayout = sideNav.menuLayout,
                 subItems = arrayListOf(
                     SubNavItem(
-                        name = "Add User",
+                        name = "Create User",
                         onClick = { navTo("SignUp") }
                     )
                 )
