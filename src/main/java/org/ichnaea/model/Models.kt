@@ -12,13 +12,17 @@ data class Role(
 
 data class Project(
     val name: String,
+    val code: String =
+        if (name.contains(" "))
+            name.split(" ").joinToString("") { it[0].uppercase() }
+        else name.uppercase().substring(0, 3),
     val description: String,
     val owner: User,
     val members: List<User> = listOf(),
 ) : PersistentEntity() {
     fun toTableRow() = arrayOf(
-        name,
-        this.createdAt.toLocalDate().toString(),
+        id,
+        "$name ($code)",
     )
 }
 
