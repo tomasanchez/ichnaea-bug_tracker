@@ -9,7 +9,7 @@ import org.ichnaea.model.User
 import org.ichnaea.respository.UserRepository
 
 class UserService(
-    private val userRepository: UserRepository = UserRepository(),
+    private val userRepository: UserRepository = UserRepository,
     private val passwordEncoder: PasswordEncoder = BCryptPasswordEncoder(),
 ) : UserDetailsService {
 
