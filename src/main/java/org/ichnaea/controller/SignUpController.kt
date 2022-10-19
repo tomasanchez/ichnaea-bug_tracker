@@ -116,7 +116,7 @@ class SignUpController : SideViewController() {
 
         usernameInput.setError(false)
         passwordInput.setError(false)
-        passwordInput.setError(false)
+        confirmPasswordInput.setError(false)
     }
 
 
