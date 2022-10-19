@@ -8,8 +8,6 @@ import org.ichnaea.core.ui.data.Table
 import org.ichnaea.core.ui.text.Title
 import org.ichnaea.core.ui.text.TitleLevel
 import java.awt.Dimension
-import java.time.LocalDate
-import java.time.LocalDateTime
 import javax.swing.Box
 import javax.swing.JScrollPane
 import javax.swing.table.DefaultTableModel
@@ -17,20 +15,21 @@ import javax.swing.table.DefaultTableModel
 @View
 class ProjectsView : SideView() {
 
+    private val scrollPanel = JScrollPane()
+
     init {
         body()
         footer()
     }
 
     private fun body() {
+        set(Box.createRigidArea(Dimension(0, 20)))
         val title = Title(text = "Projects", level = TitleLevel.H2)
-        containerPanel.add(title)
-        containerPanel.add(Box.createRigidArea(Dimension(0, 35)))
+        set(title)
+        set(Box.createRigidArea(Dimension(0, 20)))
         val table = table()
-        containerPanel.add(table.tableHeader)
-        table.addRow(arrayOf("Project 1", LocalDate.now(), LocalDateTime.now(), "In Progress"))
-        table.addRow(arrayOf("Project 2", LocalDate.now(), LocalDateTime.now(), "Analysis"))
-        set("projectsTable", table, containerPanel)
+        set(scrollPanel)
+        addToModel("projectsTable", table)
     }
 
     private fun footer() {
@@ -42,24 +41,22 @@ class ProjectsView : SideView() {
 
 
     private fun table(): Table {
-
-        val table = Table(active = true)
-        val scrollPanel = JScrollPane()
+        val table = Table(active = true, showHeader = false)
 
         table.model = object : DefaultTableModel(
             arrayOf(), arrayOf(
-                "Name", "Created", "Updated", "Status"
+                "Name",
             )
         ) {
             var canEdit = booleanArrayOf(
-                false, false, false, false, false
+                false,
             )
 
             override fun isCellEditable(rowIndex: Int, columnIndex: Int): Boolean {
                 return canEdit[columnIndex]
             }
         }
-
+        
         scrollPanel.setViewportView(table)
         table.fixTable(scrollPanel)
         return table

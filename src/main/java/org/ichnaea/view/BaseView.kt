@@ -14,4 +14,14 @@ abstract class BaseView : MVCView() {
 
     }
 
+    /**
+     * Convenience method for adding a value in the view model without adding in to any container.
+     *
+     * @param key the access identifier
+     * @param value component or object to be stored
+     */
+    fun addToModel(key: String, value: Any) {
+        model[key] = value
+    }
+
 }
