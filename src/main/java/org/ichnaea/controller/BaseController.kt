@@ -44,7 +44,7 @@ abstract class BaseController : MVCController() {
         return this.view.model[component_id] as Component?
     }
 
-    protected fun showAlert(title: String, message: String, color: Color = SemanticColor.SUCCESS) {
+    protected open fun showAlert(title: String, message: String, color: Color = SemanticColor.SUCCESS) {
 
         removeAlert()
 
@@ -67,7 +67,7 @@ abstract class BaseController : MVCController() {
     /**
      * Removes the alert from the view if it exists.
      */
-    protected fun removeAlert() {
+    protected open fun removeAlert() {
         alert?.let {
             view.remove(it)
             alert = null

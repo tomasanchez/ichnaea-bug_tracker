@@ -93,10 +93,8 @@ class SignUpController : SideViewController() {
     }
 
     private fun onCancel(event: ActionEvent) {
-        logger.info("Cancelled Sign Up. Navigating to Sign In View...")
         clearInputs()
         removeAlert()
-        navTo("SignIn")
     }
 
     // ------------------------------

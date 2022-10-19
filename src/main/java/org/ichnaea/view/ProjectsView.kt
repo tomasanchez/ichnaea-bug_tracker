@@ -5,6 +5,8 @@ import org.ichnaea.core.mvc.view.View
 import org.ichnaea.core.ui.button.Button
 import org.ichnaea.core.ui.container.Toolbar
 import org.ichnaea.core.ui.data.Table
+import org.ichnaea.core.ui.text.Title
+import org.ichnaea.core.ui.text.TitleLevel
 import java.awt.Dimension
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -21,7 +23,9 @@ class ProjectsView : SideView() {
     }
 
     private fun body() {
-
+        val title = Title(text = "Projects", level = TitleLevel.H2)
+        containerPanel.add(title)
+        containerPanel.add(Box.createRigidArea(Dimension(0, 35)))
         val table = table()
         containerPanel.add(table.tableHeader)
         table.addRow(arrayOf("Project 1", LocalDate.now(), LocalDateTime.now(), "In Progress"))
@@ -44,7 +48,7 @@ class ProjectsView : SideView() {
 
         table.model = object : DefaultTableModel(
             arrayOf(), arrayOf(
-                "Project Name", "Created", "Updated", "Status"
+                "Name", "Created", "Updated", "Status"
             )
         ) {
             var canEdit = booleanArrayOf(

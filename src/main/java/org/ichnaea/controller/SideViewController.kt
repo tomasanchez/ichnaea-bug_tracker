@@ -14,8 +14,6 @@ abstract class SideViewController : BaseController() {
     companion object {
         protected var isMenuInitialized = false
         protected var wasUserChanged = true
-
-
     }
 
     override fun show() {
@@ -80,6 +78,10 @@ abstract class SideViewController : BaseController() {
     private fun onSignOut() {
         navTo("SignIn")
     }
+
+    // ------------------------------------------
+    // Internal Methods
+    // ------------------------------------------
 
 
 }

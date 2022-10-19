@@ -64,7 +64,7 @@ class SignInController : BaseController() {
 
         clearInputs()
         navTo("Projects")
-        
+
     }
 
     private fun onSignUp(event: ActionEvent) {
@@ -79,6 +79,9 @@ class SignInController : BaseController() {
     private fun clearInputs() {
         usernameInput.text = ""
         passwordInput.text = ""
+
+        usernameInput.setError(false)
+        passwordInput.setError(false)
     }
 
 }
