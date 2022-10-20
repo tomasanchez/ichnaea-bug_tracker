@@ -33,7 +33,7 @@ abstract class SideView : BaseView() {
 
     private fun initContainerPanel() {
         containerPanel.layout = BoxLayout(containerPanel, BoxLayout.PAGE_AXIS)
-        containerPanel.border = EmptyBorder(10, 10, 10, 10)
+        containerPanel.border = EmptyBorder(25, 15, 15, 15)
         containerPanel.background = Color.WHITE
     }
 

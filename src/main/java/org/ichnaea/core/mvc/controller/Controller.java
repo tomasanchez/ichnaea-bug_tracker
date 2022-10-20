@@ -6,8 +6,14 @@ public abstract class Controller {
 
     private View View = new View();
 
+
+    /**
+     * Replaces the previous controller view with a new one.
+     */
     public void show() {
-        this.getView().show();
+        onBeforeRendering();
+        getView().show();
+        onAfterRendering();
     }
 
     protected View getView() {
@@ -25,6 +31,9 @@ public abstract class Controller {
         return this;
     }
 
+    /**
+     * Repaints the controller view.
+     */
     public void repaint() {
         this.getView().repaint();
     }
@@ -46,4 +55,18 @@ public abstract class Controller {
      * onBeforeRendering and onAfterRendering hooks.
      */
     protected abstract void onInit();
+
+    /**
+     * This method is called every time the View is rendered, before the Renderer is called and the
+     * Components are placed in the JFrame. It can be used to perform clean-up-tasks and
+     * set-up-task before re-rendering.
+     */
+    protected abstract void onBeforeRendering();
+
+    /**
+     * This method is called every time the View is rendered, after the Components are placed in the
+     * JFrame. It can be used to apply additional changes to the Model after the Rendering has
+     * finished.
+     */
+    protected abstract void onAfterRendering();
 }

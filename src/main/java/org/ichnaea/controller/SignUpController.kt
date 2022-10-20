@@ -27,6 +27,10 @@ class SignUpController : SideViewController() {
         private const val SUCCESS_MESSAGE = "User was successfully created"
     }
 
+    // -------------------------------------------------------------
+    // Lifecycle Methods
+    // -------------------------------------------------------------
+
     override fun onInit() {
 
         val signUpButton = this.byId("signUpButton") as org.ichnaea.core.ui.button.Button?
@@ -39,6 +43,13 @@ class SignUpController : SideViewController() {
         passwordInput = this.byId("passwordField") as PasswordField
         confirmPasswordInput = this.byId("password2Field") as PasswordField
 
+    }
+
+    override fun onBeforeRendering() {
+
+    }
+
+    override fun onAfterRendering() {
     }
 
     // ------------------------------

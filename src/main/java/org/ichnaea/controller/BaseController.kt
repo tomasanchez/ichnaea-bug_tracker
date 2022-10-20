@@ -63,7 +63,7 @@ abstract class BaseController : Controller() {
     /**
      * Event Handler when the pathId changes.
      *
-     * @param id an Entity Id
+     * @param id an Entity ID
      */
     open fun onPathChange(id: Long) {
 

@@ -19,6 +19,10 @@ class SignInController : BaseController() {
         private val logger: Logger = org.slf4j.LoggerFactory.getLogger(SignInController::class.java)
     }
 
+    // -------------------------------------------------------------
+    // Lifecycle Methods
+    // -------------------------------------------------------------
+
     override fun onInit() {
 
         val signInButton = this.byId("signInButton") as Button?
@@ -26,6 +30,13 @@ class SignInController : BaseController() {
 
         usernameInput = this.byId("usernameField") as TextField
         passwordInput = this.byId("passwordField") as PasswordField
+    }
+
+    override fun onBeforeRendering() {
+    }
+
+    override fun onAfterRendering() {
+        
     }
 
     // ------------------------------

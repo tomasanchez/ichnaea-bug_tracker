@@ -32,7 +32,18 @@ class ProjectDetailsController : SideViewController() {
 
     }
 
+    // -------------------------------------------------------------
+    // Lifecycle Methods
+    // -------------------------------------------------------------
+
     override fun onInit() {
     }
+
+    override fun onBeforeRendering() {
+    }
+
+    override fun onAfterRendering() {
+    }
+
 
 }

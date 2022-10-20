@@ -12,6 +12,11 @@ class ProjectsController : SideViewController() {
 
     lateinit var oTable: Table
 
+
+    // -------------------------------------------------------------
+    // Lifecycle Methods
+    // -------------------------------------------------------------
+
     override fun onInit() {
 
         byId("viewTitle")?.let {
@@ -30,6 +35,12 @@ class ProjectsController : SideViewController() {
             oTable.addRow(it.toTableRow() as Array<Any>)
         }
 
+    }
+
+    override fun onBeforeRendering() {
+    }
+
+    override fun onAfterRendering() {
     }
 
 

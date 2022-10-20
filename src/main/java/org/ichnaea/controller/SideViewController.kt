@@ -51,9 +51,13 @@ abstract class SideViewController : BaseController() {
                 parentLayout = sideNav.menuLayout,
                 subItems = arrayListOf(
                     SubNavItem(
+                        name = "Users",
+                        onClick = { navTo("Users") }
+                    ),
+                    SubNavItem(
                         name = "Create User",
                         onClick = { navTo("SignUp") }
-                    )
+                    ),
                 )
             ),
         )
