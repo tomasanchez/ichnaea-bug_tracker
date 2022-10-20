@@ -13,11 +13,17 @@ import org.ichnaea.core.ui.text.Typography
 import java.awt.Color
 import java.awt.FlowLayout
 import javax.swing.GroupLayout
+import javax.swing.Icon
 import javax.swing.JPanel
 import javax.swing.JSeparator
 import javax.swing.border.EmptyBorder
 
-class AppBar : JPanel() {
+class AppBar(
+    private val avatarImage: Icon = GoogleIconFactory.build(
+        name = GoogleMaterialDesignIcons.ACCOUNT_CIRCLE,
+        color = SemanticColor.SECONDARY.darker(),
+    ),
+) : JPanel() {
 
     private lateinit var bars: SemanticButton
 
@@ -43,10 +49,9 @@ class AppBar : JPanel() {
         )
 
         val pic = Avatar(
-            image = GoogleIconFactory.build(
-                name = GoogleMaterialDesignIcons.ACCOUNT_CIRCLE,
-                color = SemanticColor.SECONDARY.darker(),
-            ),
+            image = avatarImage,
+            borderSize = 1,
+            borderSpace = 1,
             color = SemanticColor.LIGHT,
             size = AvatarSize.XS,
         )
@@ -75,7 +80,7 @@ class AppBar : JPanel() {
                     layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(bars, GroupLayout.PREFERRED_SIZE, 38, GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 362, maxValue)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 2560, maxValue)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(
                             separator,
@@ -93,7 +98,7 @@ class AppBar : JPanel() {
                         .addComponent(
                             pic,
                             GroupLayout.PREFERRED_SIZE,
-                            38,
+                            75,
                             GroupLayout.PREFERRED_SIZE
                         )
                         .addContainerGap()
