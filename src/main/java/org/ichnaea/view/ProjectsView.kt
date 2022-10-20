@@ -54,6 +54,7 @@ class ProjectsView : SideView() {
             }
         }
 
+        table.columnModel.getColumn(0).width = 0
         table.columnModel.getColumn(0).maxWidth = 0
 
         scrollPanel.setViewportView(table)
