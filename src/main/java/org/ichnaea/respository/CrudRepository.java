@@ -13,6 +13,12 @@ public abstract class CrudRepository<T extends PersistentEntity> {
 
     private long lastId = 0;
 
+    /**
+     * Creates a new entry for an entity.
+     *
+     * @param entity to be persisted
+     * @return the persisted entity with a new id
+     */
     public T save(T entity) {
 
         if (Objects.isNull(entity.getId())) {
@@ -30,18 +36,43 @@ public abstract class CrudRepository<T extends PersistentEntity> {
         }
     }
 
+    /**
+     * Lists all entities.
+     *
+     * @return an entity list
+     */
     public List<T> findAll() {
         return list;
     }
 
+    /**
+     * Removes an entity of the persistence unit.
+     *
+     * @param id unique identifier of the entity
+     */
     public void delete(Long id) {
         list.removeIf(entity -> Objects.equals(entity.getId(), id));
     }
 
+    /**
+     * Finds an entity by its unique identifier.
+     *
+     * @param id to be searched
+     * @return Maybe an entity
+     */
     public Optional<T> findById(Long id) {
         return list.stream()
                 .filter(entity -> Objects.equals(entity.getId(), id))
                 .findFirst();
+    }
+
+    /**
+     * Counts the number of persisted entities.
+     *
+     * @return how many entities are currently persisted
+     */
+    public int count() {
+        return list.size();
     }
 
 }
