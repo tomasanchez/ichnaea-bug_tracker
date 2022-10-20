@@ -25,8 +25,10 @@ class SideNavApp(
         const val DEFAULT_WIDTH = 800
         const val DEFAULT_HEIGHT = 600
         const val SIDE_NAV_MAX_WIDTH = 180
-        const val SIDE_NAV_MIN_WIDTH = 100
+        const val SIDE_NAV_MIN_WIDTH = 0
     }
+
+    private var currentWidth = SIDE_NAV_MAX_WIDTH
 
     private val animator: Animator
 
@@ -34,7 +36,7 @@ class SideNavApp(
 
     var sideNav = SideNav(title = brand, brandImage = logo)
 
-    var appBar = AppBar()
+    var appBar = AppBar(avatarImage = ImageIcon(javaClass.getResource("/avatar/man_avatar_1.png")))
 
     init {
         val defaultSize = Dimension(DEFAULT_WIDTH, DEFAULT_HEIGHT)
@@ -57,6 +59,8 @@ class SideNavApp(
                 } else {
                     (minWidth + (maxWidth - minWidth) * fraction).toDouble()
                 }
+
+                currentWidth = width.toInt()
 
                 (contentPane.layout as MigLayout).setComponentConstraints(sideNav, "w $width!, spany2")
                 sideNav.revalidate()
@@ -97,7 +101,7 @@ class SideNavApp(
         bg.border = BorderFactory.createEmptyBorder(0, 0, 0, 0)
         bg.background = Color.WHITE
         bg.layout = layout
-        bg.add(sideNav, "w $SIDE_NAV_MAX_WIDTH!, spany 2")
+        bg.add(sideNav, "w $currentWidth!, spany 2")
         bg.add(appBar, "h 65!, wrap")
         bg.add(body, "w 100%, h 100%")
         contentPane = bg
