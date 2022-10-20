@@ -18,7 +18,7 @@ import javax.swing.ImageIcon
 class SignInView : BaseView() {
 
     init {
-        panel.layout = MigLayout("fill, insets 0, debug")
+        panel.layout = MigLayout("fill, insets 0")
         createLoginForm()
     }
 
