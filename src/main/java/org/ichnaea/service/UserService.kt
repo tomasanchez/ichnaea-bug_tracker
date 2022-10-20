@@ -11,7 +11,7 @@ import org.ichnaea.respository.UserRepository
 class UserService(
     private val userRepository: UserRepository = UserRepository,
     private val passwordEncoder: PasswordEncoder = BCryptPasswordEncoder(),
-) : UserDetailsService {
+) : TransactionalService<User>(userRepository), UserDetailsService {
 
 
     override fun loadUserByUsername(username: String): UserDetails? {
@@ -25,7 +25,7 @@ class UserService(
      * @return the persisted user
      * @throws UserAlreadyExistsException when the username is taken.
      */
-    fun save(user: User): User {
+    override fun save(user: User): User {
 
         findByUsername(user.userName)?.let {
             throw UserAlreadyExistsException("Username '${user.userName}' is already in use.")
@@ -33,7 +33,7 @@ class UserService(
 
         val secretPassword = passwordEncoder.encode(user.password)
 
-        return userRepository.save(
+        return super.save(
             user.copy(password = secretPassword)
         )
     }
