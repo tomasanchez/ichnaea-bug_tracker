@@ -31,7 +31,7 @@ public class IchnaeaApplication {
 
         LOGGER.info("Starting Ichnaea Application...");
 
-        User admin = new User("admin", "admin", new Role(RoleName.ADMIN));
+        User admin = new User("admin", "admin", new Role(RoleName.ADMIN), null);
 
         LOGGER.info("Admin user created: {}", new UserService().save(admin));
 
