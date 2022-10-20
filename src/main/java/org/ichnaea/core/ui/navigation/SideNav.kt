@@ -128,6 +128,9 @@ class SideNav(
         items.flatMap { it.subItems }
             .find { it.text.uppercase() == text.uppercase() }
             ?.button?.isSelected = true
+
+        items.find { item -> item.subItems.any { it.button.isSelected } }
+            ?.button?.isSelected = true
     }
 
     // --------------------------------
