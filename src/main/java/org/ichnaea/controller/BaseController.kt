@@ -24,6 +24,11 @@ abstract class BaseController : MVCController() {
             log.info("Initializing Reflections for controllers")
         }
 
+        /**
+         * Navigates to the View with the given name.
+         *
+         * @param viewName the name of the View (e.g. "login"), case insensitive
+         */
         fun navTo(viewName: String) {
 
             log.info("Displaying: $viewName")
@@ -42,10 +47,46 @@ abstract class BaseController : MVCController() {
 
     }
 
+    /**
+     * Navs to a view with the given name and the given pathId.
+     *
+     * @param viewName the name of the View (e.g. "projects"), case insensitive
+     * @param pathId an Entity id to be passed to the view
+     */
+    fun navTo(viewName: String, pathId: Long) {
+        val ctrl = ControllerLoader.getController(viewName) as BaseController?
+        ctrl?.onPathChange(pathId)
+        this.pathId = pathId
+        ctrl?.show()
+    }
+
+    /**
+     * Event Handler when the pathId changes.
+     *
+     * @param id an Entity Id
+     */
+    open fun onPathChange(id: Long) {
+
+    }
+
+
+    /**
+     * Obtains a component from the ViewModel
+     *
+     * @param component_id The unique identifier assigned to the component
+     * @return Possible a component if found, otherwise null
+     */
     protected fun byId(component_id: String): Component? {
         return this.view.model[component_id] as Component?
     }
 
+    /**
+     * Shows an alert banner
+     *
+     * @param title The title of the alert
+     * @param message Some additional information
+     * @param color The background color
+     */
     protected open fun showAlert(title: String, message: String, color: Color = SemanticColor.SUCCESS) {
 
         removeAlert()
