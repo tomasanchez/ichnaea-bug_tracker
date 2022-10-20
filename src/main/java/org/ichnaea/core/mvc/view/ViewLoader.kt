@@ -20,7 +20,7 @@ object ViewLoader {
         val classes =
             reflections.getSubTypesOf(MVCView::class.java)
                 .filter { clazz ->
-                    clazz.isAnnotationPresent(View::class.java) && !Modifier.isAbstract(clazz.modifiers)
+                    clazz.isAnnotationPresent(UIView::class.java) && !Modifier.isAbstract(clazz.modifiers)
                 }
 
         classes.forEach { clazz ->

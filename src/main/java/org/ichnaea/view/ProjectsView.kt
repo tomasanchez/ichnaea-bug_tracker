@@ -1,7 +1,7 @@
 package org.ichnaea.view
 
 import jiconfont.icons.google_material_design_icons.GoogleMaterialDesignIcons
-import org.ichnaea.core.mvc.view.View
+import org.ichnaea.core.mvc.view.UIView
 import org.ichnaea.core.ui.button.Button
 import org.ichnaea.core.ui.container.Toolbar
 import org.ichnaea.core.ui.data.Table
@@ -13,7 +13,7 @@ import javax.swing.JScrollPane
 import javax.swing.table.DefaultTableModel
 
 
-@View
+@UIView
 class ProjectsView : SideView() {
 
     private val scrollPanel = JScrollPane()

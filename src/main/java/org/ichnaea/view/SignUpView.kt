@@ -1,6 +1,6 @@
 package org.ichnaea.view
 
-import org.ichnaea.core.mvc.view.View
+import org.ichnaea.core.mvc.view.UIView
 import org.ichnaea.core.ui.button.Button
 import org.ichnaea.core.ui.container.Toolbar
 import org.ichnaea.core.ui.form.PasswordField
@@ -11,7 +11,7 @@ import org.ichnaea.core.ui.text.TitleLevel
 import java.awt.Dimension
 import javax.swing.Box
 
-@View
+@UIView
 class SignUpView : SideView() {
 
     init {

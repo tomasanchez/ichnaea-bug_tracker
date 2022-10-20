@@ -1,7 +1,7 @@
 package org.ichnaea.view
 
 import net.miginfocom.swing.MigLayout
-import org.ichnaea.core.mvc.view.View
+import org.ichnaea.core.mvc.view.UIView
 import org.ichnaea.core.ui.avatar.Avatar
 import org.ichnaea.core.ui.button.Button
 import org.ichnaea.core.ui.form.PasswordField
@@ -14,7 +14,7 @@ import javax.swing.Box
 import javax.swing.ImageIcon
 
 
-@View
+@UIView
 class SignInView : BaseView() {
 
     init {

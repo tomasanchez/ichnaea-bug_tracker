@@ -1,7 +1,7 @@
 package org.ichnaea.view
 
 import net.miginfocom.swing.MigLayout
-import org.ichnaea.core.mvc.view.View
+import org.ichnaea.core.mvc.view.UIView
 import org.ichnaea.core.ui.semantic.SemanticColor
 import org.ichnaea.core.ui.text.Title
 import org.ichnaea.core.ui.text.TitleLevel
@@ -10,7 +10,7 @@ import org.ichnaea.model.Project
 import java.awt.Dimension
 import javax.swing.Box
 
-@View
+@UIView
 class ProjectDetailsView : SideView() {
 
     init {
