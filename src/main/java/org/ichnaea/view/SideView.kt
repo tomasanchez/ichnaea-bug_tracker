@@ -64,4 +64,10 @@ abstract class SideView : BaseView() {
         repaint()
     }
 
+    override fun repaint() {
+        super.repaint()
+        containerPanel.revalidate()
+        containerPanel.repaint()
+    }
+
 }
