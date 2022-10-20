@@ -41,6 +41,7 @@ public class MVCView {
     public void show() {
         if (Objects.nonNull(this.frame)) {
             this.frame.setBody(this.panel, isFullScreen());
+            repaint();
         }
     }
 
@@ -74,6 +75,16 @@ public class MVCView {
     public MVCView set(Component value, String constraints) {
         this.panel.add(value, constraints);
         return this;
+    }
+
+    /**
+     * Retrieves any element stored in the view model.
+     *
+     * @param key the element identifier
+     * @return Any element stored or null.
+     */
+    public Object get(String key) {
+        return this.viewModel.get(key);
     }
 
     /**
