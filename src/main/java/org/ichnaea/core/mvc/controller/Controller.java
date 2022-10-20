@@ -1,27 +1,27 @@
 package org.ichnaea.core.mvc.controller;
 
-import org.ichnaea.core.mvc.view.MVCView;
+import org.ichnaea.core.mvc.view.View;
 
-public abstract class MVCController {
+public abstract class Controller {
 
-    private MVCView MVCView = new MVCView();
+    private View View = new View();
 
     public void show() {
         this.getView().show();
     }
 
-    protected MVCView getView() {
-        return this.MVCView;
+    protected View getView() {
+        return this.View;
     }
 
     /**
      * Changes the view of the controller.
      *
-     * @param MVCView the view to be set
+     * @param View the view to be set
      * @return the Controller instance
      */
-    public MVCController setView(MVCView MVCView) {
-        this.MVCView = MVCView;
+    public Controller setView(View View) {
+        this.View = View;
         return this;
     }
 

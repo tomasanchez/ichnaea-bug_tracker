@@ -8,7 +8,7 @@ import java.lang.reflect.Modifier
 
 object ViewLoader {
 
-    private val views: MutableMap<String, MVCView> = HashMap()
+    private val views: MutableMap<String, View> = HashMap()
 
     private val logger: Logger = org.slf4j.LoggerFactory.getLogger(ViewLoader::class.java)
 
@@ -18,7 +18,7 @@ object ViewLoader {
         val reflections = Reflections(classPath)
         var loaded = 0
         val classes =
-            reflections.getSubTypesOf(MVCView::class.java)
+            reflections.getSubTypesOf(View::class.java)
                 .filter { clazz ->
                     clazz.isAnnotationPresent(UIView::class.java) && !Modifier.isAbstract(clazz.modifiers)
                 }
@@ -38,7 +38,7 @@ object ViewLoader {
         logger.info("Loaded $loaded views")
     }
 
-    fun findView(name: String): MVCView? {
+    fun findView(name: String): View? {
         return views[name]
     }
 

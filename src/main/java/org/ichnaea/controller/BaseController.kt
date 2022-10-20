@@ -1,7 +1,7 @@
 package org.ichnaea.controller
 
+import org.ichnaea.core.mvc.controller.Controller
 import org.ichnaea.core.mvc.controller.ControllerLoader
-import org.ichnaea.core.mvc.controller.MVCController
 import org.ichnaea.core.ui.form.Validatable
 import org.ichnaea.core.ui.semantic.Alert
 import org.ichnaea.core.ui.semantic.SemanticColor
@@ -11,7 +11,7 @@ import java.awt.Component
 import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
 
-abstract class BaseController : MVCController() {
+abstract class BaseController : Controller() {
 
     protected var alert: Alert? = null
 

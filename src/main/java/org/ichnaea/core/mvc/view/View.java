@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-public class MVCView {
+public class View {
 
     protected final JPanel panel;
 
@@ -17,7 +17,7 @@ public class MVCView {
     public AppUI frame = null;
 
 
-    public MVCView() {
+    public View() {
         this.panel = new JPanel();
         this.panel.setBorder(BorderFactory.createEmptyBorder(20, 10, 10, 10));
         this.panel.setLayout(null);
@@ -28,7 +28,7 @@ public class MVCView {
         return true;
     }
 
-    public MVCView setFrame(AppUI frame) {
+    public View setFrame(AppUI frame) {
         this.frame = frame;
         return this;
     }
@@ -49,30 +49,30 @@ public class MVCView {
         return this.viewModel;
     }
 
-    public MVCView set(String key, Component value) {
+    public View set(String key, Component value) {
         this.viewModel.put(key, value);
         this.panel.add(value);
         return this;
     }
 
-    public MVCView set(String key, Component value, String constraints) {
+    public View set(String key, Component value, String constraints) {
         this.viewModel.put(key, value);
         this.panel.add(value, constraints);
         return this;
     }
 
-    public MVCView set(String key, Component value, JPanel container) {
+    public View set(String key, Component value, JPanel container) {
         this.viewModel.put(key, value);
         container.add(value);
         return this;
     }
 
-    public MVCView set(Component value) {
+    public View set(Component value) {
         this.panel.add(value);
         return this;
     }
 
-    public MVCView set(Component value, String constraints) {
+    public View set(Component value, String constraints) {
         this.panel.add(value, constraints);
         return this;
     }

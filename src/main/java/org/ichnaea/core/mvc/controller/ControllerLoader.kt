@@ -8,7 +8,7 @@ import java.lang.reflect.Modifier
 
 object ControllerLoader {
 
-    private val controllers: MutableMap<String, MVCController> = HashMap()
+    private val controllers: MutableMap<String, Controller> = HashMap()
 
     private val logger: Logger = org.slf4j.LoggerFactory.getLogger(ControllerLoader::class.java)
 
@@ -20,7 +20,7 @@ object ControllerLoader {
         val reflections = Reflections(classPath)
         var loaded = 0
         val classes =
-            reflections.getSubTypesOf(MVCController::class.java)
+            reflections.getSubTypesOf(Controller::class.java)
                 .filter { clazz ->
                     clazz.isAnnotationPresent(UIController::class.java) && !Modifier.isAbstract(clazz.modifiers)
                 }
@@ -42,7 +42,7 @@ object ControllerLoader {
         logger.info("Loaded $loaded controllers")
     }
 
-    fun getController(name: String): MVCController? {
+    fun getController(name: String): Controller? {
         return controllers[name.lowercase()]
     }
 

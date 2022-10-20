@@ -1,9 +1,9 @@
 package org.ichnaea.view
 
-import org.ichnaea.core.mvc.view.MVCView
+import org.ichnaea.core.mvc.view.View
 import org.slf4j.Logger
 
-abstract class BaseView : MVCView() {
+abstract class BaseView : View() {
 
     companion object {
         private val log: Logger = org.slf4j.LoggerFactory.getLogger(BaseView::class.java)

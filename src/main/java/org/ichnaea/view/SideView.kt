@@ -1,7 +1,7 @@
 package org.ichnaea.view
 
 import net.miginfocom.swing.MigLayout
-import org.ichnaea.core.mvc.view.MVCView
+import org.ichnaea.core.mvc.view.View
 import org.ichnaea.core.ui.semantic.SemanticColor
 import java.awt.Color
 import java.awt.Component
@@ -45,12 +45,12 @@ abstract class SideView : BaseView() {
         return false
     }
 
-    override fun set(value: Component): MVCView {
+    override fun set(value: Component): View {
         containerPanel.add(value, "wrap, align center")
         return this
     }
 
-    override fun set(key: String, value: Component): MVCView {
+    override fun set(key: String, value: Component): View {
         set(value)
         model[key] = value
         return this
