@@ -57,6 +57,16 @@ are in each status, How many hours are spent in each status. Only the admin user
 Historical on issues changes on both status and comments should be shown in a timeline (chronological order), and be
 shown in an issue detail page.
 
+## Preview
+
+### Log In View
+
+<img src="assets/ichnaea-login.PNG" alt="Log In"/>
+
+### Home
+
+<img src="assets/ichnaea-home.PNG" alt="Home"/>
+
 ## Credits
 
 This project was made with 💙 by [Tomas Sanchez](https://github.com/tomasanchez).
