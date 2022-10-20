@@ -1,11 +1,11 @@
 package org.ichnaea.controller
 
-import org.ichnaea.core.mvc.controller.Controller
+import org.ichnaea.core.mvc.controller.UIController
 import org.ichnaea.core.ui.data.Table
 import org.ichnaea.core.ui.text.Title
 import org.ichnaea.service.ProjectService
 
-@Controller
+@UIController
 class ProjectsController : SideViewController() {
 
     private val projectService = ProjectService()

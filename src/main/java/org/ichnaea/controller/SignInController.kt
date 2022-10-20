@@ -1,6 +1,6 @@
 package org.ichnaea.controller
 
-import org.ichnaea.core.mvc.controller.Controller
+import org.ichnaea.core.mvc.controller.UIController
 import org.ichnaea.core.ui.button.Button
 import org.ichnaea.core.ui.form.PasswordField
 import org.ichnaea.core.ui.form.TextField
@@ -9,7 +9,7 @@ import org.slf4j.Logger
 import java.awt.event.ActionEvent
 
 
-@Controller
+@UIController
 class SignInController : BaseController() {
 
     private lateinit var usernameInput: TextField

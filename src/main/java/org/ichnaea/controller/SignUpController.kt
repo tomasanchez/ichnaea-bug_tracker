@@ -1,7 +1,7 @@
 package org.ichnaea.controller
 
 import org.ichnaea.core.exception.UserAlreadyExistsException
-import org.ichnaea.core.mvc.controller.Controller
+import org.ichnaea.core.mvc.controller.UIController
 import org.ichnaea.core.ui.form.PasswordField
 import org.ichnaea.core.ui.form.TextField
 import org.ichnaea.core.ui.semantic.SemanticColor
@@ -10,7 +10,7 @@ import org.ichnaea.service.UserService
 import org.slf4j.Logger
 import java.awt.event.ActionEvent
 
-@Controller
+@UIController
 class SignUpController : SideViewController() {
 
     private lateinit var usernameInput: TextField

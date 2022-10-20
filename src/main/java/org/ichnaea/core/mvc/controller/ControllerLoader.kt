@@ -22,7 +22,7 @@ object ControllerLoader {
         val classes =
             reflections.getSubTypesOf(MVCController::class.java)
                 .filter { clazz ->
-                    clazz.isAnnotationPresent(Controller::class.java) && !Modifier.isAbstract(clazz.modifiers)
+                    clazz.isAnnotationPresent(UIController::class.java) && !Modifier.isAbstract(clazz.modifiers)
                 }
 
         classes.forEach { clazz ->
