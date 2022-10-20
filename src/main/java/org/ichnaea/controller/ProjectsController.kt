@@ -41,6 +41,7 @@ class ProjectsController : SideViewController() {
     }
 
     override fun onAfterRendering() {
+        updateNavSelection(HOME_NAV)
     }
 
 

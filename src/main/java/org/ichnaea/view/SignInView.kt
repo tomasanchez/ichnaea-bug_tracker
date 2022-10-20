@@ -58,7 +58,7 @@ class SignInView : BaseView() {
         set(
             "signInButton",
             Button(text = "Sign In"),
-            "align center, h 50!, spanx"
+            "align center, h 50!, w 200!, spanx"
         )
 
     }

@@ -141,4 +141,9 @@ class Table(
         })
     }
 
+    fun clear() {
+        val model = model as DefaultTableModel
+        model.rowCount = 0
+    }
+
 }

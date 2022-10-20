@@ -25,17 +25,16 @@ class SignUpView : SideView() {
     }
 
     private fun header() {
-        containerPanel.add(Box.createRigidArea(Dimension(0, 20)))
         containerPanel.add(Title(text = "Add a new User", level = TitleLevel.H2))
     }
 
     private fun body() {
 
-        containerPanel.add(Box.createRigidArea(Dimension(0, 35)))
+        containerPanel.add(Box.createRigidArea(Dimension(0, 20)))
         set("usernameField", TextField(label = "Username"), containerPanel)
-        containerPanel.add(Box.createRigidArea(Dimension(0, 35)))
+        containerPanel.add(Box.createRigidArea(Dimension(0, 30)))
         set("passwordField", PasswordField(), containerPanel)
-        containerPanel.add(Box.createRigidArea(Dimension(0, 35)))
+        containerPanel.add(Box.createRigidArea(Dimension(0, 30)))
         set("password2Field", PasswordField(label = "Confirm Password"), containerPanel)
 
     }

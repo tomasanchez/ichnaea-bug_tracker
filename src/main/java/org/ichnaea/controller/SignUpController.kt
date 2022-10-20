@@ -50,6 +50,7 @@ class SignUpController : SideViewController() {
     }
 
     override fun onAfterRendering() {
+        updateNavSelection(ADD_USER_NAV)
     }
 
     // ------------------------------

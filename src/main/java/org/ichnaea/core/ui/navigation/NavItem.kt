@@ -27,7 +27,7 @@ class NavItem(
     val button: NavButton
     var isOpen = false
     var alpha = 1f
-    private val subItems: MutableList<NavItem> = mutableListOf()
+    val subItems: MutableList<NavItem> = mutableListOf()
     private lateinit var animator: Animator
 
     init {

@@ -114,6 +114,22 @@ class SideNav(
             .forEach(NavItem::clearSelection)
     }
 
+    fun setSelectedByText(text: String) {
+        clearSelected()
+
+        val items =
+            panel.components
+                .filterIsInstance<NavItem>()
+
+        items
+            .find { it.text.equals(text, true) }
+            ?.button?.isSelected = true
+
+        items.flatMap { it.subItems }
+            .find { it.text.uppercase() == text.uppercase() }
+            ?.button?.isSelected = true
+    }
+
     // --------------------------------
     // Components Initialization
     // --------------------------------

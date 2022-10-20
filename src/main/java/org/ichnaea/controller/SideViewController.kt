@@ -8,12 +8,20 @@ import org.ichnaea.core.ui.navigation.SubNavItem
 
 abstract class SideViewController : BaseController() {
 
-    private val app: SideNavApp
+    protected val app: SideNavApp
         get() = this.view.app as SideNavApp
 
     companion object {
         protected var isMenuInitialized = false
         protected var wasUserChanged = true
+
+        const val HOME_NAV = "Projects"
+
+        const val USERS_NAV = "Users"
+
+        const val ADD_USER_NAV = "Create User"
+
+        const val END_SESSION_NAV = "Exit"
     }
 
     override fun show() {
@@ -33,7 +41,7 @@ abstract class SideViewController : BaseController() {
         sideNav.addGroup(
             "Home",
             NavItem(
-                text = "Projects",
+                text = HOME_NAV,
                 icon = GoogleMaterialDesignIcons.WORK,
                 onClear = sideNav::clearSelected,
                 parentLayout = sideNav.menuLayout,
@@ -51,11 +59,11 @@ abstract class SideViewController : BaseController() {
                 parentLayout = sideNav.menuLayout,
                 subItems = arrayListOf(
                     SubNavItem(
-                        name = "Users",
+                        name = USERS_NAV,
                         onClick = { navTo("Users") }
                     ),
                     SubNavItem(
-                        name = "Create User",
+                        name = ADD_USER_NAV,
                         onClick = { navTo("SignUp") }
                     ),
                 )
@@ -65,7 +73,7 @@ abstract class SideViewController : BaseController() {
         sideNav.addGroup(
             "Session",
             NavItem(
-                text = "Exit",
+                text = END_SESSION_NAV,
                 icon = GoogleMaterialDesignIcons.EXIT_TO_APP,
                 onClear = sideNav::clearSelected,
                 parentLayout = sideNav.menuLayout,
@@ -73,6 +81,17 @@ abstract class SideViewController : BaseController() {
                 isMainButton = true,
             ),
         )
+    }
+
+    /**
+     * Updates nav selection
+     *
+     * @param name of the nav item
+     */
+    fun updateNavSelection(name: String) {
+        val sideNav: SideNav = app.sideNav
+        sideNav.clearSelected()
+        sideNav.setSelectedByText(name)
     }
 
     // ------------------------------------------
