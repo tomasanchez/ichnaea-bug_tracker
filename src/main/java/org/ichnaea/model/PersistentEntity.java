@@ -23,4 +23,8 @@ public abstract class PersistentEntity implements Serializable {
     protected LocalDateTime createdAt = LocalDateTime.now();
 
     protected LocalDateTime lastUpdatedAt;
+
+    public String getCreationDate() {
+        return createdAt.toLocalDate().toString();
+    }
 }
