@@ -39,6 +39,7 @@ class SideNav(
     private var index = 0
 
     init {
+        border = EmptyBorder(10, 0, 10, 0)
         layout = BorderLayout()
         isOpaque = true
         background = color
