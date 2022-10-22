@@ -22,4 +22,10 @@ public interface SecurityContext {
      */
     AuthorizationManager getAuthorizationManager();
 
+    /**
+     * Retrieves the current authenticated user.
+     *
+     * @return
+     */
+    SessionManager getSessionManager();
 }

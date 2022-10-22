@@ -1,4 +1,4 @@
-package org.ichnaea.core.security.auth;
+package org.ichnaea.core.security.user;
 
 import org.ichnaea.core.exception.EntityNotFoundException;
 

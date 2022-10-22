@@ -2,6 +2,7 @@ package org.ichnaea.core.security.auth;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import org.ichnaea.core.security.user.UserDetails;
 
 import java.security.Principal;
 import java.util.Collection;
@@ -38,6 +39,10 @@ public class UsernamePasswordAuthenticationToken implements Authentication {
     @Override
     public String getName() {
 
+        if (principal instanceof String) {
+            return (String) principal;
+        }
+
         if (this.getPrincipal() instanceof UserDetails) {
             return ((UserDetails) this.getPrincipal()).getUsername();
         }
@@ -51,27 +56,27 @@ public class UsernamePasswordAuthenticationToken implements Authentication {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        return authorities;
     }
 
     @Override
     public Object getCredentials() {
-        return null;
+        return credentials;
     }
 
     @Override
     public Object getPrincipal() {
-        return null;
+        return principal;
     }
 
     @Override
     public boolean isAuthenticated() {
-        return false;
+        return isAuthenticated;
     }
 
     @Override
     public void setAuthenticated(boolean isAuthenticated) {
-
+        this.isAuthenticated = isAuthenticated;
     }
 
 }

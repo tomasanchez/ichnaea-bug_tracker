@@ -1,10 +1,14 @@
 package org.ichnaea.service
 
+import org.ichnaea.core.exception.EntityNotFoundException
 import org.ichnaea.core.exception.UserAlreadyExistsException
-import org.ichnaea.core.security.auth.UserDetails
-import org.ichnaea.core.security.auth.UserDetailsService
+import org.ichnaea.core.security.auth.GrantedAuthority
+import org.ichnaea.core.security.auth.SimpleGrantedAuthority
 import org.ichnaea.core.security.crypto.BCryptPasswordEncoder
 import org.ichnaea.core.security.crypto.PasswordEncoder
+import org.ichnaea.core.security.user.AuthUser
+import org.ichnaea.core.security.user.UserDetails
+import org.ichnaea.core.security.user.UserDetailsService
 import org.ichnaea.model.User
 import org.ichnaea.respository.UserRepository
 import org.ichnaea.respository.dao.UserDAORepository
@@ -14,12 +18,6 @@ class UserService(
     private val userRepository: UserRepository = UserDAORepository(),
     private val passwordEncoder: PasswordEncoder = BCryptPasswordEncoder(),
 ) : TransactionalService<User>(userRepository), UserDetailsService {
-
-
-    override fun loadUserByUsername(username: String): UserDetails? {
-        return null;
-    }
-
     /**
      * Persist a user with the given username.
      *
@@ -47,8 +45,43 @@ class UserService(
      * @param username the unique username
      * @return the user or null if no user with the given username
      */
-    private fun findByUsername(username: String): Optional<User> {
+    fun findByUsername(username: String): Optional<User> {
         return userRepository.findByUsername(username)
+    }
+
+    override fun loadUserByUsername(username: String): UserDetails {
+
+        val user: User =
+            try {
+                userRepository.findByUsername(username).get()
+            } catch (e: Exception) {
+                throw EntityNotFoundException("User not found")
+            }
+
+        val enabled = true;
+        val accountNonExpired = true;
+        val credentialsNonExpired = true;
+        val accountNonLocked = true;
+
+        return AuthUser(
+            user.userName,
+            user.password,
+            enabled,
+            accountNonExpired,
+            credentialsNonExpired,
+            accountNonLocked,
+            getAuthorities(user)
+        )
+    }
+
+    /**
+     * Retrieves an user privileges.
+     *
+     * @param user to be checked
+     * @return a list of privileges (granted authorities)
+     */
+    private fun getAuthorities(user: User): List<GrantedAuthority> {
+        return listOf(SimpleGrantedAuthority(user.role.toString()))
     }
 
 }

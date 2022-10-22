@@ -1,10 +1,14 @@
 package org.ichnaea.controller
 
+import org.ichnaea.auth.IchnaeaSessionProvider
+import org.ichnaea.core.exception.AuthenticationException
 import org.ichnaea.core.mvc.controller.UIController
+import org.ichnaea.core.security.auth.Authentication
 import org.ichnaea.core.ui.button.Button
 import org.ichnaea.core.ui.form.PasswordField
 import org.ichnaea.core.ui.form.TextField
 import org.ichnaea.core.ui.semantic.SemanticColor
+import org.ichnaea.service.UserService
 import org.slf4j.Logger
 import java.awt.event.ActionEvent
 
@@ -14,6 +18,10 @@ class SignInController : BaseController() {
 
     private lateinit var usernameInput: TextField
     private lateinit var passwordInput: PasswordField
+    private val userService = UserService()
+    private val sessionProvider: IchnaeaSessionProvider =
+        getSecurityContext().sessionManager as IchnaeaSessionProvider
+
 
     companion object {
         private val logger: Logger = org.slf4j.LoggerFactory.getLogger(SignInController::class.java)
@@ -64,20 +72,42 @@ class SignInController : BaseController() {
 
         logger.info("$username has Signed in successful")
 
-        showAlert(
-            title = "Hello, $username!",
-            message = "You are being redirected to the home page...",
-            color = SemanticColor.SUCCESS
-        )
-
-        clearInputs()
-        navTo("Projects")
+        sessionProvider.attemptAuthentication(username, password, this::onSuccessfulSignIn, this::onFailedSignIn)
+            ?: run {
+                logger.error("Failed to sign in: session provider is null")
+            }
 
     }
 
     // ------------------------------
     // Internal Methods
     // ------------------------------
+
+    private fun onSuccessfulSignIn(auth: Authentication) {
+        logger.info("Sign in successful for ${auth.name}")
+
+        val user = userService.findByUsername(auth.name)
+
+        sessionProvider.session = user.get()
+        clearInputs()
+        navTo("Projects")
+    }
+
+    private fun onFailedSignIn(e: AuthenticationException) {
+
+        logger.error("Sign in failed")
+
+        usernameInput.setError(true)
+        passwordInput.setError(true)
+        passwordInput.text = ""
+
+        showAlert(
+            title = "Error",
+            message = "Sign in failed: ${e.message}",
+            color = SemanticColor.DANGER
+        )
+
+    }
 
     private fun clearInputs() {
         usernameInput.text = ""

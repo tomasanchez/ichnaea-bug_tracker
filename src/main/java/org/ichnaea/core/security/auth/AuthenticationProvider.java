@@ -7,6 +7,8 @@ import lombok.Setter;
 import org.ichnaea.core.exception.BadCredentialsException;
 import org.ichnaea.core.exception.EntityNotFoundException;
 import org.ichnaea.core.security.crypto.PasswordEncoder;
+import org.ichnaea.core.security.user.UserDetails;
+import org.ichnaea.core.security.user.UserDetailsService;
 
 @Getter
 @Setter

@@ -1,5 +1,6 @@
 package org.ichnaea;
 
+import org.ichnaea.config.SecurityConfig;
 import org.ichnaea.core.mvc.controller.ControllerLoader;
 import org.ichnaea.core.mvc.view.ViewLoader;
 import org.ichnaea.core.ui.app.AppUI;
@@ -26,6 +27,7 @@ public class IchnaeaApplication {
     public static void main(String[] args) {
         EventQueue.invokeLater(() -> {
             try {
+                configure();
                 AppUI window = new SideNavApp(
                         APP_TITLE,
                         BRAND,
@@ -39,4 +41,9 @@ public class IchnaeaApplication {
             }
         });
     }
+
+    private static void configure() {
+        new SecurityConfig().configure();
+    }
+
 }
