@@ -1,11 +1,20 @@
 package org.ichnaea.core.mvc.controller;
 
 import org.ichnaea.core.mvc.view.View;
+import org.ichnaea.core.security.auth.SecurityContext;
 
 public abstract class Controller {
 
+    private static SecurityContext securityContext;
     private View View = new View();
 
+    public static SecurityContext getSecurityContext() {
+        return securityContext;
+    }
+
+    public static void setSecurityContext(SecurityContext securityContext) {
+        Controller.securityContext = securityContext;
+    }
 
     /**
      * Replaces the previous controller view with a new one.
