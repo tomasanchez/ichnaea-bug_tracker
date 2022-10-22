@@ -3,7 +3,7 @@ package org.ichnaea.respository
 import org.ichnaea.model.Project
 import org.ichnaea.model.User
 
-object ProjectRepository : CrudRepository<Project>() {
+object ProjectRepository : ListRepository<Project>() {
     init {
 
         val owner = User("admin", "")

@@ -2,6 +2,7 @@ package org.ichnaea.dao;
 
 import org.ichnaea.model.PersistentEntity;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface PersistentEntityDAO<T extends PersistentEntity> {
@@ -18,7 +19,7 @@ public interface PersistentEntityDAO<T extends PersistentEntity> {
      *
      * @return an entity list
      */
-    Iterable<T> findAll();
+    List<T> findAll();
 
     /**
      * Removes an entity of the persistence unit.

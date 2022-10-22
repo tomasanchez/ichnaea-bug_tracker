@@ -4,10 +4,6 @@ import org.ichnaea.core.mvc.controller.ControllerLoader;
 import org.ichnaea.core.mvc.view.ViewLoader;
 import org.ichnaea.core.ui.app.AppUI;
 import org.ichnaea.core.ui.app.SideNavApp;
-import org.ichnaea.model.Role;
-import org.ichnaea.model.RoleName;
-import org.ichnaea.model.User;
-import org.ichnaea.service.UserService;
 import org.slf4j.Logger;
 
 import java.awt.*;
@@ -28,14 +24,6 @@ public class IchnaeaApplication {
     private static final String CONTROLLER_CLASS_PATH = "org.ichnaea.controller";
 
     public static void main(String[] args) {
-
-        LOGGER.info("Starting Ichnaea Application...");
-
-        User admin = new User("admin", "admin", new Role(RoleName.ADMIN), null);
-
-        LOGGER.info("Admin user created: {}", new UserService().save(admin));
-
-
         EventQueue.invokeLater(() -> {
             try {
                 AppUI window = new SideNavApp(

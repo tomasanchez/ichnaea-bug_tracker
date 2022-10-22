@@ -3,11 +3,16 @@ package org.ichnaea.model
 enum class RoleName {
     USER,
     ADMIN,
+    TEST,
 }
 
 data class Role(
     val name: RoleName,
-) : PersistentEntity()
+) : PersistentEntity() {
+    override fun toMap(): Map<String, Any> = mapOf(
+        "name" to name.name,
+    )
+}
 
 
 data class Project(
@@ -19,6 +24,7 @@ data class Project(
     val description: String,
     val owner: User,
     val members: List<User> = listOf(),
+    val issues: List<Issue> = listOf(),
 ) : PersistentEntity() {
     fun toTableRow() = arrayOf(
         id,

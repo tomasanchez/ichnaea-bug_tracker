@@ -2,7 +2,7 @@ package org.ichnaea.service;
 
 import lombok.Getter;
 import org.ichnaea.model.PersistentEntity;
-import org.ichnaea.respository.CrudRepository;
+import org.ichnaea.respository.ListRepository;
 
 import java.util.List;
 import java.util.Optional;
@@ -10,9 +10,9 @@ import java.util.Optional;
 @Getter
 public abstract class TransactionalService<T extends PersistentEntity> {
 
-    protected final CrudRepository<T> dao;
+    protected final ListRepository<T> dao;
 
-    public TransactionalService(CrudRepository<T> repository) {
+    public TransactionalService(ListRepository<T> repository) {
         this.dao = repository;
     }
 

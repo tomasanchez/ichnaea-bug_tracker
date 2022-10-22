@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-public abstract class CrudRepository<T extends PersistentEntity> {
+public abstract class ListRepository<T extends PersistentEntity> implements PersistentEntityRepository<T> {
 
     private final List<T> list = new ArrayList<>();
 
