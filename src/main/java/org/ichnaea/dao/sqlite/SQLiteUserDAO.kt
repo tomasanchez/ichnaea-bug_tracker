@@ -11,6 +11,7 @@ class SQLiteUserDAO : SQLiteDAO<User>(), UserDAO {
         userName = resultMap["user_name"] as String,
         password = resultMap["password"] as String,
         roleId = (resultMap["role_id"] as Int).toLong(),
+        image = resultMap["image"] as String?,
     )
 
     /**

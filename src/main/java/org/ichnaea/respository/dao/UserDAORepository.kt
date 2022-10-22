@@ -21,7 +21,10 @@ class UserDAORepository : DAORepository<User>(), UserRepository {
 
     override fun findByUsername(username: String): Optional<User> {
         return userDAO.findByUsername(username)
-            .map { it.copy(role = roleDAO.findById(it.roleId).orElseThrow { PersistenceException("Role not found") }) }
+            .map {
+                it.copy(role = roleDAO.findById(it.roleId).orElseThrow { PersistenceException("Role not found") })
+                    .also { copied -> copied.id = it.id }
+            }
     }
 
 }
