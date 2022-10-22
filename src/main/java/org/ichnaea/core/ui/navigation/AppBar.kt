@@ -19,13 +19,18 @@ import javax.swing.JSeparator
 import javax.swing.border.EmptyBorder
 
 class AppBar(
-    private val avatarImage: Icon = GoogleIconFactory.build(
+    var avatarImage: Icon = GoogleIconFactory.build(
         name = GoogleMaterialDesignIcons.ACCOUNT_CIRCLE,
         color = SemanticColor.SECONDARY.darker(),
     ),
+    var username: String = "undefined",
+    var role: String = "undefined",
 ) : JPanel() {
 
-    private lateinit var bars: SemanticButton
+    private val bars: SemanticButton = IconButton(
+        code = GoogleMaterialDesignIcons.MENU,
+        color = SemanticColor.SECONDARY,
+    )
 
     init {
         border = EmptyBorder(0, 0, 0, 0)
@@ -43,10 +48,6 @@ class AppBar(
 
     private fun initComponents() {
 
-        bars = IconButton(
-            code = GoogleMaterialDesignIcons.MENU,
-            color = SemanticColor.SECONDARY,
-        )
 
         val pic = Avatar(
             image = avatarImage,
@@ -57,12 +58,12 @@ class AppBar(
         )
 
         val userName = Title(
-            text = "Peter",
+            text = username,
             level = TitleLevel.H3,
         )
 
         val role = Typography(
-            text = "Admin",
+            text = role,
         )
 
         val separator = JSeparator()
@@ -143,8 +144,11 @@ class AppBar(
         this.layout = layout
     }
 
-    fun onMenu() {
-        println("onMenu")
+    fun refresh() {
+        removeAll()
+        initComponents()
+        revalidate()
+        repaint()
     }
 
 }

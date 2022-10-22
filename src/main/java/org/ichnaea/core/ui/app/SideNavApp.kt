@@ -36,7 +36,7 @@ class SideNavApp(
 
     var sideNav = SideNav(title = brand, brandImage = logo)
 
-    var appBar = AppBar(avatarImage = ImageIcon(javaClass.getResource("/avatar/man_avatar_1.png")))
+    var appBar = AppBar()
 
     init {
         val defaultSize = Dimension(DEFAULT_WIDTH, DEFAULT_HEIGHT)

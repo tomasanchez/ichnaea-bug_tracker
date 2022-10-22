@@ -22,7 +22,6 @@ class SignInController : BaseController() {
     private val sessionProvider: IchnaeaSessionProvider =
         getSecurityContext().sessionManager as IchnaeaSessionProvider
 
-
     companion object {
         private val logger: Logger = org.slf4j.LoggerFactory.getLogger(SignInController::class.java)
     }
@@ -73,9 +72,6 @@ class SignInController : BaseController() {
         logger.info("$username has Signed in successful")
 
         sessionProvider.attemptAuthentication(username, password, this::onSuccessfulSignIn, this::onFailedSignIn)
-            ?: run {
-                logger.error("Failed to sign in: session provider is null")
-            }
 
     }
 

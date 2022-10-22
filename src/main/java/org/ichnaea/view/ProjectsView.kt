@@ -35,9 +35,13 @@ class ProjectsView : SideView() {
 
     private fun footer() {
         containerPanel.add(Box.createRigidArea(Dimension(0, 35)))
+
         val toolbar = Toolbar()
-        toolbar.add(Button(text = "New Project", icon = GoogleMaterialDesignIcons.ADD))
+        val button = Button(text = "New Project", icon = GoogleMaterialDesignIcons.ADD)
+        model["newProjectButton"] = button
+        toolbar.add(button)
         containerPanel.add(toolbar)
+
     }
 
 

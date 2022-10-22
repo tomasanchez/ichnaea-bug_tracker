@@ -38,11 +38,13 @@ class ProjectsController : SideViewController() {
     }
 
     override fun onBeforeRendering() {
+        byId("newProjectButton")?.let {
+            it.isVisible = isUserAdmin()
+        }
     }
 
     override fun onAfterRendering() {
         updateNavSelection(HOME_NAV)
     }
-
 
 }

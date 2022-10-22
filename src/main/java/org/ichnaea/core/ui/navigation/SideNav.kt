@@ -201,5 +201,12 @@ class SideNav(
         scrollPanel.verticalScrollBar = ScrollBar()
     }
 
+    fun refresh() {
+        panel.removeAll()
+        panel.revalidate()
+        panel.repaint()
+        initComponents()
+        index = 0
+    }
 
 }
