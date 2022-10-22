@@ -105,7 +105,13 @@ abstract class SQLiteConnector(
 
                 for (i in 1..columnCount) {
                     val columnName = it.metaData.getColumnName(i).lowercase()
-                    objectMap[columnName] = it.getObject(i)
+
+                    try {
+                        objectMap[columnName] = it.getObject(i)
+                    } catch (npe: NullPointerException) {
+                        continue
+                    }
+                    
                 }
 
                 resultList.add(objectMap)
