@@ -2,7 +2,7 @@ package org.ichnaea.service;
 
 import lombok.Getter;
 import org.ichnaea.model.PersistentEntity;
-import org.ichnaea.respository.ListRepository;
+import org.ichnaea.respository.PersistentEntityRepository;
 
 import java.util.List;
 import java.util.Optional;
@@ -10,10 +10,10 @@ import java.util.Optional;
 @Getter
 public abstract class TransactionalService<T extends PersistentEntity> {
 
-    protected final ListRepository<T> dao;
+    protected final PersistentEntityRepository<T> repository;
 
-    public TransactionalService(ListRepository<T> repository) {
-        this.dao = repository;
+    public TransactionalService(PersistentEntityRepository<T> repository) {
+        this.repository = repository;
     }
 
     /**
@@ -23,7 +23,7 @@ public abstract class TransactionalService<T extends PersistentEntity> {
      * @return the persisted entity
      */
     public T save(T entity) {
-        return dao.save(entity);
+        return repository.save(entity);
     }
 
     /**
@@ -32,7 +32,7 @@ public abstract class TransactionalService<T extends PersistentEntity> {
      * @param id unique identifier of the entity
      */
     public void delete(Long id) {
-        dao.delete(id);
+        repository.delete(id);
     }
 
     /**
@@ -41,7 +41,7 @@ public abstract class TransactionalService<T extends PersistentEntity> {
      * @return an entity list
      */
     public List<T> findAll() {
-        return dao.findAll();
+        return repository.findAll();
     }
 
     /**
@@ -51,7 +51,7 @@ public abstract class TransactionalService<T extends PersistentEntity> {
      * @return the found entity
      */
     public Optional<T> findById(Long id) {
-        return dao.findById(id);
+        return repository.findById(id);
     }
 
 }

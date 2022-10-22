@@ -7,9 +7,11 @@ import org.ichnaea.core.security.crypto.BCryptPasswordEncoder
 import org.ichnaea.core.security.crypto.PasswordEncoder
 import org.ichnaea.model.User
 import org.ichnaea.respository.UserRepository
+import org.ichnaea.respository.dao.UserDAORepository
+import java.util.*
 
 class UserService(
-    private val userRepository: UserRepository = UserRepository,
+    private val userRepository: UserRepository = UserDAORepository(),
     private val passwordEncoder: PasswordEncoder = BCryptPasswordEncoder(),
 ) : TransactionalService<User>(userRepository), UserDetailsService {
 
@@ -45,7 +47,7 @@ class UserService(
      * @param username the unique username
      * @return the user or null if no user with the given username
      */
-    private fun findByUsername(username: String): User? {
+    private fun findByUsername(username: String): Optional<User>? {
         return userRepository.findByUsername(username)
     }
 
