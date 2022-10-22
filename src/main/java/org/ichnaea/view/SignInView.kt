@@ -1,11 +1,13 @@
 package org.ichnaea.view
 
+import jiconfont.icons.google_material_design_icons.GoogleMaterialDesignIcons
 import net.miginfocom.swing.MigLayout
 import org.ichnaea.core.mvc.view.UIView
 import org.ichnaea.core.ui.avatar.Avatar
 import org.ichnaea.core.ui.button.Button
 import org.ichnaea.core.ui.form.PasswordField
 import org.ichnaea.core.ui.form.TextField
+import org.ichnaea.core.ui.icon.GoogleIconFactory
 import org.ichnaea.core.ui.semantic.SemanticColor
 import org.ichnaea.core.ui.text.Title
 import org.ichnaea.core.ui.text.TitleLevel
@@ -30,7 +32,15 @@ class SignInView : BaseView() {
 
     private fun header() {
         val icon = ImageIcon(javaClass.getResource("/icon/ichnaea-icon.png"))
-        set(Avatar(image = icon), "align center, wrap")
+        set(
+            Avatar(
+                GoogleIconFactory.build(
+                    name = GoogleMaterialDesignIcons.TRACK_CHANGES,
+                    color = SemanticColor.PRIMARY.darker()
+                )
+            ),
+            "align center, wrap"
+        )
         set(
             "title",
             Title(text = "Ichnaea Issue Tracker", level = TitleLevel.H1, color = SemanticColor.PRIMARY),
