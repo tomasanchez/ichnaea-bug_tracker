@@ -29,8 +29,8 @@ class UserService(
      */
     override fun save(user: User): User {
 
-        findByUsername(user.userName)?.let {
-            throw UserAlreadyExistsException("Username '${user.userName}' is already in use.")
+        findByUsername(user.userName).ifPresent {
+            throw UserAlreadyExistsException("Username '${it.userName}' is already in use.")
         }
 
         val secretPassword = passwordEncoder.encode(user.password)
@@ -47,7 +47,7 @@ class UserService(
      * @param username the unique username
      * @return the user or null if no user with the given username
      */
-    private fun findByUsername(username: String): Optional<User>? {
+    private fun findByUsername(username: String): Optional<User> {
         return userRepository.findByUsername(username)
     }
 
