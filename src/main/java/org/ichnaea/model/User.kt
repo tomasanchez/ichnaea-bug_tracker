@@ -5,7 +5,7 @@ data class User(
     val password: String,
     val roleId: Long = 1,
     val role: Role = Role(RoleName.USER),
-    val profile: String? = null,
+    val image: String? = null,
 ) : PersistentEntity() {
 
     fun toTableRow() = arrayOf(
@@ -14,11 +14,15 @@ data class User(
     )
 
     override fun toMap(): Map<String, Any> {
-        return mapOf(
+        val map = mapOf(
             "user_name" to userName,
             "role_id" to roleId,
             "password" to password,
         )
+
+        image?.let { map.plus("image" to it) }
+
+        return map
     }
 
 }
