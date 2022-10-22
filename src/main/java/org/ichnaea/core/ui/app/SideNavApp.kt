@@ -73,9 +73,9 @@ class SideNavApp(
         }
 
         animator = Animator(500, target)
-        animator.resolution = 0;
-        animator.deceleration = 0.5f;
-        animator.acceleration = 0.5f;
+        animator.resolution = 0
+        animator.deceleration = 0.5f
+        animator.acceleration = 0.5f
 
         appBar.onBars {
 
