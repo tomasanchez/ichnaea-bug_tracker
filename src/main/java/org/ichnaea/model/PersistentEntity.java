@@ -1,10 +1,9 @@
 package org.ichnaea.model;
 
-import lombok.Getter;
-import lombok.Setter;
-
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * A Superclass implementation of an Entity which has a stable entity identifier.
@@ -12,8 +11,6 @@ import java.time.LocalDateTime;
  * @author Tomás Sánchez
  * @version 3.0
  */
-@Getter
-@Setter
 public abstract class PersistentEntity implements Serializable {
 
     static final long serialVersionUID = 1L;
@@ -26,5 +23,35 @@ public abstract class PersistentEntity implements Serializable {
 
     public String getCreationDate() {
         return createdAt.toLocalDate().toString();
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public LocalDateTime getLastUpdatedAt() {
+        return lastUpdatedAt;
+    }
+
+    public void setLastUpdatedAt(LocalDateTime lastUpdatedAt) {
+        this.lastUpdatedAt = lastUpdatedAt;
+    }
+
+    public Map<String, Object> toMap() {
+        Map<String, Object> values = new HashMap<>();
+        values.put("id", id);
+        return values;
     }
 }
