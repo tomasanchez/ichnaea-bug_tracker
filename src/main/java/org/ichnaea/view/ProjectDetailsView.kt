@@ -3,6 +3,7 @@ package org.ichnaea.view
 import jiconfont.icons.google_material_design_icons.GoogleMaterialDesignIcons
 import net.miginfocom.swing.MigLayout
 import org.ichnaea.core.mvc.view.UIView
+import org.ichnaea.core.ui.button.Button
 import org.ichnaea.core.ui.container.TabContainer
 import org.ichnaea.core.ui.icon.GoogleIconFactory
 import org.ichnaea.core.ui.semantic.SemanticColor
@@ -13,6 +14,7 @@ import org.ichnaea.model.Project
 import java.awt.Dimension
 import javax.swing.Box
 import javax.swing.JPanel
+import javax.swing.JScrollPane
 
 @UIView
 class ProjectDetailsView : SideView() {
@@ -21,8 +23,12 @@ class ProjectDetailsView : SideView() {
 
     private lateinit var tabs: TabContainer
 
+    private val membersScrollPanel: JScrollPane = JScrollPane()
+
+    private val addMemberButton = Button(text = "Add Member")
+
     init {
-        onBeforeRendering()
+        model["addMemberButton"] = addMemberButton
     }
 
     private fun onBeforeRendering() {
@@ -83,7 +89,7 @@ class ProjectDetailsView : SideView() {
     private fun createTab() {
         tabs = TabContainer()
         issueTab()
-        tabs.addTab("Members", JPanel())
+        membersTab()
     }
 
     private fun issueTab() {
@@ -96,5 +102,34 @@ class ProjectDetailsView : SideView() {
         tabs.addTab("Issues", icon, tab)
     }
 
+    private fun membersTab() {
+        val tab = tabPanel()
+        val membersTable = table(membersScrollPanel)
+        val listTitle = Title(text = "Members", level = TitleLevel.H4)
+        model["membersTitle"] = listTitle
+        tab.add(listTitle, "align left, wrap")
+        tab.add(
+            Typography(text = "Admins are not listed", color = SemanticColor.SECONDARY, size = 12f),
+            "align left, wrap"
+        )
+        model["membersTable"] = membersTable
+        tab.add(membersScrollPanel, "align center, growx, growy, wrap")
+        tab.add(addMemberButton, "align center, h 45!, w 150!, wrap")
+        tabs.addTab("Members", tab)
+    }
 
+    // ---------------------------------------------------------------------------------------------
+    // Internal Methods
+    // ---------------------------------------------------------------------------------------------
+
+    private fun tabPanel(): JPanel {
+        return JPanel().also {
+            it.background = SemanticColor.LIGHT
+            it.layout = MigLayout(
+                "fill",
+                "0[100%, fill]0",
+                "15[fill]15"
+            )
+        }
+    }
 }

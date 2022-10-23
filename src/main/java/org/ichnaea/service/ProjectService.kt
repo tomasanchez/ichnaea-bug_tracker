@@ -23,6 +23,10 @@ class ProjectService(
         }
     }
 
+    fun findMembers(id: Long): List<User> {
+        return (repository as ProjectRepository).findMembers(id)
+    }
+
     private fun isAdmin(user: User): Boolean {
         return user.role.name.toString().equals("admin", true)
     }
