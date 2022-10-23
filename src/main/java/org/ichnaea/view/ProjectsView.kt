@@ -4,13 +4,11 @@ import jiconfont.icons.google_material_design_icons.GoogleMaterialDesignIcons
 import org.ichnaea.core.mvc.view.UIView
 import org.ichnaea.core.ui.button.Button
 import org.ichnaea.core.ui.container.Toolbar
-import org.ichnaea.core.ui.data.Table
 import org.ichnaea.core.ui.text.Title
 import org.ichnaea.core.ui.text.TitleLevel
 import java.awt.Dimension
 import javax.swing.Box
 import javax.swing.JScrollPane
-import javax.swing.table.DefaultTableModel
 
 
 @UIView
@@ -28,7 +26,7 @@ class ProjectsView : SideView() {
         val title = Title(text = "Projects", level = TitleLevel.H2)
         set("viewTitle", title)
         set(Box.createRigidArea(Dimension(0, 20)))
-        val table = table()
+        val table = table(scrollPanel)
         set(scrollPanel)
         addToModel("projectsTable", table)
     }
@@ -43,28 +41,5 @@ class ProjectsView : SideView() {
         containerPanel.add(toolbar)
 
     }
-
-
-    private fun table(): Table {
-        val table = Table(active = true, showHeader = false)
-
-        table.model = object : DefaultTableModel(
-            arrayOf(), arrayOf(
-                "Id", "Name",
-            )
-        ) {
-            override fun isCellEditable(rowIndex: Int, columnIndex: Int): Boolean {
-                return false
-            }
-        }
-
-        table.columnModel.getColumn(0).width = 0
-        table.columnModel.getColumn(0).maxWidth = 0
-
-        scrollPanel.setViewportView(table)
-        table.fixTable(scrollPanel)
-        return table
-    }
-
 
 }
