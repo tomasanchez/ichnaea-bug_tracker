@@ -1,6 +1,7 @@
-package org.ichnaea.respository;
+package org.ichnaea.respository.list;
 
 import org.ichnaea.model.PersistentEntity;
+import org.ichnaea.respository.PersistentEntityRepository;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,6 +1,7 @@
 package org.ichnaea.controller
 
 import org.ichnaea.core.mvc.controller.UIController
+import org.ichnaea.core.ui.button.Button
 import org.ichnaea.core.ui.data.Table
 import org.ichnaea.core.ui.text.Title
 import org.ichnaea.service.ProjectService
@@ -21,23 +22,26 @@ class ProjectsController : SideViewController() {
 
         byId("viewTitle")?.let {
             val title = it as Title
-            title.text = "Projects (${projectService.findAll().size})"
+            title.text = "No data found"
         }
 
         byId("projectsTable")?.let {
             oTable = it as Table
         }
 
-        oTable.onRowClick { navTo("projectDetails", it as Long) }
-
-        @Suppress("UNCHECKED_CAST")
-        projectService.findAll().forEach {
-            oTable.addRow(it.toTableRow() as Array<Any>)
+        byId("newProjectButton")?.let {
+            (it as Button).onClick {
+                navTo("NewProject")
+            }
         }
+
+        oTable.onRowClick { navTo("projectDetails", it as Long) }
 
     }
 
     override fun onBeforeRendering() {
+        updateTable()
+
         byId("newProjectButton")?.let {
             it.isVisible = isUserAdmin()
         }
@@ -45,6 +49,25 @@ class ProjectsController : SideViewController() {
 
     override fun onAfterRendering() {
         updateNavSelection(HOME_NAV)
+    }
+
+    // -------------------------------------------------------------
+    // Internal methods
+    // -------------------------------------------------------------
+
+
+    private fun updateTable() {
+        oTable.clear()
+
+        val projects = projectService.findByUser(user!!)
+
+        @Suppress("UNCHECKED_CAST")
+        projects.forEach { oTable.addRow(it.toTableRow() as Array<Any>) }
+
+        byId("viewTitle")?.let {
+            val title = it as Title
+            title.text = if (projects.isNotEmpty()) "Projects (${projects.size})" else "No Projects"
+        }
     }
 
 }

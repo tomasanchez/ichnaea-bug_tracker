@@ -22,6 +22,14 @@ public interface PersistentEntityDAO<T extends PersistentEntity> {
     List<T> findAll();
 
     /**
+     * Lists all entities which id is in a range
+     *
+     * @param ids to be listed
+     * @return an entity list
+     */
+    List<T> findByIds(List<Long> ids);
+
+    /**
      * Removes an entity of the persistence unit.
      *
      * @param id unique identifier of the entity

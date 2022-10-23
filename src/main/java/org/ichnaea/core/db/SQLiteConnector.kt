@@ -46,7 +46,7 @@ abstract class SQLiteConnector(
 
     protected fun createPreparedStatement(sql: String): java.sql.PreparedStatement? {
         return try {
-            return connection?.prepareStatement(sql)
+            connection?.prepareStatement(sql)
         } catch (e: SQLException) {
             LOGGER.error("Connection Error")
             throw ConnectionException("Trouble closing Connection. Maybe, try again later.", e)
@@ -57,7 +57,7 @@ abstract class SQLiteConnector(
     protected fun executeStatement(query: String): java.sql.ResultSet {
         return try {
             val statement = connection!!.createStatement()
-            return statement.executeQuery(query)
+            statement.executeQuery(query)
         } catch (e: SQLException) {
             LOGGER.error("Query Error")
             throw ConnectionException("Trouble executing Query.", e)
@@ -72,7 +72,6 @@ abstract class SQLiteConnector(
             connection?.close()
         } catch (e: SQLException) {
             LOGGER.error("Disconnection Error")
-            throw ConnectionException("Trouble disconnecting from DataBase. Maybe, try again later.", e)
         }
     }
 
@@ -111,7 +110,7 @@ abstract class SQLiteConnector(
                     } catch (npe: NullPointerException) {
                         continue
                     }
-                    
+
                 }
 
                 resultList.add(objectMap)

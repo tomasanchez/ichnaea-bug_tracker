@@ -180,6 +180,32 @@ abstract class SQLiteDAO<T : PersistentEntity> : SQLiteConnector(), PersistentEn
     }
 
     /**
+     * Selects entities with ids in a range.
+     *
+     * @param ids the range of ids to be searched.
+     * @return a list of Persistent Entities.
+     */
+    override fun findByIds(ids: List<Long>): List<T> {
+
+        val query = "${selectAllFromTable()} WHERE T.id IN (?)"
+        try {
+            connect()
+
+            val rs = createPreparedStatement(query)?.apply {
+                setString(1, ids.joinToString(","))
+            }?.executeQuery()
+
+            val resultList = resultSetToMapList(rs).map(::toEntity)
+
+            disconnect()
+
+            return resultList
+        } catch (e: ConnectionException) {
+            throw PersistenceException("Error retrieving row from table ${getTableName()} with id $ids.", e)
+        }
+    }
+
+    /**
      * Persists an entity into the database.
      *
      * @param entity to be persisted.
@@ -220,7 +246,7 @@ abstract class SQLiteDAO<T : PersistentEntity> : SQLiteConnector(), PersistentEn
     // Internal Methods
     // ---------------------------------------------------------------------
 
-    fun create(entity: T): T {
+    private fun create(entity: T): T {
 
         val map = entity.toMap()
 
@@ -274,7 +300,7 @@ abstract class SQLiteDAO<T : PersistentEntity> : SQLiteConnector(), PersistentEn
         return entity
     }
 
-    fun update(entity: T): T {
+    private fun update(entity: T): T {
 
         val map = entity.toMap()
 

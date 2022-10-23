@@ -22,13 +22,18 @@ data class Project(
             name.split(" ").joinToString("") { it[0].uppercase() }
         else name.uppercase().substring(0, 3),
     val description: String,
-    val owner: User,
     val members: List<User> = listOf(),
     val issues: List<Issue> = listOf(),
 ) : PersistentEntity() {
     fun toTableRow() = arrayOf(
         id,
         "$name ($code)",
+    )
+
+    override fun toMap(): Map<String, Any> = mapOf(
+        "name" to name,
+        "code" to code,
+        "description" to description,
     )
 }
 

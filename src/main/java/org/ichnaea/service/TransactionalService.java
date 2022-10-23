@@ -54,4 +54,13 @@ public abstract class TransactionalService<T extends PersistentEntity> {
         return repository.findById(id);
     }
 
+    /**
+     * Counts the number of entities.
+     *
+     * @return how many records are saved
+     */
+    public int count() {
+        return repository.count();
+    }
+
 }
