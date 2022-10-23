@@ -136,17 +136,21 @@ abstract class SQLiteDAO<T : PersistentEntity> : SQLiteConnector(), PersistentEn
 
         val columnId = "${getEntityName().lowercase()}_id"
 
-        val query = "SELECT * FROM ? T WHERE T.$columnId = ?"
+        val query = "SELECT * " +
+                "FROM $relatedTable " +
+                "WHERE $columnId = ?"
 
         try {
+            connect()
             val preparedStatement = createPreparedStatement(query)
-            preparedStatement?.setString(1, relatedTable)
-            preparedStatement?.setInt(2, id.toInt())
+            preparedStatement?.setInt(1, id.toInt())
             val rs = preparedStatement?.executeQuery()
             @Suppress("UNCHECKED_CAST")
             return resultSetToMapList(rs) as List<Map<String, Long>>
         } catch (e: java.lang.Exception) {
             throw PersistenceException("Error retrieving all rows from table ${getTableName()}.", e)
+        } finally {
+            disconnect()
         }
     }
 
