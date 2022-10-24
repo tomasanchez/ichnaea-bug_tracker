@@ -23,8 +23,18 @@ class ProjectService(
         }
     }
 
+    /**
+     * Finds members of a project
+     *
+     * @param id of a project
+     * @return a list of user members
+     */
     fun findMembers(id: Long): List<User> {
         return (repository as ProjectRepository).findMembers(id)
+    }
+
+    fun removeMember(projectId: Long, userId: Long) {
+        (repository as ProjectRepository).removeMember(projectId, userId)
     }
 
     private fun isAdmin(user: User): Boolean {

@@ -104,7 +104,14 @@ class ProjectDetailsView : SideView() {
 
     private fun membersTab() {
         val tab = tabPanel()
-        val membersTable = table(membersScrollPanel)
+        
+        val columns = arrayOf("Id", "Name", "Actions")
+        val membersTable = table(scrollPanel = membersScrollPanel, columns = columns).also {
+
+            it.columnModel.getColumn(2).maxWidth = 10
+
+        }
+
         val listTitle = Title(text = "Members", level = TitleLevel.H4)
         model["membersTitle"] = listTitle
         tab.add(listTitle, "align left, wrap")
