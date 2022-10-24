@@ -36,7 +36,8 @@ class Notification(
 
 
     init {
-        minimumSize = Dimension(450, 75)
+        minimumSize = Dimension(375, 100)
+        preferredSize = Dimension(375, 100)
         background = Color.WHITE
         closeButton.onClick { close() }
         initComponents()
