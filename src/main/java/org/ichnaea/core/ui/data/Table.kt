@@ -8,6 +8,7 @@ import java.awt.Component
 import java.awt.Font
 import java.awt.Point
 import java.awt.event.MouseEvent
+import javax.swing.JComponent
 import javax.swing.JPanel
 import javax.swing.JScrollPane
 import javax.swing.JTable
@@ -53,10 +54,14 @@ class Table(
                 column: Int,
             ): Component {
 
-                val component = Typography(
-                    value.toString(),
-                    style = if (isSelected) Font.BOLD else Font.PLAIN,
-                )
+                val component =
+                    when (value) {
+                        is JComponent -> value
+                        else -> Typography(
+                            value.toString(),
+                            style = if (isSelected) Font.BOLD else Font.PLAIN,
+                        )
+                    }
 
                 border = noFocusBorder
 
@@ -133,6 +138,21 @@ class Table(
                 val row = this@Table.rowAtPoint(p)
                 val col = this@Table.columnAtPoint(p)
                 if (row >= 0 && col >= 0) {
+                    this@Table.selectionModel.clearSelection()
+                    val id = this@Table.model.getValueAt(row, 0)
+                    idConsumer(id as Long)
+                }
+            }
+        })
+    }
+
+    fun onCellClick(cell: Int, idConsumer: (id: Number) -> Unit) {
+        addMouseListener(object : java.awt.event.MouseAdapter() {
+            override fun mouseClicked(e: MouseEvent) {
+                val p: Point = e.point
+                val row = this@Table.rowAtPoint(p)
+                val col = this@Table.columnAtPoint(p)
+                if (row >= 0 && col == cell) {
                     this@Table.selectionModel.clearSelection()
                     val id = this@Table.model.getValueAt(row, 0)
                     idConsumer(id as Long)
