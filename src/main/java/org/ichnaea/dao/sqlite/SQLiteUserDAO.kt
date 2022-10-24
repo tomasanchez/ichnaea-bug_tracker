@@ -22,7 +22,7 @@ class SQLiteUserDAO : SQLiteDAO<User>(), UserDAO {
      */
     override fun findByUsername(username: String): Optional<User> {
 
-        val sql = "SELECT * FROM ${getTableName()} WHERE user_name = ?"
+        val sql = "SELECT * FROM ${getTableName()} WHERE UPPER(user_name) = UPPER(?)"
 
         var user: User? = null
 
