@@ -4,6 +4,7 @@ import org.ichnaea.core.exception.UserAlreadyExistsException
 import org.ichnaea.core.mvc.controller.UIController
 import org.ichnaea.core.ui.form.PasswordField
 import org.ichnaea.core.ui.form.TextField
+import org.ichnaea.core.ui.semantic.Notification
 import org.ichnaea.core.ui.semantic.SemanticColor
 import org.ichnaea.model.User
 import org.ichnaea.service.UserService
@@ -87,17 +88,29 @@ class SignUpController : SideViewController() {
             user = userDetailsService.save(user)
 
         } catch (uae: UserAlreadyExistsException) {
-            uae.message?.let { showAlert("Error", it, SemanticColor.DANGER) }
+            uae.message?.let {
+                popNotification(
+                    it,
+                    type = Notification.Type.ERROR,
+                    location = Notification.Location.BOTTOM_CENTER
+                )
+            }
             usernameInput.setError(true)
             logger.error("User already exists")
             return
         } catch (e: Exception) {
-            showAlert("Error", e.message ?: "Something went wrong. Try again later.", SemanticColor.DANGER)
+            popNotification(
+                e.message ?: "Couldn't add the user. Try again later.",
+                type = Notification.Type.ERROR,
+            )
             logger.error("Error creating a user", e)
             return
         }
 
-        showAlert("Success", "User was created successfully")
+        popNotification(
+            "User '${user.userName}' was created",
+            type = Notification.Type.SUCCESS,
+        )
 
         clearInputs()
 
@@ -106,7 +119,6 @@ class SignUpController : SideViewController() {
 
     private fun onCancel(event: ActionEvent) {
         clearInputs()
-        removeAlert()
     }
 
     // ------------------------------

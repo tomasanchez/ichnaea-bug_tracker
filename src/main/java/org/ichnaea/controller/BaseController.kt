@@ -4,6 +4,7 @@ import org.ichnaea.core.mvc.controller.Controller
 import org.ichnaea.core.mvc.controller.ControllerLoader
 import org.ichnaea.core.ui.form.Validatable
 import org.ichnaea.core.ui.semantic.Alert
+import org.ichnaea.core.ui.semantic.Notification
 import org.ichnaea.core.ui.semantic.SemanticColor
 import org.slf4j.Logger
 import java.awt.Color
@@ -115,6 +116,14 @@ abstract class BaseController : Controller() {
             view.remove(it)
             alert = null
         }
+    }
+
+    protected open fun popNotification(
+        message: String,
+        type: Notification.NotificationDataType,
+        location: Notification.Location = Notification.Location.BOTTOM_CENTER,
+    ) {
+        Notification(app = view.app, message = message, type = type, location = location).pop()
     }
 
 }
