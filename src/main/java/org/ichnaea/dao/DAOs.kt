@@ -1,5 +1,6 @@
 package org.ichnaea.dao
 
+import org.ichnaea.model.Issue
 import org.ichnaea.model.Project
 import org.ichnaea.model.Role
 import org.ichnaea.model.User
@@ -45,4 +46,9 @@ interface ProjectDAO : PersistentEntityDAO<Project> {
      */
     fun findProjects(userId: Long): List<Project>
 
+}
+
+interface IssueDAO : PersistentEntityDAO<Issue> {
+
+    fun findByProject(projectId: Long): List<Issue>
 }
