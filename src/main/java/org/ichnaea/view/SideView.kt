@@ -16,7 +16,7 @@ abstract class SideView : BaseView() {
     init {
         initPanel()
         initContainerPanel()
-        panel.add(containerPanel, "align center, wrap")
+        panel.add(containerPanel, "align center, wrap, growx, growy")
     }
 
 
