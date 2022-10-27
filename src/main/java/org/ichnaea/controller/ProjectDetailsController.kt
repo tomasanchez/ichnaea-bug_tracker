@@ -4,22 +4,32 @@ import jiconfont.icons.google_material_design_icons.GoogleMaterialDesignIcons
 import org.ichnaea.core.mvc.controller.UIController
 import org.ichnaea.core.ui.button.Button
 import org.ichnaea.core.ui.button.IconButton
+import org.ichnaea.core.ui.data.Table
 import org.ichnaea.core.ui.semantic.Notification
 import org.ichnaea.core.ui.semantic.SemanticColor
+import org.ichnaea.core.ui.text.Title
+import org.ichnaea.model.Issue
+import org.ichnaea.model.IssueStatus
 import org.ichnaea.model.Project
 import org.ichnaea.model.User
+import org.ichnaea.service.IssueService
 import org.ichnaea.service.ProjectService
 import org.ichnaea.view.BaseView
 import org.slf4j.Logger
+import java.awt.Dimension
+import javax.swing.JPanel
 
 @UIController
 class ProjectDetailsController : SideViewController() {
 
     private val projectService = ProjectService()
+    private val issueService = IssueService()
 
     private lateinit var project: Project
 
     private var members: List<User> = listOf()
+    private var issues: List<Issue> = listOf()
+
 
     companion object {
         private val LOGGER: Logger = org.slf4j.LoggerFactory.getLogger(ProjectDetailsController::class.java)
@@ -34,6 +44,7 @@ class ProjectDetailsController : SideViewController() {
             projectService.findById(id).ifPresent {
                 project = it
                 members = projectService.findMembers(id)
+                issues = issueService.findByProject(id)
                 repaint()
             }
             (this.view as BaseView).addToModel("project", project)
@@ -56,11 +67,18 @@ class ProjectDetailsController : SideViewController() {
     }
 
     override fun onBeforeRendering() {
-        isUserAdmin()
+        val isAdmin = isUserAdmin()
+
+        byId("addMemberButton")?.let {
+            it as Button
+            it.isVisible = isAdmin
+        }
+
     }
 
     override fun onAfterRendering() {
         updateNavSelection(HOME_NAV)
+        updateIssueTable()
         updateMembersTable()
     }
 
@@ -100,9 +118,52 @@ class ProjectDetailsController : SideViewController() {
     // Internal Methods
     // -------------------------------------------------------------
 
+    private fun updateIssueTable() {
+        val issueTable = byId("issuesTable") as Table
+        val title = byId("issuesTitle") as Title
+        issueTable.clear()
+
+        if (issues.isEmpty()) {
+            title.text = "No Issues"
+            return
+        }
+
+        title.text = "Issues (${issues.size})"
+
+        issues.forEach {
+
+            val withStatusRow = it.toTableRow().toMutableList()
+
+
+            val statusButton =
+                Button(
+                    text = it.getStatusLabel(),
+//                    style = Font.BOLD,
+                    color = when (it.status) {
+                        IssueStatus.TO_DO -> SemanticColor.SECONDARY
+                        IssueStatus.BLOCKED -> SemanticColor.DANGER
+                        IssueStatus.IN_PROGRESS -> SemanticColor.PRIMARY
+                        IssueStatus.DONE -> SemanticColor.SUCCESS
+                    }
+                ).also { button ->
+                    button.minimumSize = Dimension(120, 30)
+                }
+
+            val containerPanel = JPanel().also { panel ->
+                panel.add(statusButton)
+                panel.isOpaque = false
+            }
+
+            withStatusRow.add(containerPanel)
+
+            issueTable.addRow(withStatusRow.toTypedArray())
+        }
+
+    }
+
     private fun updateMembersTable() {
-        val table = byId("membersTable") as org.ichnaea.core.ui.data.Table
-        val title = byId("membersTitle") as org.ichnaea.core.ui.text.Title
+        val table = byId("membersTable") as Table
+        val title = byId("membersTitle") as Title
         table.clear()
 
         val noAdminMembers = members.filter { it.roleId == 1L }
@@ -122,7 +183,10 @@ class ProjectDetailsController : SideViewController() {
                         code = GoogleMaterialDesignIcons.DELETE,
                         color = SemanticColor.DANGER,
                         size = 20f,
-                    )
+                    ).also {
+                        it.isOpaque = false
+                        it.isBorderPainted = false
+                    }
                 )
 
                 table.addRow(withActionsRow.toTypedArray() as Array<Any>)
