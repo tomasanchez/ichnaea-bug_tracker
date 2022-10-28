@@ -2,6 +2,7 @@ package org.ichnaea.controller
 
 import org.ichnaea.core.mvc.controller.Controller
 import org.ichnaea.core.mvc.controller.ControllerLoader
+import org.ichnaea.core.ui.form.TextField
 import org.ichnaea.core.ui.form.Validatable
 import org.ichnaea.core.ui.semantic.Alert
 import org.ichnaea.core.ui.semantic.Notification
@@ -126,4 +127,8 @@ abstract class BaseController : Controller() {
         Notification(app = view.app, message = message, type = type, location = location).pop()
     }
 
+    protected fun clearTextField(input: TextField) {
+        input.setError(false)
+        input.text = ""
+    }
 }

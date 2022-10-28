@@ -12,4 +12,6 @@ class IssueService(
     fun findByProject(projectId: Long): List<Issue> {
         return (repository as IssueRepository).findByProject(projectId)
     }
+
+
 }

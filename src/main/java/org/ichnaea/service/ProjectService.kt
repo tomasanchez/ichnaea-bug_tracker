@@ -1,12 +1,18 @@
 package org.ichnaea.service
 
+import org.ichnaea.core.exception.EntityNotFoundException
+import org.ichnaea.core.exception.PersistenceException
 import org.ichnaea.model.Project
 import org.ichnaea.model.User
 import org.ichnaea.respository.ProjectRepository
+import org.ichnaea.respository.UserRepository
 import org.ichnaea.respository.dao.ProjectDAORepository
+import org.ichnaea.respository.dao.UserDAORepository
+import org.ichnaea.service.exceptions.IllegalMemberException
 
 class ProjectService(
     projectRepository: ProjectRepository = ProjectDAORepository(),
+    private val userRepository: UserRepository = UserDAORepository(),
 ) : TransactionalService<Project>(projectRepository) {
 
     /**
@@ -35,6 +41,20 @@ class ProjectService(
 
     fun removeMember(projectId: Long, userId: Long) {
         (repository as ProjectRepository).removeMember(projectId, userId)
+    }
+
+    fun addMember(projectId: Long, userId: Long): User {
+        val user = userRepository.findById(userId).orElseThrow { EntityNotFoundException() }
+
+        if (isAdmin(user)) {
+            throw IllegalMemberException("Admins can't be added to projects")
+        } else try {
+            (repository as ProjectRepository).addMember(projectId, userId)
+        } catch (pe: PersistenceException) {
+            throw IllegalMemberException("User is already a member of this project")
+        }
+
+        return user
     }
 
     private fun isAdmin(user: User): Boolean {

@@ -5,12 +5,15 @@ import net.miginfocom.swing.MigLayout
 import org.ichnaea.core.mvc.view.UIView
 import org.ichnaea.core.ui.button.Button
 import org.ichnaea.core.ui.container.TabContainer
+import org.ichnaea.core.ui.container.TransparentPanel
+import org.ichnaea.core.ui.form.TextField
 import org.ichnaea.core.ui.icon.GoogleIconFactory
 import org.ichnaea.core.ui.semantic.SemanticColor
 import org.ichnaea.core.ui.text.Title
 import org.ichnaea.core.ui.text.TitleLevel
 import org.ichnaea.core.ui.text.Typography
 import org.ichnaea.model.Project
+import java.awt.Color
 import java.awt.Dimension
 import javax.swing.Box
 import javax.swing.JPanel
@@ -29,11 +32,17 @@ class ProjectDetailsView : SideView() {
 
     private val addMemberButton = Button(text = "Add Member")
 
+    private val userIDInput: TextField = TextField(label = "User ID")
+
+    private val userForm: JPanel = TransparentPanel()
+
     private val addIssueButton = Button(text = "Report Issue")
 
     init {
         model["addMemberButton"] = addMemberButton
         model["addIssueButton"] = addIssueButton
+        model["userForm"] = userForm
+        model["userIdInput"] = userIDInput
     }
 
     private fun onBeforeRendering() {
@@ -149,7 +158,9 @@ class ProjectDetailsView : SideView() {
         )
         model["membersTable"] = membersTable
         tab.add(membersScrollPanel, "align center, height 100:n:n, growx, growy, wrap")
-        tab.add(addMemberButton, "align center, h 45!, w 150!, wrap")
+
+
+        tab.add(registerForm(), "align center, growx, wrap")
         tabs.addTab("Members", tab)
     }
 
@@ -167,4 +178,38 @@ class ProjectDetailsView : SideView() {
             )
         }
     }
+
+    private fun registerForm(): JPanel {
+        userForm.removeAll()
+        val container = userForm
+
+        container.layout = MigLayout(
+            "fill",
+            "5[100%, fill]25",
+            "0[fill]0"
+        )
+
+        container.add(Title(text = "Add Member", level = TitleLevel.H4), "align center, wrap")
+        container.add(
+            Typography(text = "Enter an existing User ID", color = SemanticColor.SECONDARY, size = 12f),
+            "align center, wrap"
+        )
+
+        val form = JPanel()
+
+        form.background = Color.WHITE
+        form.layout = MigLayout(
+            "fill",
+            "0[100%, fill]0",
+            "15[fill]15"
+        )
+
+
+        form.add(userIDInput, "align center, growx, wrap")
+        form.add(addMemberButton, "align center, h 40!, w 150!, wrap")
+        container.add(form, "align center, growx, growy, wrap")
+
+        return userForm
+    }
+
 }

@@ -1,10 +1,12 @@
 package org.ichnaea.controller
 
 import jiconfont.icons.google_material_design_icons.GoogleMaterialDesignIcons
+import org.ichnaea.core.exception.EntityNotFoundException
 import org.ichnaea.core.mvc.controller.UIController
 import org.ichnaea.core.ui.button.Button
 import org.ichnaea.core.ui.button.IconButton
 import org.ichnaea.core.ui.data.Table
+import org.ichnaea.core.ui.form.TextField
 import org.ichnaea.core.ui.semantic.Notification
 import org.ichnaea.core.ui.semantic.SemanticColor
 import org.ichnaea.core.ui.text.Title
@@ -14,9 +16,11 @@ import org.ichnaea.model.Project
 import org.ichnaea.model.User
 import org.ichnaea.service.IssueService
 import org.ichnaea.service.ProjectService
+import org.ichnaea.service.exceptions.IllegalMemberException
 import org.ichnaea.view.BaseView
 import org.slf4j.Logger
 import java.awt.Dimension
+import java.awt.event.ActionEvent
 import javax.swing.JPanel
 
 @UIController
@@ -59,21 +63,12 @@ class ProjectDetailsController : SideViewController() {
     override fun onInit() {
         byId("addMemberButton")?.let {
             it as Button
-            it.onClick {
-                LOGGER.info("Add Member Button Clicked")
-                popNotification("Member Added", Notification.Type.SUCCESS)
-            }
+            it.onClick(::onAddMember)
         }
     }
 
     override fun onBeforeRendering() {
-        val isAdmin = isUserAdmin()
-
-        byId("addMemberButton")?.let {
-            it as Button
-            it.isVisible = isAdmin
-        }
-
+        hideComponents()
     }
 
     override fun onAfterRendering() {
@@ -112,6 +107,50 @@ class ProjectDetailsController : SideViewController() {
 
         }
 
+    }
+
+
+    private fun onAddMember(e: ActionEvent) {
+
+        val idInput = byId("userIdInput") as TextField
+
+        val isEmpty = validateEmpty(idInput.text, idInput)
+
+        if (isEmpty) {
+            popNotification("ID must not be empty", Notification.Type.ERROR)
+            return
+        }
+
+        val text: String = idInput.text
+
+        idInput.text = ""
+        idInput.setError(true)
+
+        val userId: Long = try {
+            text.toLong()
+        } catch (e: NumberFormatException) {
+            LOGGER.error("ID is not a number (${e.message})")
+            popNotification("ID is not a number", Notification.Type.ERROR)
+            return
+        }
+
+        val user =
+            try {
+                projectService.addMember(project.id, userId)
+            } catch (enf: EntityNotFoundException) {
+                LOGGER.error("User not found")
+                popNotification("User Does not Exists", Notification.Type.ERROR)
+                return
+            } catch (ime: IllegalMemberException) {
+                popNotification("${ime.message}", Notification.Type.ERROR)
+                return
+            }
+
+        members = projectService.findMembers(project.id)
+        updateMembersTable()
+        
+        clearTextField(idInput)
+        popNotification("${user.userName} was added", Notification.Type.SUCCESS)
     }
 
     // -------------------------------------------------------------
@@ -202,5 +241,16 @@ class ProjectDetailsController : SideViewController() {
 
     }
 
+    // -------------------------------------------------------------
+    // Hide Admin Components
+    // -------------------------------------------------------------
+
+
+    private fun hideComponents() {
+        val isAdmin = isUserAdmin()
+        byId("userForm")?.let {
+            it.isVisible = isAdmin
+        }
+    }
 
 }
