@@ -191,13 +191,11 @@ abstract class SQLiteDAO<T : PersistentEntity> : SQLiteConnector(), PersistentEn
      */
     override fun findByIds(ids: List<Long>): List<T> {
 
-        val query = "${selectAllFromTable()} WHERE T.id IN (?)"
+        val query = "${selectAllFromTable()} WHERE T.id IN (${ids.joinToString(",")})"
         try {
             connect()
 
-            val rs = createPreparedStatement(query)?.apply {
-                setString(1, ids.joinToString(","))
-            }?.executeQuery()
+            val rs = createPreparedStatement(query)?.executeQuery()
 
             val resultList = resultSetToMapList(rs).map(::toEntity)
 
