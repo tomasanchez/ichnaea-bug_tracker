@@ -13,7 +13,6 @@ import org.ichnaea.core.ui.text.Title
 import org.ichnaea.core.ui.text.TitleLevel
 import org.ichnaea.core.ui.text.Typography
 import org.ichnaea.model.Project
-import java.awt.Color
 import java.awt.Dimension
 import javax.swing.Box
 import javax.swing.JPanel
@@ -32,7 +31,7 @@ class ProjectDetailsView : SideView() {
 
     private val addMemberButton = Button(text = "Add Member")
 
-    private val userIDInput: TextField = TextField(label = "User ID")
+    private val userIDInput: TextField = TextField(label = "Username").also { it.isOpaque = false }
 
     private val userForm: JPanel = TransparentPanel()
 
@@ -191,13 +190,13 @@ class ProjectDetailsView : SideView() {
 
         container.add(Title(text = "Add Member", level = TitleLevel.H4), "align center, wrap")
         container.add(
-            Typography(text = "Enter an existing User ID", color = SemanticColor.SECONDARY, size = 12f),
+            Typography(text = "Enter an existing Username", color = SemanticColor.SECONDARY, size = 12f),
             "align center, wrap"
         )
 
         val form = JPanel()
 
-        form.background = Color.WHITE
+        form.isOpaque = false
         form.layout = MigLayout(
             "fill",
             "0[100%, fill]0",

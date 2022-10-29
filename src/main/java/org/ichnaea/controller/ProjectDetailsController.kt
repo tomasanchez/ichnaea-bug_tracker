@@ -109,6 +109,11 @@ class ProjectDetailsController : SideViewController() {
 
     }
 
+    /**
+     * Event handler for when the add member buttons is pressed.
+     *
+     * @param e
+     */
 
     private fun onAddMember(e: ActionEvent) {
 
@@ -121,22 +126,14 @@ class ProjectDetailsController : SideViewController() {
             return
         }
 
-        val text: String = idInput.text
+        val userName: String = idInput.text
 
         idInput.text = ""
         idInput.setError(true)
 
-        val userId: Long = try {
-            text.toLong()
-        } catch (e: NumberFormatException) {
-            LOGGER.error("ID is not a number (${e.message})")
-            popNotification("ID is not a number", Notification.Type.ERROR)
-            return
-        }
-
         val user =
             try {
-                projectService.addMember(project.id, userId)
+                projectService.addMember(project.id, userName)
             } catch (enf: EntityNotFoundException) {
                 LOGGER.error("User not found")
                 popNotification("User Does not Exists", Notification.Type.ERROR)
@@ -148,7 +145,7 @@ class ProjectDetailsController : SideViewController() {
 
         members = projectService.findMembers(project.id)
         updateMembersTable()
-        
+
         clearTextField(idInput)
         popNotification("${user.userName} was added", Notification.Type.SUCCESS)
     }

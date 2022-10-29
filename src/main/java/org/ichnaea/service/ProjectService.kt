@@ -43,13 +43,20 @@ class ProjectService(
         (repository as ProjectRepository).removeMember(projectId, userId)
     }
 
-    fun addMember(projectId: Long, userId: Long): User {
-        val user = userRepository.findById(userId).orElseThrow { EntityNotFoundException() }
+    /**
+     * Adds a member to a Project
+     *
+     * @param projectId id of a project
+     * @param userName of an existing user
+     * @return the added user
+     */
+    fun addMember(projectId: Long, userName: String): User {
+        val user = userRepository.findByUsername(userName).orElseThrow { EntityNotFoundException("User not found") }
 
         if (isAdmin(user)) {
             throw IllegalMemberException("Admins can't be added to projects")
         } else try {
-            (repository as ProjectRepository).addMember(projectId, userId)
+            (repository as ProjectRepository).addMember(projectId, user.id)
         } catch (pe: PersistenceException) {
             throw IllegalMemberException("User is already a member of this project")
         }
