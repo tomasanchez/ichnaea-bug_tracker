@@ -22,8 +22,8 @@ class SideNavApp(
 ) : AppUI() {
 
     companion object {
-        const val DEFAULT_WIDTH = 800
-        const val DEFAULT_HEIGHT = 600
+        const val DEFAULT_WIDTH = 960
+        const val DEFAULT_HEIGHT = 720
         const val SIDE_NAV_MAX_WIDTH = 180
         const val SIDE_NAV_MIN_WIDTH = 0
     }
@@ -155,7 +155,6 @@ class SideNavApp(
 
         repaint()
         revalidate()
-        pack()
     }
 
 }
