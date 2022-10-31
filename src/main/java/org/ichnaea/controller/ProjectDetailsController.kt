@@ -18,6 +18,7 @@ import org.ichnaea.service.IssueService
 import org.ichnaea.service.ProjectService
 import org.ichnaea.service.exceptions.IllegalMemberException
 import org.ichnaea.view.BaseView
+import org.ichnaea.view.ProjectDetailsView
 import org.slf4j.Logger
 import java.awt.Dimension
 import java.awt.event.ActionEvent
@@ -64,6 +65,11 @@ class ProjectDetailsController : SideViewController() {
         byId("addMemberButton")?.let {
             it as Button
             it.onClick(::onAddMember)
+        }
+
+        this.view.model["issueForm"]?.let {
+            it as ProjectDetailsView.IssueForm
+            it.submit.onClick(::onReportIssue)
         }
     }
 
@@ -148,6 +154,59 @@ class ProjectDetailsController : SideViewController() {
 
         clearTextField(idInput)
         popNotification("${user.userName} was added", Notification.Type.SUCCESS)
+    }
+
+
+    private fun onReportIssue(e: ActionEvent) {
+
+        val issueForm = view.model["issueForm"] as ProjectDetailsView.IssueForm
+
+
+        val isEmpty = validateEmpty(issueForm.title.text, issueForm.title) || validateEmpty(
+            issueForm.points.text,
+            issueForm.points
+        )
+
+
+        if (isEmpty) {
+            popNotification("Title and Story Points must not be empty", Notification.Type.ERROR)
+            return
+        }
+
+
+        val points = try {
+            issueForm.points.text.toInt()
+        } catch (e: NumberFormatException) {
+            popNotification("Story Points must be a number", Notification.Type.ERROR)
+            return
+        }
+
+        val issue =
+            try {
+
+                issueService.reportIssue(
+                    project.id,
+                    issueForm.title.text,
+                    issueForm.description.text,
+                    points,
+                    issueForm.assignee.text,
+                )
+            } catch (enf: IllegalMemberException) {
+                LOGGER.error("User not found")
+                popNotification(enf.message ?: "Invalid Username", Notification.Type.ERROR)
+                issueForm.assignee.setError(true)
+                return
+            }
+
+        popNotification(
+            message = "Issue ${issue.id} was reported",
+            type = Notification.Type.SUCCESS
+        )
+
+        issueForm.clear()
+
+        issues = issueService.findByProject(project.id)
+        updateIssueTable()
     }
 
     // -------------------------------------------------------------

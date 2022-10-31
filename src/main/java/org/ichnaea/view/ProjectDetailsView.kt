@@ -4,8 +4,10 @@ import jiconfont.icons.google_material_design_icons.GoogleMaterialDesignIcons
 import net.miginfocom.swing.MigLayout
 import org.ichnaea.core.mvc.view.UIView
 import org.ichnaea.core.ui.button.Button
+import org.ichnaea.core.ui.container.ScrollContainer
 import org.ichnaea.core.ui.container.TabContainer
 import org.ichnaea.core.ui.container.TransparentPanel
+import org.ichnaea.core.ui.form.TextArea
 import org.ichnaea.core.ui.form.TextField
 import org.ichnaea.core.ui.icon.GoogleIconFactory
 import org.ichnaea.core.ui.semantic.SemanticColor
@@ -35,13 +37,36 @@ class ProjectDetailsView : SideView() {
 
     private val userForm: JPanel = TransparentPanel()
 
-    private val addIssueButton = Button(text = "Report Issue")
+    private val issueForm: IssueForm = IssueForm()
+
+    class IssueForm(
+        val title: TextField = TextField(label = "Title").also { it.isOpaque = false },
+        val descriptionScroll: ScrollContainer = ScrollContainer().also { it.isOpaque = false },
+        val description: TextArea = TextArea(label = "Description", scroll = descriptionScroll).also {
+            it.background = SemanticColor.LIGHT
+        },
+        val points: TextField = TextField(label = "Estimated Story Points").also { it.isOpaque = false },
+        val assignee: TextField = TextField(label = "Assignee", required = false).also { it.isOpaque = false },
+        val submit: Button = Button(text = "Report", color = SemanticColor.PRIMARY),
+    ) {
+        fun clear() {
+            title.text = ""
+            description.text = ""
+            points.text = ""
+            assignee.text = ""
+
+            title.setError(false)
+            description.setError(false)
+            points.setError(false)
+            assignee.setError(false)
+        }
+    }
 
     init {
         model["addMemberButton"] = addMemberButton
-        model["addIssueButton"] = addIssueButton
         model["userForm"] = userForm
         model["userIdInput"] = userIDInput
+        model["issueForm"] = issueForm
     }
 
     private fun onBeforeRendering() {
@@ -103,6 +128,7 @@ class ProjectDetailsView : SideView() {
         tabs = TabContainer()
         issueTab()
         membersTab()
+        addIssueTab()
     }
 
     private fun issueTab() {
@@ -132,7 +158,6 @@ class ProjectDetailsView : SideView() {
         tab.add(listTitle, "align left, wrap")
         tab.add(tableHeader, "align center, growx, wrap")
         tab.add(issuesScrollPanel, "align center, growx, wrap")
-        tab.add(addIssueButton, "align center, h 45!, w 150!, wrap")
         tabs.addTab("Issues", icon, tab)
     }
 
@@ -161,6 +186,21 @@ class ProjectDetailsView : SideView() {
 
         tab.add(registerForm(), "align center, growx, wrap")
         tabs.addTab("Members", tab)
+    }
+
+    private fun addIssueTab() {
+        val tab = tabPanel()
+        val tabTitle = Title(text = "Report an Issue", level = TitleLevel.H4)
+
+        issueForm.clear()
+        tab.add(tabTitle, "align left, wrap")
+        tab.add(issueForm.title, "align center, wrap")
+        tab.add(issueForm.descriptionScroll, "align center, w 300!, wrap")
+        tab.add(issueForm.points, "align center, wrap")
+        tab.add(issueForm.assignee, "align center, wrap")
+        tab.add(issueForm.submit, "align center, h 45!, w 150!, wrap")
+
+        tabs.addTab("Report Issue", tab)
     }
 
     // ---------------------------------------------------------------------------------------------
