@@ -67,6 +67,10 @@ shown in an issue detail page.
 
 <img src="assets/ichnaea-home.PNG" alt="Home"/>
 
+### Project Details View
+
+<img src="assets/ichnaea-project-details.PNG" alt="Project Details"/>
+
 ## Credits
 
 This project was made with 💙 by [Tomas Sanchez](https://github.com/tomasanchez).
