@@ -14,7 +14,7 @@ class SQLiteIssueDAO : SQLiteDAO<Issue>(), IssueDAO {
             title = resultMap["title"] as String,
             description = resultMap["description"] as String,
             status = IssueStatus.valueOf(resultMap["status"] as String),
-            estimatedPoints = resultMap["estimated_points"] as Int?,
+            estimatedPoints = resultMap["estimated_points"] as Int,
             realPoints = resultMap["real_points"] as Int?,
         )
     }

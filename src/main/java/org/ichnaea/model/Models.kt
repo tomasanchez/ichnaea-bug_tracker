@@ -57,11 +57,11 @@ enum class IssueStatus {
 data class Issue(
     val title: String,
     val description: String,
-    val projectId: Long = -1L,
+    val projectId: Long,
     val assigneeId: Long? = null,
     val assignee: User? = null,
     val status: IssueStatus = IssueStatus.TO_DO,
-    val estimatedPoints: Int? = null,
+    val estimatedPoints: Int,
     val realPoints: Int? = null,
 ) : PersistentEntity() {
 
@@ -78,6 +78,7 @@ data class Issue(
     override fun toMap(): Map<String, Any> {
         val mutableMap = mutableMapOf(
             "title" to title,
+            "project_id" to projectId,
             "description" to description,
             "status" to status.name,
             "estimated_points" to estimatedPoints,
@@ -85,8 +86,10 @@ data class Issue(
             "user_id" to assigneeId,
         )
 
+        mutableMap.values.removeAll(sequenceOf(null))
+
         @Suppress("UNCHECKED_CAST")
-        return mutableMap.filter { it.value == null } as Map<String, Any>
+        return mutableMap as Map<String, Any>
     }
 
 }
