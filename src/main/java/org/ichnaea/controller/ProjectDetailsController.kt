@@ -9,6 +9,7 @@ import org.ichnaea.core.ui.data.Table
 import org.ichnaea.core.ui.form.TextField
 import org.ichnaea.core.ui.semantic.Notification
 import org.ichnaea.core.ui.semantic.SemanticColor
+import org.ichnaea.core.ui.text.Link
 import org.ichnaea.core.ui.text.Title
 import org.ichnaea.model.Issue
 import org.ichnaea.model.IssueStatus
@@ -70,6 +71,11 @@ class ProjectDetailsController : SideViewController() {
         this.view.model["issueForm"]?.let {
             it as ProjectDetailsView.IssueForm
             it.submit.onClick(::onReportIssue)
+        }
+
+        byId("homeLink")?.let {
+            it as Link
+            it.onClick = { navTo("projects") }
         }
     }
 

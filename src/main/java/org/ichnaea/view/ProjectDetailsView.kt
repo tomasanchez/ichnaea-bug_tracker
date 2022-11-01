@@ -10,7 +10,9 @@ import org.ichnaea.core.ui.container.TransparentPanel
 import org.ichnaea.core.ui.form.TextArea
 import org.ichnaea.core.ui.form.TextField
 import org.ichnaea.core.ui.icon.GoogleIconFactory
+import org.ichnaea.core.ui.navigation.BreadCrumb
 import org.ichnaea.core.ui.semantic.SemanticColor
+import org.ichnaea.core.ui.text.Link
 import org.ichnaea.core.ui.text.Title
 import org.ichnaea.core.ui.text.TitleLevel
 import org.ichnaea.core.ui.text.Typography
@@ -38,6 +40,11 @@ class ProjectDetailsView : SideView() {
     private val userForm: JPanel = TransparentPanel()
 
     private val issueForm: IssueForm = IssueForm()
+
+    private val home = Link(
+        text = "Home",
+        tooltip = "Go to the home page",
+    )
 
     class IssueForm(
         val title: TextField = TextField(label = "Title").also { it.isOpaque = false },
@@ -67,6 +74,7 @@ class ProjectDetailsView : SideView() {
         model["userForm"] = userForm
         model["userIdInput"] = userIDInput
         model["issueForm"] = issueForm
+        model["homeLink"] = home
     }
 
     private fun onBeforeRendering() {
@@ -94,6 +102,10 @@ class ProjectDetailsView : SideView() {
         project = model["project"] as Project?
 
         project?.let {
+
+            val breadCrumb = BreadCrumb(mutableListOf(home, Typography(text = it.code)))
+            
+            containerPanel.add(breadCrumb, "align left, wrap")
 
             val title = Title(text = it.name, level = TitleLevel.H3)
             containerPanel.add(title, "align left, wrap")
