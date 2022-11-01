@@ -260,6 +260,8 @@ class ProjectDetailsController : SideViewController() {
             issueTable.addRow(withStatusRow.toTypedArray())
         }
 
+        issueTable.onRowClick { navTo("issueDetails", it as Long) }
+
     }
 
     private fun updateMembersTable() {
