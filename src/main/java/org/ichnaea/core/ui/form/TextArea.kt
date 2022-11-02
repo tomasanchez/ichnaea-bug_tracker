@@ -16,7 +16,7 @@ import javax.swing.event.DocumentListener
 class TextArea(
     label: String,
     required: Boolean = false,
-    private var scroll: ScrollContainer,
+    var scroll: ScrollContainer = ScrollContainer(),
 ) : JTextArea(), Validatable {
 
     init {
