@@ -14,11 +14,13 @@ import java.awt.event.MouseAdapter
 import java.awt.event.MouseEvent
 import javax.swing.JTextField
 import javax.swing.border.EmptyBorder
+import javax.swing.text.PlainDocument
 
 
 class TextField(
     val label: String,
     private val required: Boolean = true,
+    type: Int = Type.TEXT,
 ) : JTextField(), Validatable {
 
     private val animator: Animator
@@ -32,6 +34,14 @@ class TextField(
     private var isAnimatedHint = true
 
     private var hasError = false
+
+    class Type {
+        companion object {
+            const val TEXT = 0
+            const val NUMBER = 1
+        }
+
+    }
 
     init {
 
@@ -75,6 +85,15 @@ class TextField(
                 animationLocation = fraction
                 repaint()
             }
+        }
+
+        when (type) {
+
+            Type.NUMBER -> {
+                (document as PlainDocument).documentFilter = NumberDocumentFilter()
+            }
+
+            else -> {}
         }
 
         animator = Animator(300, target)
