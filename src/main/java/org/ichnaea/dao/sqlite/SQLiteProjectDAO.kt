@@ -8,6 +8,7 @@ class SQLiteProjectDAO : SQLiteDAO<Project>(), ProjectDAO {
 
     companion object {
         const val PROJECT_MEMBERS_TABLE = "PROJECT_USER"
+        const val ISSUE_TABLE = "ISSUE"
     }
 
     override fun entityMapper(resultMap: Map<String, Any>): Project {
@@ -45,9 +46,12 @@ class SQLiteProjectDAO : SQLiteDAO<Project>(), ProjectDAO {
 
     override fun removeUser(userId: Long, projectId: Long) {
         val sql = "DELETE FROM $PROJECT_MEMBERS_TABLE WHERE user_id = ? AND project_id = ?"
+        val sql2 = "UPDATE $ISSUE_TABLE SET user_id = NULL WHERE user_id = ? AND project_id = ?"
+
         try {
             connect()
             val statement = createPreparedStatement(sql)!!
+
             statement.setInt(1, userId.toInt())
             statement.setInt(2, projectId.toInt())
 
@@ -57,6 +61,11 @@ class SQLiteProjectDAO : SQLiteDAO<Project>(), ProjectDAO {
                 throw PersistenceException("No rows affected while removing user from project")
             }
 
+            val statement2 = createPreparedStatement(sql2)!!
+            statement2.setInt(1, userId.toInt())
+            statement2.setInt(2, projectId.toInt())
+
+            statement2.executeUpdate()
         } catch (e: Exception) {
             throw PersistenceException("Error while removing user from project", e)
         } finally {
