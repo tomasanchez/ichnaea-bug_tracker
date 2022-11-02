@@ -2,6 +2,7 @@ package org.ichnaea.view
 
 import net.miginfocom.swing.MigLayout
 import org.ichnaea.core.mvc.view.UIView
+import org.ichnaea.core.ui.container.TransparentPanel
 import org.ichnaea.core.ui.navigation.BreadCrumb
 import org.ichnaea.core.ui.semantic.SemanticColor
 import org.ichnaea.core.ui.text.Link
@@ -10,9 +11,7 @@ import org.ichnaea.core.ui.text.TitleLevel
 import org.ichnaea.core.ui.text.Typography
 import org.ichnaea.model.Issue
 import org.ichnaea.model.IssueStatus
-import java.awt.FlowLayout
 import java.awt.Font
-import javax.swing.JPanel
 
 @UIView
 class IssueDetailsView : SideView() {
@@ -41,8 +40,8 @@ class IssueDetailsView : SideView() {
 
     private fun onBeforeRendering() {
         containerPanel.layout = MigLayout(
-            "fill, insets 0, debug",
-            "0[100%]0",
+            "fill, insets 0",
+            "[][grow, fill]50[][grow,fill]",
             "0[fill, top]0"
         )
 
@@ -73,36 +72,27 @@ class IssueDetailsView : SideView() {
                         Typography(text = issue!!.id.toString())
                     )
                 )
-
             val title =
                 Title(
                     text = it.title,
                     level = TitleLevel.H3
                 )
 
-            val description =
-                Typography(
-                    text = it.description,
-                    color = SemanticColor.DARK.brighter()
-                )
 
+            val assigneeLabel = Typography(text = "Assignee: ", size = 12f, style = Font.BOLD)
             val assignee =
                 Typography(
-                    text = "<b>Assignee:</b>  ${it.assignee?.userName ?: "Unassigned"}",
+                    text = it.assignee?.userName ?: "Unassigned",
+                    color = it.assignee?.let { SemanticColor.PRIMARY } ?: SemanticColor.DARK,
                     size = 12f
                 )
 
-            val statusPanel = JPanel().also { statusPanel ->
-                statusPanel.isOpaque = false
-                statusPanel.layout = FlowLayout(FlowLayout.LEFT, 0, 0)
-            }
 
             val statusLabel =
                 Typography(
                     text = "<b>Status: </b>",
                     size = 12f
                 )
-
             val status = Typography(
                 text = it.getStatusLabel(),
                 style = Font.BOLD,
@@ -115,27 +105,75 @@ class IssueDetailsView : SideView() {
                 size = 12f
             )
 
+            val storyPointsLabel = Typography(text = "Estimate: ", size = 12f, style = Font.BOLD)
             val storyPoints = Typography(
-                text = "<b>Story Points:</b> ${it.estimatedPoints}",
+                text = it.estimatedPoints.toString(),
+                size = 12f
+            )
+
+            val realLabel = Typography(text = "Real: ", size = 12f, style = Font.BOLD)
+            val real = Typography(
+                text = it.realPoints.toString(),
+                color = it.realPoints?.let { points ->
+                    when (it.estimatedPoints - points) {
+                        0 -> SemanticColor.SECONDARY
+                        in 0..Int.MAX_VALUE -> SemanticColor.SUCCESS
+                        else -> SemanticColor.DANGER
+                    }
+                } ?: SemanticColor.DARK,
                 size = 12f
             )
 
 
-            statusPanel.add(statusLabel)
-            statusPanel.add(status)
+            containerPanel.add(breadCrumb, "align left, h 30!, wrap")
 
-            containerPanel.add(breadCrumb, "align left, h 30!, growx, wrap")
-            containerPanel.add(title, "align left, growx, wrap")
-            containerPanel.add(description, "align left, growx, wrap")
-            containerPanel.add(assignee, "align left, growx, wrap")
-            containerPanel.add(statusPanel, "align left, aligny center, growx, wrap")
-            containerPanel.add(storyPoints, "align left, growx, wrap")
+            containerPanel.add(title, "align left, wrap")
+
+            containerPanel.add(
+                Title(
+                    text = "Details",
+                    level = TitleLevel.H4,
+                    color = SemanticColor.SECONDARY
+                ), "align left, span 2"
+            )
+            containerPanel.add(
+                Title(text = "People", level = TitleLevel.H4, color = SemanticColor.SECONDARY),
+                "w 75!, wrap"
+            )
+
+            containerPanel.add(statusLabel, "w 75!, left")
+            containerPanel.add(status, "align left")
+            containerPanel.add(assigneeLabel, "w 75!")
+            containerPanel.add(assignee, "wrap")
+
+
+            containerPanel.add(storyPointsLabel, "w 75!")
+            containerPanel.add(storyPoints, "wrap")
+            it.realPoints?.let {
+                containerPanel.add(realLabel, "w 75!")
+                containerPanel.add(real, "wrap")
+            }
+
 
         }
 
     }
 
     private fun body() {
+        issue?.let {
+
+            val descriptionTitle = Title(text = "Description", level = TitleLevel.H4)
+
+            val description =
+                Typography(
+                    text = it.description,
+                    color = SemanticColor.DARK.brighter()
+                )
+
+            containerPanel.add(TransparentPanel(), "h 75!,growx, span, wrap")
+            containerPanel.add(descriptionTitle, "align left, wrap")
+            containerPanel.add(description, "align left, span, wrap")
+        }
 
     }
     // ---------------------------------------------------------------------------------------------
