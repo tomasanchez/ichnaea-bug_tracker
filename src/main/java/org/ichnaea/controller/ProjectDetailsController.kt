@@ -192,10 +192,10 @@ class ProjectDetailsController : SideViewController() {
 
                 issueService.reportIssue(
                     project.id,
-                    issueForm.title.text,
-                    issueForm.description.text,
+                    issueForm.title.text.trim(),
+                    issueForm.description.text.trim(),
                     points,
-                    issueForm.assignee.text,
+                    issueForm.assignee.text.trim(),
                 )
             } catch (enf: IllegalMemberException) {
                 LOGGER.error("User not found")
@@ -239,7 +239,6 @@ class ProjectDetailsController : SideViewController() {
             val statusButton =
                 Button(
                     text = it.getStatusLabel(),
-//                    style = Font.BOLD,
                     color = when (it.status) {
                         IssueStatus.TO_DO -> SemanticColor.SECONDARY
                         IssueStatus.BLOCKED -> SemanticColor.DANGER
