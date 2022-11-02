@@ -11,7 +11,7 @@ abstract class Form {
         return this::class.memberProperties.map { it.getter.call(this) }.filterIsInstance<JComponent>()
     }
 
-    fun clear() {
+    open fun clear() {
 
         fields().forEach {
 

@@ -3,10 +3,11 @@ package org.ichnaea.form
 import org.ichnaea.core.ui.button.Button
 import org.ichnaea.core.ui.form.TextArea
 import org.ichnaea.core.ui.form.TextField
+import org.ichnaea.core.ui.semantic.SemanticColor
 import org.ichnaea.model.Issue
 
 class IssueForm(
-    issue: Issue? = null,
+    val issue: Issue? = null,
 ) : Form() {
 
     val title =
@@ -43,6 +44,7 @@ class IssueForm(
     }
 
     val submit = Button(text = "Submit")
+    val cancel = Button(text = "Cancel", color = SemanticColor.SECONDARY)
 
     fun values(): Map<String, String> {
         return mapOf(
@@ -52,6 +54,18 @@ class IssueForm(
             "realPoints" to real.text,
             "username" to assignee.text,
         )
+    }
+
+    override fun clear() {
+        super.clear()
+
+        issue?.let {
+            title.text = it.title
+            description.text = it.description
+            estimate.text = it.estimatedPoints.toString()
+            real.text = it.realPoints?.toString()
+            assignee.text = it.assignee?.userName
+        }
     }
 
 
