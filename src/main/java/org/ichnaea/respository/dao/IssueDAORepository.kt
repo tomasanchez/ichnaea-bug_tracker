@@ -4,6 +4,7 @@ import org.ichnaea.dao.IssueDAO
 import org.ichnaea.dao.UserDAO
 import org.ichnaea.model.Issue
 import org.ichnaea.respository.IssueRepository
+import java.util.*
 
 class IssueDAORepository : DAORepository<Issue>(), IssueRepository {
 
@@ -27,4 +28,16 @@ class IssueDAORepository : DAORepository<Issue>(), IssueRepository {
     }
 
 
+    override fun findById(id: Long): Optional<Issue> = super.findById(id).map(::withUser)
+
+
+    private fun withUser(issue: Issue): Issue {
+
+        issue.assigneeId?.let { id ->
+            val assignee = userDAO.findById(id).orElse(null)
+            return issue.copy(assignee = assignee).also { it.id = issue.id }
+        }
+
+        return issue
+    }
 }
