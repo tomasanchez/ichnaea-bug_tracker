@@ -19,6 +19,7 @@ import javax.swing.text.PlainDocument
 
 class TextField(
     val label: String,
+    value: String? = "",
     private val required: Boolean = true,
     type: Int = Type.TEXT,
 ) : JTextField(), Validatable {
@@ -46,7 +47,7 @@ class TextField(
     init {
 
         border = EmptyBorder(20, 0, 10, 30)
-
+        this.text = value
         selectionColor = SemanticColor.PRIMARY
 
         minimumSize = Dimension(300, 45)
@@ -101,6 +102,11 @@ class TextField(
         animator.acceleration = 0.5f
         animator.deceleration = 0.5f
 
+    }
+
+    override fun setText(text: String?) {
+        isAnimatedHint = text?.isEmpty() ?: true
+        super.setText(text)
     }
 
 
