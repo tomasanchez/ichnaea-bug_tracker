@@ -84,11 +84,36 @@ class Table(
             tableHeader = null
     }
 
+
+    /**
+     * Forces a width for the given column.
+     *
+     * @param column The column index.
+     * @param width The width in pixels.
+     */
+    fun setColumnWidth(column: Int, width: Int) {
+        getColumnModel().getColumn(column).preferredWidth = width
+        getColumnModel().getColumn(column).maxWidth = width
+        getColumnModel().getColumn(column).minWidth = width
+    }
+
+    /**
+     * Adds a row to the table.
+     * If an element is out of JComponent, it will be displayed as it is.
+     * Otherwise, it will be converted to a Typography.
+     *
+     * @param row an array of any non-null elements
+     */
     fun addRow(row: Array<Any>) {
         val model = model as DefaultTableModel
         model.addRow(row)
     }
 
+    /**
+     * Fix a table to a scroll pane
+     *
+     * @param scroll container which holds the table
+     */
     fun fixTable(scroll: JScrollPane) {
         scroll.border = null
         scroll.verticalScrollBar = org.ichnaea.core.ui.container.ScrollBar()
@@ -131,6 +156,11 @@ class Table(
         })
     }
 
+    /**
+     * Event Handler for when a row is selected in the table.
+     *
+     * @param idConsumer the function to call when a row is selected
+     */
     fun onRowClick(idConsumer: (id: Number) -> Unit) {
         addMouseListener(object : java.awt.event.MouseAdapter() {
             override fun mouseClicked(e: MouseEvent) {
@@ -146,6 +176,12 @@ class Table(
         })
     }
 
+    /**
+     * Event handler for a specific column click.
+     *
+     * @param cell index of the column
+     * @param idConsumer function to be called with the id of the clicked row
+     */
     fun onCellClick(cell: Int, idConsumer: (id: Number) -> Unit) {
         addMouseListener(object : java.awt.event.MouseAdapter() {
             override fun mouseClicked(e: MouseEvent) {
@@ -161,6 +197,10 @@ class Table(
         })
     }
 
+    /**
+     * Removes al rows of a table.
+     *
+     */
     fun clear() {
         val model = model as DefaultTableModel
         model.rowCount = 0
