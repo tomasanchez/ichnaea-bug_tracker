@@ -4,10 +4,8 @@ import jiconfont.icons.google_material_design_icons.GoogleMaterialDesignIcons
 import net.miginfocom.swing.MigLayout
 import org.ichnaea.core.mvc.view.UIView
 import org.ichnaea.core.ui.button.Button
-import org.ichnaea.core.ui.container.ScrollContainer
 import org.ichnaea.core.ui.container.TabContainer
 import org.ichnaea.core.ui.container.TransparentPanel
-import org.ichnaea.core.ui.form.TextArea
 import org.ichnaea.core.ui.form.TextField
 import org.ichnaea.core.ui.icon.GoogleIconFactory
 import org.ichnaea.core.ui.navigation.BreadCrumb
@@ -16,6 +14,7 @@ import org.ichnaea.core.ui.text.Link
 import org.ichnaea.core.ui.text.Title
 import org.ichnaea.core.ui.text.TitleLevel
 import org.ichnaea.core.ui.text.Typography
+import org.ichnaea.form.IssueForm
 import org.ichnaea.model.Project
 import java.awt.Dimension
 import javax.swing.Box
@@ -46,28 +45,6 @@ class ProjectDetailsView : SideView() {
         tooltip = "Go to the home page",
     )
 
-    class IssueForm(
-        val title: TextField = TextField(label = "Title").also { it.isOpaque = false },
-        val descriptionScroll: ScrollContainer = ScrollContainer().also { it.isOpaque = false },
-        val description: TextArea = TextArea(label = "Description", scroll = descriptionScroll).also {
-            it.background = SemanticColor.LIGHT
-        },
-        val points: TextField = TextField(label = "Estimated Story Points").also { it.isOpaque = false },
-        val assignee: TextField = TextField(label = "Assignee", required = false).also { it.isOpaque = false },
-        val submit: Button = Button(text = "Report", color = SemanticColor.PRIMARY),
-    ) {
-        fun clear() {
-            title.text = ""
-            description.text = ""
-            points.text = ""
-            assignee.text = ""
-
-            title.setError(false)
-            description.setError(false)
-            points.setError(false)
-            assignee.setError(false)
-        }
-    }
 
     init {
         model["addMemberButton"] = addMemberButton
@@ -104,7 +81,7 @@ class ProjectDetailsView : SideView() {
         project?.let {
 
             val breadCrumb = BreadCrumb(mutableListOf(home, Typography(text = it.code)))
-            
+
             containerPanel.add(breadCrumb, "align left, wrap")
 
             val title = Title(text = it.name, level = TitleLevel.H3)
@@ -203,12 +180,14 @@ class ProjectDetailsView : SideView() {
     private fun addIssueTab() {
         val tab = tabPanel()
         val tabTitle = Title(text = "Report an Issue", level = TitleLevel.H4)
+        
+        issueForm.description.background = SemanticColor.LIGHT
 
         issueForm.clear()
         tab.add(tabTitle, "align left, wrap")
         tab.add(issueForm.title, "align center, wrap")
-        tab.add(issueForm.descriptionScroll, "align center, w 300!, wrap")
-        tab.add(issueForm.points, "align center, wrap")
+        tab.add(issueForm.description.scroll, "align center, w 300!, wrap")
+        tab.add(issueForm.estimate, "align center, wrap")
         tab.add(issueForm.assignee, "align center, wrap")
         tab.add(issueForm.submit, "align center, h 45!, w 150!, wrap")
 

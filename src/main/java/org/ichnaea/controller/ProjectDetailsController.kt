@@ -11,6 +11,7 @@ import org.ichnaea.core.ui.semantic.Notification
 import org.ichnaea.core.ui.semantic.SemanticColor
 import org.ichnaea.core.ui.text.Link
 import org.ichnaea.core.ui.text.Title
+import org.ichnaea.form.IssueForm
 import org.ichnaea.model.Issue
 import org.ichnaea.model.IssueStatus
 import org.ichnaea.model.Project
@@ -19,7 +20,6 @@ import org.ichnaea.service.IssueService
 import org.ichnaea.service.ProjectService
 import org.ichnaea.service.exceptions.IllegalMemberException
 import org.ichnaea.view.BaseView
-import org.ichnaea.view.ProjectDetailsView
 import org.slf4j.Logger
 import java.awt.Dimension
 import java.awt.event.ActionEvent
@@ -69,7 +69,7 @@ class ProjectDetailsController : SideViewController() {
         }
 
         this.view.model["issueForm"]?.let {
-            it as ProjectDetailsView.IssueForm
+            it as IssueForm
             it.submit.onClick(::onReportIssue)
         }
 
@@ -165,12 +165,12 @@ class ProjectDetailsController : SideViewController() {
 
     private fun onReportIssue(e: ActionEvent) {
 
-        val issueForm = view.model["issueForm"] as ProjectDetailsView.IssueForm
+        val issueForm = view.model["issueForm"] as IssueForm
 
 
         val isEmpty = validateEmpty(issueForm.title.text, issueForm.title) || validateEmpty(
-            issueForm.points.text,
-            issueForm.points
+            issueForm.estimate.text,
+            issueForm.estimate
         )
 
 
@@ -181,9 +181,10 @@ class ProjectDetailsController : SideViewController() {
 
 
         val points = try {
-            issueForm.points.text.toInt()
+            issueForm.estimate.text.toInt()
         } catch (e: NumberFormatException) {
             popNotification("Story Points must be a number", Notification.Type.ERROR)
+            issueForm.estimate.setError(true)
             return
         }
 
