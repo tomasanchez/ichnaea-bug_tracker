@@ -44,36 +44,32 @@ class IssueDetailsController : SideViewController() {
     // -------------------------------------------------------------
 
     override fun onPathChange(id: Long) {
+
         LOGGER.info("Details for Issue[id=$id]")
 
-        if (this.pathId != id) {
+        LOGGER.warn("Issue has changed from ${this.pathId} to $id")
 
-            LOGGER.warn("Issue has changed from ${this.pathId} to $id")
+        this.pathId = id
 
-            this.pathId = id
+        issueService.findById(id).ifPresent {
+            issue = it
 
-            issueService.findById(id).ifPresent {
-                issue = it
+            projectService
+                .findById(issue.projectId)
+                .ifPresent { project ->
+                    byId("projectLink")
+                        ?.let { link ->
+                            link as Link
+                            link.text = project.code
+                            link.onClick = { navTo("projectDetails", project.id) }
+                        }
+                }
 
-                projectService
-                    .findById(issue.projectId)
-                    .ifPresent { project ->
-                        byId("projectLink")
-                            ?.let { link ->
-                                link as Link
-                                link.text = project.code
-                                link.onClick = { navTo("projectDetails", project.id) }
-                            }
-                    }
-
-                repaint()
-            }
-
-
-
-            (this.view as BaseView).addToModel("issue", issue)
+            repaint()
         }
 
+
+        (this.view as BaseView).addToModel("issue", issue)
     }
 
     // -------------------------------------------------------------
