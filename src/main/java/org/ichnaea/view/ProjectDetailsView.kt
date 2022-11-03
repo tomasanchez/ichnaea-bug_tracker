@@ -133,7 +133,7 @@ class ProjectDetailsView : SideView() {
         // Table
         val columns = arrayOf("Id", "Name", "Assignee", "SP", "Real SP", "Status")
         val issuesTable = table(scrollPanel = issuesScrollPanel, columns = columns, showHeader = true).also {
-            it.columnModel.getColumn(0).maxWidth = 40
+            it.setColumnWidth(0, 25)
             it.columnModel.getColumn(1).minWidth = 130
             it.columnModel.getColumn(2).minWidth = 100
             it.columnModel.getColumn(3).maxWidth = 60
@@ -155,7 +155,6 @@ class ProjectDetailsView : SideView() {
 
         val columns = arrayOf("Id", "Name", "Actions")
         val membersTable = table(scrollPanel = membersScrollPanel, columns = columns).also {
-
             it.columnModel.getColumn(2).minWidth = 10
             it.columnModel.getColumn(2).preferredWidth = 20
             it.columnModel.getColumn(2).maxWidth = 35
@@ -180,7 +179,7 @@ class ProjectDetailsView : SideView() {
     private fun addIssueTab() {
         val tab = tabPanel()
         val tabTitle = Title(text = "Report an Issue", level = TitleLevel.H4)
-        
+
         issueForm.description.background = SemanticColor.LIGHT
 
         issueForm.clear()
