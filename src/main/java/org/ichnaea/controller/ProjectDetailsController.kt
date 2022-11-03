@@ -44,17 +44,16 @@ class ProjectDetailsController : SideViewController() {
     override fun onPathChange(id: Long) {
         LOGGER.info("Details for Project[id=$id]")
 
-        if (this.pathId != id) {
-            LOGGER.warn("Project has changed from ${this.pathId} to $id")
-            this.pathId = id
-            projectService.findById(id).ifPresent {
-                project = it
-                members = projectService.findMembers(id)
-                issues = issueService.findByProject(id)
-                repaint()
-            }
-            (this.view as BaseView).addToModel("project", project)
+        this.pathId = id
+        
+        projectService.findById(id).ifPresent {
+            project = it
+            members = projectService.findMembers(id)
+            issues = issueService.findByProject(id)
+            repaint()
         }
+
+        (this.view as BaseView).addToModel("project", project)
 
     }
 

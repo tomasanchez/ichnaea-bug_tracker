@@ -55,4 +55,22 @@ class SQLiteIssueDAO : SQLiteDAO<Issue>(), IssueDAO {
 
     }
 
+    override fun setStatus(issueId: Long, status: String) {
+
+        try {
+            connect()
+            val sql = "UPDATE ${getTableName()} SET status = ? WHERE id = ?"
+            val statement = createPreparedStatement(sql)!!
+            statement.setString(1, status)
+            statement.setInt(2, issueId.toInt())
+            statement.executeUpdate()
+
+        } catch (e: Exception) {
+            throw PersistenceException("Action could not be completed", e)
+        } finally {
+            disconnect()
+        }
+
+    }
+
 }

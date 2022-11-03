@@ -14,8 +14,10 @@ import org.ichnaea.core.ui.text.Typography
 import org.ichnaea.form.IssueForm
 import org.ichnaea.model.Issue
 import org.ichnaea.model.IssueStatus
+import java.awt.FlowLayout
 import java.awt.Font
 import java.awt.event.ActionEvent
+import javax.swing.JPanel
 
 @UIView
 class IssueDetailsView : SideView() {
@@ -38,6 +40,9 @@ class IssueDetailsView : SideView() {
     private val editButton =
         Button(text = "Edit", icon = GoogleMaterialDesignIcons.EDIT).also { it.onClick(::toggleEdit) }
 
+    private val deleteButton =
+        Button(text = "Delete", icon = GoogleMaterialDesignIcons.DELETE, color = SemanticColor.DARK)
+
     private val cancelButton =
         Button(
             text = "Cancel",
@@ -45,6 +50,32 @@ class IssueDetailsView : SideView() {
         ).also { it.onClick(::toggleEdit) }
 
     private val saveButton = Button(text = "Save", icon = GoogleMaterialDesignIcons.SAVE)
+
+    private val actions = IssueActions()
+
+    class IssueActions {
+        val toDo = Button(
+            text = "To do",
+            icon = GoogleMaterialDesignIcons.CHECK_BOX_OUTLINE_BLANK,
+            color = SemanticColor.SECONDARY
+        )
+        val block = Button(
+            text = "Block",
+            icon = GoogleMaterialDesignIcons.BLOCK,
+            color = SemanticColor.DANGER
+        )
+        val inProgress = Button(
+            text = "In Progress",
+            icon = GoogleMaterialDesignIcons.TRACK_CHANGES,
+            color = SemanticColor.PRIMARY
+        )
+        val done = Button(
+            text = "Done",
+            icon = GoogleMaterialDesignIcons.CHECK,
+            color = SemanticColor.SUCCESS
+        )
+    }
+
 
     // ---------------------------------------------------------------------------------------------
     // View Drawing
@@ -55,6 +86,8 @@ class IssueDetailsView : SideView() {
         model["projectLink"] = projectLink
         model["saveButton"] = saveButton
         model["toggleFunction"] = ::toggleEdit
+        model["actions"] = actions
+        model["deleteButton"] = deleteButton
     }
 
 
@@ -186,19 +219,43 @@ class IssueDetailsView : SideView() {
     }
 
     private fun body() {
-        issue?.let {
+        issue?.let { it ->
 
-            val descriptionTitle = Title(text = "Description", level = TitleLevel.H4)
-
+            val descriptionTitle = subTitle("Description")
             val description =
                 Typography(
                     text = it.description,
                     color = SemanticColor.DARK.brighter()
                 )
 
-            containerPanel.add(TransparentPanel(), "h 75!,growx, span, wrap")
+            val actionsTitle = subTitle("Actions")
+            val actionsSubtitle = Typography(text = "Click to change Issue status")
+            val actionsPanel = JPanel(FlowLayout(FlowLayout.LEFT, 25, 0)).also { p -> p.isOpaque = false }
+
+            listOf(actions.toDo, actions.block, actions.inProgress, actions.done)
+                .filterNot { button -> button.text.uppercase() in it.status.name.replace("_", " ").uppercase() }
+                .forEach { button ->
+                    actionsPanel.add(button)
+                }
+
+            val dangerZoneTitle =
+                Title(text = "Danger Zone", level = TitleLevel.H4, color = SemanticColor.DANGER)
+            val warning = Typography(
+                text = "Deleting an issue is permanent and cannot be undone.",
+            )
+
+            containerPanel.add(TransparentPanel(), "h 75!,growx, span")
             containerPanel.add(descriptionTitle, "align left, wrap")
             containerPanel.add(description, "align left, span, wrap")
+            containerPanel.add(TransparentPanel(), "h 50!,growx, span")
+            containerPanel.add(actionsTitle, "align left, growx, span")
+            containerPanel.add(actionsSubtitle, "align left, growx, span")
+            containerPanel.add(TransparentPanel(), "align left, h 15!,span")
+            containerPanel.add(actionsPanel, "growx, span")
+            containerPanel.add(dangerZoneTitle, "align left, growx, span")
+            containerPanel.add(warning, "align left, h 30!, span")
+            containerPanel.add(deleteButton, "align center, h 25!, w 100!, span")
+
         }
 
     }
@@ -218,8 +275,8 @@ class IssueDetailsView : SideView() {
 
             // Navigation
             containerPanel.add(editText, "align left, growx, h 30!, span 2")
-            containerPanel.add(cancelButton, "align right, h 25!, w 95!")
-            containerPanel.add(saveButton, "align right, h 25!, w 80!,  wrap")
+            containerPanel.add(cancelButton, "align right, h 25!")
+            containerPanel.add(saveButton, "align right, h 25!, span")
 
             // Issue Title
             containerPanel.add(issueForm.title, "align left, wrap")

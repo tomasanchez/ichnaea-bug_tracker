@@ -6,10 +6,12 @@ import org.ichnaea.core.ui.semantic.Notification
 import org.ichnaea.core.ui.text.Link
 import org.ichnaea.form.IssueForm
 import org.ichnaea.model.Issue
+import org.ichnaea.model.IssueStatus
 import org.ichnaea.service.IssueService
 import org.ichnaea.service.ProjectService
 import org.ichnaea.service.exceptions.IllegalMemberException
 import org.ichnaea.view.BaseView
+import org.ichnaea.view.IssueDetailsView
 import org.slf4j.Logger
 import java.awt.event.ActionEvent
 
@@ -22,7 +24,8 @@ class IssueDetailsController : SideViewController() {
 
 
     private lateinit var issue: Issue
-    lateinit var issueForm: IssueForm
+    private lateinit var issueForm: IssueForm
+    private lateinit var actions: IssueDetailsView.IssueActions
 
 
     companion object {
@@ -42,6 +45,23 @@ class IssueDetailsController : SideViewController() {
         byId("saveButton")?.let {
             it as Button
             it.onClick(::onSave)
+        }
+
+        byId("deleteButton")?.let {
+            it as Button
+            it.onClick(::onDelete)
+        }
+
+
+        view.model["actions"]?.let {
+            it as IssueDetailsView.IssueActions
+            actions = it
+
+            actions.toDo.onClick { e -> onStatusChange(e, IssueStatus.TO_DO) }
+            actions.block.onClick { e -> onStatusChange(e, IssueStatus.BLOCKED) }
+            actions.inProgress.onClick { e -> onStatusChange(e, IssueStatus.IN_PROGRESS) }
+            actions.done.onClick { e -> onStatusChange(e, IssueStatus.DONE) }
+
         }
     }
 
@@ -136,6 +156,47 @@ class IssueDetailsController : SideViewController() {
     }
 
 
+    private fun onStatusChange(e: ActionEvent, status: IssueStatus) {
+
+        try {
+
+            when (status) {
+
+                IssueStatus.DONE -> {
+                    popNotification(message = "Enter the time spent", type = Notification.Type.INFO)
+                    view.model["toggleFunction"]?.let {
+                        @Suppress("UNCHECKED_CAST")
+                        it as (ActionEvent) -> Unit
+                        it(e)
+                    }
+                }
+
+                else -> {
+                    issueService.updateStatus(issue.id, status)
+                    popNotification(message = "Status updated", type = Notification.Type.SUCCESS)
+                    navTo("issueDetails", issue.id)
+                }
+            }
+
+
+        } catch (e: Exception) {
+            popNotification(message = e.message ?: "Could not change status", type = Notification.Type.ERROR)
+            return
+        }
+
+    }
+
+    private fun onDelete(e: ActionEvent) {
+        try {
+            issueService.delete(issue.id)
+            popNotification(message = "Issue deleted", type = Notification.Type.WARNING)
+            navTo("projectDetails", issue.projectId)
+        } catch (e: Exception) {
+            popNotification(message = e.message ?: "Could not delete issue", type = Notification.Type.ERROR)
+            return
+        }
+    }
+
     // -------------------------------------------------------------
     // Internal Methods
     // -------------------------------------------------------------
@@ -145,5 +206,6 @@ class IssueDetailsController : SideViewController() {
         return validateEmpty(issueForm.title.text, issueForm.title)
                 || validateEmpty(issueForm.estimate.text, issueForm.estimate)
     }
+
 
 }
