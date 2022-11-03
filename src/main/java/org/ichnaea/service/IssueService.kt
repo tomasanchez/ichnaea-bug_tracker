@@ -21,6 +21,7 @@ class IssueService(
     private val projectRepository: ProjectRepository = ProjectDAORepository()
     private val userRepository: UserRepository = UserDAORepository()
 
+
     fun findByProject(projectId: Long): List<Issue> {
         return (repository as IssueRepository).findByProject(projectId)
     }
@@ -45,6 +46,8 @@ class IssueService(
         return (repository as IssueRepository).save(issue)
     }
 
+    fun updateStatus(issueId: Long, status: IssueStatus) = (repository as IssueRepository).setStatus(issueId, status)
+
 
     fun update(
         issueID: Long,
@@ -58,9 +61,11 @@ class IssueService(
         val user: User? =
             fetchUser(username)
 
-        (repository as IssueRepository).unAssign(issueID)
+        unAssign(issueID)
 
-        val originalIssue = findById(issueID).orElseThrow { EntityNotFoundException("Issue[id=$issueID] not found") }
+        val originalIssue =
+            findById(issueID)
+                .orElseThrow { EntityNotFoundException("Issue[id=$issueID] not found") }
 
         verifyUser(user, originalIssue.projectId, username)
 
@@ -91,12 +96,18 @@ class IssueService(
         else null
 
     private fun verifyUser(user: User?, projectId: Long, username: String) {
-        user?.let {
-            if (it.role.name != RoleName.ADMIN) {
-                projectRepository.findMembers(projectId).find { member -> member.id == it.id }
-                    ?: throw IllegalMemberException("User $username is not a member of this project")
+        user
+            ?.let {
+                if (it.role.name != RoleName.ADMIN)
+                    projectRepository
+                        .findMembers(projectId)
+                        .find { member -> member.id == it.id }
+                        ?: throw IllegalMemberException("User $username is not a member of this project")
             }
-        }
+    }
+
+    private fun unAssign(issueID: Long) {
+        (repository as IssueRepository).unAssign(issueID)
     }
 
 }

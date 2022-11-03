@@ -64,4 +64,12 @@ interface IssueDAO : PersistentEntityDAO<Issue> {
      * @param issueId the issue unique identifier
      */
     fun unAssign(issueId: Long)
+
+    /**
+     * Sets an Issue status
+     *
+     * @param issueId
+     * @param status
+     */
+    fun setStatus(issueId: Long, status: String)
 }

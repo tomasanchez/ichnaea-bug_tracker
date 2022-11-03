@@ -3,6 +3,7 @@ package org.ichnaea.respository.dao
 import org.ichnaea.dao.IssueDAO
 import org.ichnaea.dao.UserDAO
 import org.ichnaea.model.Issue
+import org.ichnaea.model.IssueStatus
 import org.ichnaea.respository.IssueRepository
 import java.util.*
 
@@ -41,4 +42,6 @@ class IssueDAORepository : DAORepository<Issue>(), IssueRepository {
     }
 
     override fun unAssign(issueId: Long) = issueDAO.unAssign(issueId)
+
+    override fun setStatus(issueId: Long, status: IssueStatus) = issueDAO.setStatus(issueId, status.name)
 }
