@@ -32,7 +32,7 @@ class IssueForm(
             }
 
     val real =
-        TextField(label = "Real", type = TextField.Type.NUMBER)
+        TextField(label = "Real", type = TextField.Type.NUMBER, required = false)
             .also {
                 it.text = issue?.realPoints?.toString()
                 it.isOpaque = false
@@ -67,6 +67,5 @@ class IssueForm(
             assignee.text = it.assignee?.userName
         }
     }
-
 
 }

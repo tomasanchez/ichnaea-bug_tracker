@@ -1,6 +1,8 @@
 package org.ichnaea.service
 
+import org.ichnaea.core.exception.EntityNotFoundException
 import org.ichnaea.model.Issue
+import org.ichnaea.model.IssueStatus
 import org.ichnaea.model.RoleName
 import org.ichnaea.model.User
 import org.ichnaea.respository.IssueRepository
@@ -27,18 +29,9 @@ class IssueService(
     fun reportIssue(projectId: Long, title: String, description: String, storyPoints: Int, username: String): Issue {
 
         val user: User? =
-            if (username.isNotBlank())
-                userRepository
-                    .findByUsername(username)
-                    .orElseThrow { IllegalMemberException("User $username does not exist") }
-            else null
+            fetchUser(username)
 
-        user?.let {
-            if (it.role.name != RoleName.ADMIN) {
-                projectRepository.findMembers(projectId).find { member -> member.id == user.id }
-                    ?: throw IllegalMemberException("User $username is not a member of this project")
-            }
-        }
+        verifyUser(user, projectId, username)
 
 
         val issue = Issue(
@@ -50,6 +43,60 @@ class IssueService(
         )
 
         return (repository as IssueRepository).save(issue)
+    }
+
+
+    fun update(
+        issueID: Long,
+        title: String,
+        description: String,
+        estimate: Int,
+        real: Int?,
+        username: String,
+    ): Issue {
+
+        val user: User? =
+            fetchUser(username)
+
+        (repository as IssueRepository).unAssign(issueID)
+
+        val originalIssue = findById(issueID).orElseThrow { EntityNotFoundException("Issue[id=$issueID] not found") }
+
+        verifyUser(user, originalIssue.projectId, username)
+
+        val status =
+            if (real != null) IssueStatus.DONE
+            else originalIssue.status
+
+        val toUpdate = originalIssue.copy(
+            title = title,
+            description = description,
+            estimatedPoints = estimate,
+            realPoints = real,
+            assigneeId = user?.id,
+            status = status,
+        ).also {
+            it.id = issueID
+        }
+
+
+        return repository.save(toUpdate)
+    }
+
+    private fun fetchUser(username: String): User? =
+        if (username.isNotBlank())
+            userRepository
+                .findByUsername(username)
+                .orElseThrow { IllegalMemberException("User $username does not exist") }
+        else null
+
+    private fun verifyUser(user: User?, projectId: Long, username: String) {
+        user?.let {
+            if (it.role.name != RoleName.ADMIN) {
+                projectRepository.findMembers(projectId).find { member -> member.id == it.id }
+                    ?: throw IllegalMemberException("User $username is not a member of this project")
+            }
+        }
     }
 
 }

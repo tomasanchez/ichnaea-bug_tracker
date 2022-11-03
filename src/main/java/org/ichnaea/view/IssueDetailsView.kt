@@ -1,7 +1,9 @@
 package org.ichnaea.view
 
+import jiconfont.icons.google_material_design_icons.GoogleMaterialDesignIcons
 import net.miginfocom.swing.MigLayout
 import org.ichnaea.core.mvc.view.UIView
+import org.ichnaea.core.ui.button.Button
 import org.ichnaea.core.ui.container.TransparentPanel
 import org.ichnaea.core.ui.navigation.BreadCrumb
 import org.ichnaea.core.ui.semantic.SemanticColor
@@ -9,14 +11,17 @@ import org.ichnaea.core.ui.text.Link
 import org.ichnaea.core.ui.text.Title
 import org.ichnaea.core.ui.text.TitleLevel
 import org.ichnaea.core.ui.text.Typography
+import org.ichnaea.form.IssueForm
 import org.ichnaea.model.Issue
 import org.ichnaea.model.IssueStatus
 import java.awt.Font
+import java.awt.event.ActionEvent
 
 @UIView
 class IssueDetailsView : SideView() {
 
     private var issue: Issue? = null
+    private var issueEditId: Long? = null
 
     private val homeLink = Link(
         text = "Home",
@@ -28,6 +33,19 @@ class IssueDetailsView : SideView() {
         tooltip = "Go to project details",
     )
 
+    private var edit = false
+
+    private val editButton =
+        Button(text = "Edit", icon = GoogleMaterialDesignIcons.EDIT).also { it.onClick(::toggleEdit) }
+
+    private val cancelButton =
+        Button(
+            text = "Cancel",
+            color = SemanticColor.SECONDARY,
+        ).also { it.onClick(::toggleEdit) }
+
+    private val saveButton = Button(text = "Save", icon = GoogleMaterialDesignIcons.SAVE)
+
     // ---------------------------------------------------------------------------------------------
     // View Drawing
     // ---------------------------------------------------------------------------------------------
@@ -35,18 +53,31 @@ class IssueDetailsView : SideView() {
     init {
         model["homeLink"] = homeLink
         model["projectLink"] = projectLink
+        model["saveButton"] = saveButton
+        model["toggleFunction"] = ::toggleEdit
     }
 
 
     private fun onBeforeRendering() {
+
+        issue = model["issue"] as Issue?
+
+        if (edit && issueEditId != null && issueEditId != issue?.id) {
+            cancelEdit()
+        }
+
         containerPanel.layout = MigLayout(
             "fill, insets 0",
-            "[][grow, fill]50[][grow,fill]",
+            "[][grow, fill]50[][${if (!edit) "grow, fill" else ""}]",
             "0[fill, top]0"
         )
 
-        header()
-        body()
+        if (!edit) {
+            header()
+            body()
+        } else {
+            editForm()
+        }
     }
 
     override fun repaint() {
@@ -60,8 +91,6 @@ class IssueDetailsView : SideView() {
     // ---------------------------------------------------------------------------------------------
 
     private fun header() {
-
-        issue = model["issue"] as Issue?
 
         issue?.let {
 
@@ -77,7 +106,6 @@ class IssueDetailsView : SideView() {
                     text = it.title,
                     level = TitleLevel.H3
                 )
-
 
             val assigneeLabel = Typography(text = "Assignee: ", size = 12f, style = Font.BOLD)
             val assignee =
@@ -124,25 +152,23 @@ class IssueDetailsView : SideView() {
                 size = 12f
             )
 
+            // Navigation Breadcrumbs
+            containerPanel.add(breadCrumb, "align left, h 30!, span 3")
+            containerPanel.add(editButton, "align right, h 25!, w 70!,  wrap")
 
-            containerPanel.add(breadCrumb, "align left, h 30!, wrap")
-
+            // Title
             containerPanel.add(title, "align left, wrap")
-
             containerPanel.add(
-                Title(
-                    text = "Details",
-                    level = TitleLevel.H4,
-                    color = SemanticColor.SECONDARY
-                ), "align left, span 2"
+                subTitle("Details"), "align left, span 2"
             )
             containerPanel.add(
-                Title(text = "People", level = TitleLevel.H4, color = SemanticColor.SECONDARY),
+                subTitle("People"),
                 "w 75!, wrap"
             )
-
+            // Details part
             containerPanel.add(statusLabel, "w 75!, left")
             containerPanel.add(status, "align left")
+            // People Part
             containerPanel.add(assigneeLabel, "w 75!")
             containerPanel.add(assignee, "wrap")
 
@@ -176,7 +202,77 @@ class IssueDetailsView : SideView() {
         }
 
     }
+
+
+    private fun editForm() {
+
+        issueEditId = issue?.id
+
+        val issueForm = IssueForm(issue)
+
+        model["issueForm"] = issueForm
+
+        issue?.let {
+
+            val editText = Title(text = "Edit Mode", color = SemanticColor.PRIMARY, level = TitleLevel.H2)
+
+            // Navigation
+            containerPanel.add(editText, "align left, growx, h 30!, span 2")
+            containerPanel.add(cancelButton, "align right, h 25!, w 95!")
+            containerPanel.add(saveButton, "align right, h 25!, w 80!,  wrap")
+
+            // Issue Title
+            containerPanel.add(issueForm.title, "align left, wrap")
+            containerPanel.add(TransparentPanel(), "h 35!, span, wrap")
+            containerPanel.add(
+                subTitle("Details"), "align left, span 2"
+            )
+            containerPanel.add(
+                subTitle("People"),
+                "w 75!, wrap"
+            )
+            containerPanel.add(
+                Typography(
+                    text = "Entering real story points changes status to DONE.",
+                    color = SemanticColor.SECONDARY.brighter(),
+                    style = Font.ITALIC,
+                    size = 10f
+                ),
+                "span 3, wrap"
+            )
+
+            // Details part
+            containerPanel.add(issueForm.estimate, "w 75!, span 2")
+            containerPanel.add(issueForm.assignee, " w 300!, span")
+            containerPanel.add(issueForm.real, "w 75!, span")
+
+
+            // Description
+            containerPanel.add(TransparentPanel(), "h 75!,growx, span, wrap")
+            containerPanel.add(subTitle("More Information"), "align left, span, wrap")
+            containerPanel.add(issueForm.description.scroll, "align left, growx, span")
+        }
+    }
+
     // ---------------------------------------------------------------------------------------------
     // Internal Methods
     // ---------------------------------------------------------------------------------------------
+
+    private fun toggleEdit(e: ActionEvent) {
+        cancelEdit()
+        repaint()
+    }
+
+    private fun cancelEdit() {
+        edit = !edit
+        issueEditId = null
+    }
+
+    private fun subTitle(text: String): Title {
+        return Title(
+            text = text,
+            level = TitleLevel.H4,
+            color = SemanticColor.SECONDARY
+        )
+    }
 }
