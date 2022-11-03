@@ -37,4 +37,22 @@ class SQLiteIssueDAO : SQLiteDAO<Issue>(), IssueDAO {
             disconnect()
         }
     }
+
+    override fun unAssign(issueId: Long) {
+
+        try {
+            connect()
+            val sql = "UPDATE ${getTableName()} SET user_id = NULL WHERE id = ?"
+            val statement = createPreparedStatement(sql)!!
+            statement.setInt(1, issueId.toInt())
+            statement.executeUpdate()
+
+        } catch (e: Exception) {
+            throw PersistenceException("Action could not be completed", e)
+        } finally {
+            disconnect()
+        }
+
+    }
+
 }

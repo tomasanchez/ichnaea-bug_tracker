@@ -358,7 +358,7 @@ abstract class SQLiteDAO<T : PersistentEntity> : SQLiteConnector(), PersistentEn
      * @param map a Map of [columnName, value] pairs.
      * @return a String of column values to be set in a prepared statement.
      */
-    protected fun getColumnValues(map: Map<String, Any>): String {
+    protected fun getColumnValues(map: Map<String, Any?>): String {
         return map.values.joinToString(", ", "(", ")", transform = { "?" })
     }
 
@@ -368,9 +368,10 @@ abstract class SQLiteDAO<T : PersistentEntity> : SQLiteConnector(), PersistentEn
      * @param preparedStatement to be set
      * @param map containing the values to be set.
      */
-    protected fun setValues(preparedStatement: java.sql.PreparedStatement, map: Map<String, Any>) {
+    protected fun setValues(preparedStatement: java.sql.PreparedStatement, map: Map<String, Any?>) {
         map.values.forEachIndexed { index, value ->
             when (value) {
+                null -> preparedStatement.setNull(index + 1, java.sql.Types.NULL)
                 is String -> preparedStatement.setString(index + 1, value)
                 is Int -> preparedStatement.setInt(index + 1, value)
                 is Long -> preparedStatement.setLong(index + 1, value)

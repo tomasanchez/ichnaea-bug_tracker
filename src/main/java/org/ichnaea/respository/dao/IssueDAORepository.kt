@@ -30,7 +30,6 @@ class IssueDAORepository : DAORepository<Issue>(), IssueRepository {
 
     override fun findById(id: Long): Optional<Issue> = super.findById(id).map(::withUser)
 
-
     private fun withUser(issue: Issue): Issue {
 
         issue.assigneeId?.let { id ->
@@ -40,4 +39,6 @@ class IssueDAORepository : DAORepository<Issue>(), IssueRepository {
 
         return issue
     }
+
+    override fun unAssign(issueId: Long) = issueDAO.unAssign(issueId)
 }

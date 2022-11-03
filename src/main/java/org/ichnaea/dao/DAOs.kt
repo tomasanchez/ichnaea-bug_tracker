@@ -50,5 +50,18 @@ interface ProjectDAO : PersistentEntityDAO<Project> {
 
 interface IssueDAO : PersistentEntityDAO<Issue> {
 
+    /**
+     * Finds all Issues related to a project
+     *
+     * @param projectId the project unique identifier
+     * @return a list of issues
+     */
     fun findByProject(projectId: Long): List<Issue>
+
+    /**
+     * Sets the assignee to null
+     *
+     * @param issueId the issue unique identifier
+     */
+    fun unAssign(issueId: Long)
 }
