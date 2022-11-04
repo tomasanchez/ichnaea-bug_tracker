@@ -4,10 +4,8 @@ import org.ichnaea.auth.IchnaeaSessionProvider
 import org.ichnaea.core.exception.AuthenticationException
 import org.ichnaea.core.mvc.controller.UIController
 import org.ichnaea.core.security.auth.Authentication
-import org.ichnaea.core.ui.button.Button
-import org.ichnaea.core.ui.form.PasswordField
-import org.ichnaea.core.ui.form.TextField
 import org.ichnaea.core.ui.semantic.SemanticColor
+import org.ichnaea.form.UserForm
 import org.ichnaea.service.UserService
 import org.slf4j.Logger
 import java.awt.event.ActionEvent
@@ -16,11 +14,10 @@ import java.awt.event.ActionEvent
 @UIController
 class SignInController : BaseController() {
 
-    private lateinit var usernameInput: TextField
-    private lateinit var passwordInput: PasswordField
     private val userService = UserService()
     private val sessionProvider: IchnaeaSessionProvider =
         getSecurityContext().sessionManager as IchnaeaSessionProvider
+    private lateinit var userForm: UserForm
 
     companion object {
         private val logger: Logger = org.slf4j.LoggerFactory.getLogger(SignInController::class.java)
@@ -31,12 +28,8 @@ class SignInController : BaseController() {
     // -------------------------------------------------------------
 
     override fun onInit() {
-
-        val signInButton = this.byId("signInButton") as Button?
-        signInButton?.onClick(::onSignIn)
-
-        usernameInput = this.byId("usernameField") as TextField
-        passwordInput = this.byId("passwordField") as PasswordField
+        userForm = view.model["userForm"] as UserForm
+        userForm.submitButton.onClick(::onSignIn)
     }
 
     override fun onBeforeRendering() {
@@ -52,10 +45,10 @@ class SignInController : BaseController() {
 
     private fun onSignIn(event: ActionEvent) {
 
-        val username = usernameInput.text
-        val password = passwordInput.value()
+        val username = userForm.username.text
+        val password = userForm.password.value()
 
-        val anyEmptyFields = validateEmpty(username, usernameInput) || validateEmpty(password, passwordInput)
+        val anyEmptyFields = validateEmpty(username, userForm.username) || validateEmpty(password, userForm.password)
 
         logger.info("Sign In attempted")
 
@@ -85,7 +78,7 @@ class SignInController : BaseController() {
         val user = userService.findByUsername(auth.name)
 
         sessionProvider.session = user.get()
-        clearInputs()
+        userForm.clear()
         navTo("Projects")
     }
 
@@ -93,9 +86,9 @@ class SignInController : BaseController() {
 
         logger.error("Sign in failed")
 
-        usernameInput.setError(true)
-        passwordInput.setError(true)
-        passwordInput.text = ""
+        userForm.username.setError(true)
+        userForm.password.setError(true)
+        userForm.password.text = ""
 
         showAlert(
             title = "Error",
@@ -104,15 +97,6 @@ class SignInController : BaseController() {
         )
 
     }
-
-    private fun clearInputs() {
-        usernameInput.text = ""
-        passwordInput.text = ""
-
-        usernameInput.setError(false)
-        passwordInput.setError(false)
-    }
-
 }
 
 
