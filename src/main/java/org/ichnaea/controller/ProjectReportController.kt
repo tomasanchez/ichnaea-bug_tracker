@@ -32,6 +32,7 @@ class ProjectReportController : SideViewController() {
     }
 
     override fun onAfterRendering() {
+        updateNavSelection(PROJECT_REPORT_NAV)
     }
 
     // -------------------------------------------------------------
