@@ -36,6 +36,8 @@ abstract class SideViewController : BaseController() {
 
         const val USERS_NAV = "Users"
 
+        const val PROJECT_REPORT_NAV = "Projects Report"
+
         const val ADD_USER_NAV = "Create User"
 
         const val END_SESSION_NAV = "Exit"
@@ -104,6 +106,10 @@ abstract class SideViewController : BaseController() {
                     onClear = sideNav::clearSelected,
                     parentLayout = sideNav.menuLayout,
                     subItems = arrayListOf(
+                        SubNavItem(
+                            name = PROJECT_REPORT_NAV,
+                            onClick = { navTo("ProjectReport") }
+                        ),
                         SubNavItem(
                             name = USERS_NAV,
                             onClick = { navTo("Users") }
